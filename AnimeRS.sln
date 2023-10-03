@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimeRS.Web", "AnimeRS\AnimeRS.Web.csproj", "{0D4F494C-49F5-4401-878E-64CFA390F77D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimeRS.Web", "AnimeRS\AnimeRS.Web.csproj", "{0D4F494C-49F5-4401-878E-64CFA390F77D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimeRS.Core", "AnimeRS.Core\AnimeRS.Core.csproj", "{4DD34CE6-4F71-43F0-8151-34CBD35E2A21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimeRS.Core", "AnimeRS.Core\AnimeRS.Core.csproj", "{4DD34CE6-4F71-43F0-8151-34CBD35E2A21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimeRS.Data", "AnimeRS.Data\AnimeRS.Data.csproj", "{B77D6F89-2626-484A-BCA1-8B5C5E56975D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimeRS.Data", "AnimeRS.Data\AnimeRS.Data.csproj", "{B77D6F89-2626-484A-BCA1-8B5C5E56975D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTesten", "UnitTesten\UnitTesten.csproj", "{4B36B9F5-CC78-4CE9-9AD8-6D9254E87EA2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{B77D6F89-2626-484A-BCA1-8B5C5E56975D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B77D6F89-2626-484A-BCA1-8B5C5E56975D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B77D6F89-2626-484A-BCA1-8B5C5E56975D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B36B9F5-CC78-4CE9-9AD8-6D9254E87EA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B36B9F5-CC78-4CE9-9AD8-6D9254E87EA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B36B9F5-CC78-4CE9-9AD8-6D9254E87EA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B36B9F5-CC78-4CE9-9AD8-6D9254E87EA2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

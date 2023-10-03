@@ -11,4 +11,9 @@
     <ProjectReference Include="..\AnimeRS.Data\AnimeRS.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Views\" />
+  </ItemGroup>
+
 </Project>
