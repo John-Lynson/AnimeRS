@@ -10,8 +10,4 @@
     <ProjectReference Include="..\AnimeRS.Core\AnimeRS.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>
