@@ -8,11 +8,20 @@ namespace AnimeRS.Core.Models
 {
     public class Anime
     {
-        public int ID { get; private set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public DateTime ReleaseDate { get; set; }   
-        public string Genre { get; set; } // later weizigen.
+        public int Id { get; private set; }
+        public string Title { get; private set; }
+        public string Description { get; private set; }
+        public string Genre { get; private set; }
+        public DateTime ReleaseDate { get; private set; }
 
+
+        public Anime(int id, string title, string description, string genre, DateTime releaseDate)
+        {
+            Id = id;
+            Title = title;
+            Description = description;
+            Genre = genre;
+            ReleaseDate = releaseDate;
+        }
     }
 }

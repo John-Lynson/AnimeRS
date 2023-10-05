@@ -23,7 +23,7 @@ namespace AnimeRS.Data.Repositories
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                using (var command = connection.CreateCommand("SELECT * FROM Animes")) 
+                using (var command = new SqlCommand("SELECT * FROM Animes")) 
                 { 
                     using (var reader = await command.ExecuteReaderAsync()) 
                     { 
@@ -60,5 +60,36 @@ namespace AnimeRS.Data.Repositories
             return null;
 
         }
+
+        public async Task AddAsync (Anime anime)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand(
+                    "INSERT INTO Animes (Title, Description, Genre, ReleaseDate) VALUES (@Title, @Description, @Genre, @ReleaseDate",
+                    connection))
+                {
+                    command.Parameters.AddWithValue("@Title", anime.Title);
+                    command.Parameters.AddWithValue("@Description", anime.Description);
+                    command.Parameters.AddWithValue("@Genre", anime.Genre);
+                    command.Parameters.AddWithValue("@ReleaseData", anime.ReleaseDate);
+
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+        }
+
+        private Anime MapToAnime(SqlDataReader reader)
+        {
+            return new Anime(
+                id: reader.GetInt32(reader.GetOrdinal("Id")),
+                title: reader.GetString(reader.GetOrdinal("Title")),
+                description: reader.GetString(reader.GetOrdinal("Description")),
+                genre: reader.GetString(reader.GetOrdinal("Genre")),
+                releaseDate: reader.GetDateTime(reader.GetOrdinal("ReleaseDate"))
+            );
+        }
+
     }
 }
