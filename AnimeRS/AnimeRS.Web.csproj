@@ -12,8 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Views\" />
+    <Folder Include="Views\Anime\" />
   </ItemGroup>
 
 </Project>
