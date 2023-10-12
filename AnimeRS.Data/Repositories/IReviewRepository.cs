@@ -11,8 +11,8 @@ namespace AnimeRS.Data.Repositories
     {
         IEnumerable<Review> GetAllReviews();
         Review GetReviewById(int id);
-        void AddReview (Review review);
+        void AddReview(Review review);
         void UpdateReview(Review review);
-        void DeleteReview (int id);
+        void DeleteReview(int id);
     }
 }
