@@ -23,11 +23,11 @@ namespace AnimeRS.Data.Repositories
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                using (var command = new SqlCommand("SELECT * FROM Animes")) 
-                { 
-                    using (var reader = await command.ExecuteReaderAsync()) 
-                    { 
-                        while (await reader.ReadAsync()) 
+                using (var command = new SqlCommand("SELECT * FROM Animes"))
+                {
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
                         {
                             var anime = MapToAnime(reader);
                             animes.Add(anime);
@@ -39,7 +39,7 @@ namespace AnimeRS.Data.Repositories
             return animes;
         }
 
-        public async Task<Anime> GetAsync (int id)
+        public async Task<Anime> GetAsync(int id)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -61,7 +61,7 @@ namespace AnimeRS.Data.Repositories
 
         }
 
-        public async Task AddAsync (Anime anime)
+        public async Task AddAsync(Anime anime)
         {
             using (var connection = new SqlConnection(_connectionString))
             {

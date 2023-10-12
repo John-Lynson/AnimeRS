@@ -20,3 +20,18 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+:root {
+    --primary-color: #2e51a2; /* Blauw */
+    --secondary-color: #ffffff; /* Wit */
+    --text-color: #000000; /* Zwart */
+}
+
+body {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+}
+
+header, footer {
+    background-color: var(--primary-color);
+}
