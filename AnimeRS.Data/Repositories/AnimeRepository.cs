@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using AnimeRS.Core.Models;
+using AnimeRS.Core.Interfaces;
 
 namespace AnimeRS.Data.Repositories
 {

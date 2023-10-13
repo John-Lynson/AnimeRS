@@ -1,4 +1,5 @@
 ﻿using AnimeRS.Data.Repositories;
+using AnimeRS.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnimeRS.Web.Controllers

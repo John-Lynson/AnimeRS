@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AnimeRS.Data.Repositories
+namespace AnimeRS.Core.Interfaces
 {
     public interface IAnimeLoverRepository
     {

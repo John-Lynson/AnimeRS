@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AnimeRS.Core.Models;
 
-namespace AnimeRS.Data.Repositories
+namespace AnimeRS.Core.Interfaces
 {
     public interface IReviewRepository
     {

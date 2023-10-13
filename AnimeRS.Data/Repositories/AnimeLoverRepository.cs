@@ -1,4 +1,5 @@
 ﻿using AnimeRS.Core.Models;
+using AnimeRS.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -33,7 +34,7 @@ namespace AnimeRS.Data.Repositories
                         {
                             var animeLover = new AnimeLover(
                                 reader.GetInt32(reader.GetOrdinal("Id")),
-                                reader["Username"].ToString(),
+                                reader["Username"]?.ToString(),
                                 reader["Email"].ToString(),
                                 reader["PasswordHash"].ToString(),
                                 reader["Role"].ToString()
@@ -51,7 +52,7 @@ namespace AnimeRS.Data.Repositories
 
         public async Task<AnimeLover> GetAnimeLoverByIdAsync(int id)
         {
-            AnimeLover animeLover = null;
+            AnimeLover animeLover = null!;
             var query = "SELECT * FROM AnimeLovers WHERE Id = @Id";
 
             using (var connection = new SqlConnection(_connectionString))
@@ -66,7 +67,7 @@ namespace AnimeRS.Data.Repositories
                         {
                             animeLover = new AnimeLover(
                                 reader.GetInt32(reader.GetOrdinal("Id")),
-                                reader["Username"].ToString(),
+                                reader["Username"]?.ToString(),
                                 reader["Email"].ToString(),
                                 reader["PasswordHash"].ToString(),
                                 reader["Role"].ToString()
