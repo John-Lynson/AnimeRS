@@ -9,8 +9,10 @@ namespace AnimeRS.Core.Interfaces
 {
     public interface IAnimeRepository
     {
-        Task<IEnumerable<Anime>> GetAllAsync();
-        Task<Anime> GetAsync(int id);
-        Task AddAsync (Anime anime);
+        Task<IEnumerable<Anime>> GetAllAnimesAsync();
+        Task<Anime> GetAnimeByIdAsync(int id);
+        Task AddAnimeAsync(Anime anime);
+        Task UpdateAnimeAsync(Anime anime);
+        Task DeleteAnimeAsync(int id);
     }
 }

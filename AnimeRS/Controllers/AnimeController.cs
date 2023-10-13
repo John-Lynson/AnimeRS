@@ -16,7 +16,7 @@ namespace AnimeRS.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var animes = await _animeRepository.GetAllAsync();
+            var animes = await _animeRepository.GetAllAnimesAsync();
             return View(animes);
         }
     }

@@ -33,14 +33,13 @@ namespace AnimeRS.Data.Repositories
                     {
                         while (reader.Read())
                         {
-                            var review = new Review
-                            {
-                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                                AnimeId = reader.GetInt32(reader.GetOrdinal("AnimeId")),
-                                Comment = reader.GetString(reader.GetOrdinal("Comment")),
-                                Rating = reader.GetInt32(reader.GetOrdinal("Rating")),
-                                DatePosted = reader.GetDateTime(reader.GetOrdinal("DatePosted"))
-                            };
+                            var review = new Review(
+                                reader.GetInt32(reader.GetOrdinal("Id")),
+                                reader.GetInt32(reader.GetOrdinal("AnimeId")),
+                                reader.GetString(reader.GetOrdinal("Comment")),
+                                reader.GetInt32(reader.GetOrdinal("Rating")),
+                                reader.GetDateTime(reader.GetOrdinal("DatePosted"))
+                            );
                             reviews.Add(review);
                         }
                     }
@@ -62,19 +61,19 @@ namespace AnimeRS.Data.Repositories
                 {
                     if (reader.Read())
                     {
-                        return new Review
-                        {
-                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            AnimeId = reader.GetInt32(reader.GetOrdinal("AnimeId")),
-                            Comment = reader.GetString(reader.GetOrdinal("Comment")),
-                            Rating = reader.GetInt32(reader.GetOrdinal("Rating")),
-                            DatePosted = reader.GetDateTime(reader.GetOrdinal("DatePosted"))
-                        };
+                        return new Review(
+                            reader.GetInt32(reader.GetOrdinal("Id")),
+                            reader.GetInt32(reader.GetOrdinal("AnimeId")),
+                            reader.GetString(reader.GetOrdinal("Comment")),
+                            reader.GetInt32(reader.GetOrdinal("Rating")),
+                            reader.GetDateTime(reader.GetOrdinal("DatePosted"))
+                        );
                     }
                 }
             }
             return null;  // Geen review gevonden met de opgegeven ID
         }
+
 
         public void AddReview(Review review)
         {
@@ -119,4 +118,4 @@ namespace AnimeRS.Data.Repositories
             }
         }
     }
-
+}

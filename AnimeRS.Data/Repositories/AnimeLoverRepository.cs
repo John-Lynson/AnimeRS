@@ -100,7 +100,7 @@ namespace AnimeRS.Data.Repositories
                         var role = reader.GetString(reader.GetOrdinal("Role"));
                         return new AnimeLover(id, username, email, passwordHash, role);
                     }
-                    return null; 
+                    return null;
                 }
             }
         }
@@ -146,7 +146,7 @@ namespace AnimeRS.Data.Repositories
                     command.Parameters.AddWithValue("@PasswordHash", animeLover.PasswordHash);
                     command.Parameters.AddWithValue("@Role", animeLover.Role);
                     int rowsAffected = await command.ExecuteNonQueryAsync();
-                    return rowsAffected > 0;  
+                    return rowsAffected > 0;
                 }
             }
         }
@@ -162,7 +162,7 @@ namespace AnimeRS.Data.Repositories
                 {
                     command.Parameters.AddWithValue("@Id", id);
                     int rowsAffected = await command.ExecuteNonQueryAsync();
-                    return rowsAffected > 0; 
+                    return rowsAffected > 0;
                 }
             }
         }
