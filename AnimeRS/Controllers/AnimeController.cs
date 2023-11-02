@@ -1,7 +1,7 @@
-﻿using AnimeRS.Data.Repositories;
+﻿
+using AnimeRS.Data.Repositories;
 using AnimeRS.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace AnimeRS.Web.Controllers
 {
@@ -9,14 +9,14 @@ namespace AnimeRS.Web.Controllers
     {
         private readonly IAnimeRepository _animeRepository;
 
-        public AnimeController (IAnimeRepository animeRepository)
+        public AnimeController(IAnimeRepository animeRepository)
         {
             _animeRepository = animeRepository;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var animes = await _animeRepository.GetAllAnimesAsync();
+            var animes = _animeRepository.GetAllAnimes();
             return View(animes);
         }
     }

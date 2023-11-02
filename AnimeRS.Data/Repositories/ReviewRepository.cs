@@ -1,9 +1,6 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
 using System.Data.SqlClient;
 using AnimeRS.Core.Models;
 using AnimeRS.Core.Interfaces;
@@ -21,19 +18,19 @@ namespace AnimeRS.Data.Repositories
 
         public IEnumerable<Review> GetAllReviews()
         {
-            var reviews = new List<Review>();
-            var query = "SELECT * FROM Reviews";
+            List<Review> reviews = new List<Review>();
+            string query = "SELECT * FROM Reviews";
 
-            using (var connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                using (var command = new SqlCommand(query, connection))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    using (var reader = command.ExecuteReader())
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            var review = new Review(
+                            Review review = new Review(
                                 reader.GetInt32(reader.GetOrdinal("Id")),
                                 reader.GetInt32(reader.GetOrdinal("AnimeId")),
                                 reader.GetString(reader.GetOrdinal("Comment")),
@@ -51,13 +48,13 @@ namespace AnimeRS.Data.Repositories
 
         public Review GetReviewById(int id)
         {
-            var query = "SELECT * FROM Reviews WHERE Id = @Id";
-            using (var connection = new SqlConnection(_connectionString))
-            using (var command = new SqlCommand(query, connection))
+            string query = "SELECT * FROM Reviews WHERE Id = @Id";
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@Id", id);
                 connection.Open();
-                using (var reader = command.ExecuteReader())
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
@@ -71,15 +68,14 @@ namespace AnimeRS.Data.Repositories
                     }
                 }
             }
-            return null;  // Geen review gevonden met de opgegeven ID
+            return null;  // No review found with the specified ID
         }
-
 
         public void AddReview(Review review)
         {
-            var query = "INSERT INTO Reviews (AnimeId, Comment, Rating, DatePosted) VALUES (@AnimeId, @Comment, @Rating, @DatePosted)";
-            using (var connection = new SqlConnection(_connectionString))
-            using (var command = new SqlCommand(query, connection))
+            string query = "INSERT INTO Reviews (AnimeId, Comment, Rating, DatePosted) VALUES (@AnimeId, @Comment, @Rating, @DatePosted)";
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@AnimeId", review.AnimeId);
                 command.Parameters.AddWithValue("@Comment", review.Comment);
@@ -92,9 +88,9 @@ namespace AnimeRS.Data.Repositories
 
         public void UpdateReview(Review review)
         {
-            var query = "UPDATE Reviews SET AnimeId = @AnimeId, Comment = @Comment, Rating = @Rating, DatePosted = @DatePosted WHERE Id = @Id";
-            using (var connection = new SqlConnection(_connectionString))
-            using (var command = new SqlCommand(query, connection))
+            string query = "UPDATE Reviews SET AnimeId = @AnimeId, Comment = @Comment, Rating = @Rating, DatePosted = @DatePosted WHERE Id = @Id";
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@Id", review.Id);
                 command.Parameters.AddWithValue("@AnimeId", review.AnimeId);
@@ -108,9 +104,9 @@ namespace AnimeRS.Data.Repositories
 
         public void DeleteReview(int id)
         {
-            var query = "DELETE FROM Reviews WHERE Id = @Id";
-            using (var connection = new SqlConnection(_connectionString))
-            using (var command = new SqlCommand(query, connection))
+            string query = "DELETE FROM Reviews WHERE Id = @Id";
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@Id", id);
                 connection.Open();

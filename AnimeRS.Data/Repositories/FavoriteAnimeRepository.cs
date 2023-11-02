@@ -1,9 +1,9 @@
-﻿using AnimeRS.Core.Interfaces;
+﻿
+using AnimeRS.Core.Interfaces;
 using AnimeRS.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Threading.Tasks;
 
 namespace AnimeRS.Data.Repositories
 {
@@ -16,22 +16,22 @@ namespace AnimeRS.Data.Repositories
             _connectionString = connectionString;
         }
 
-        public async Task<IEnumerable<FavoriteAnime>> GetFavoriteAnimesByAnimeLoverIdAsync(int animeLoverId)
+        public IEnumerable<FavoriteAnime> GetFavoriteAnimesByAnimeLoverId(int animeLoverId)
         {
-            var favoriteAnimes = new List<FavoriteAnime>();
-            var query = "SELECT * FROM FavoriteAnimes WHERE AnimeLoverId = @AnimeLoverId";
+            List<FavoriteAnime> favoriteAnimes = new List<FavoriteAnime>();
+            string query = "SELECT * FROM FavoriteAnimes WHERE AnimeLoverId = @AnimeLoverId";
 
-            using (var connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                await connection.OpenAsync();
-                using (var command = new SqlCommand(query, connection))
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@AnimeLoverId", animeLoverId);
-                    using (var reader = await command.ExecuteReaderAsync())
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        while (await reader.ReadAsync())
+                        while (reader.Read())
                         {
-                            var favoriteAnime = new FavoriteAnime(
+                            FavoriteAnime favoriteAnime = new FavoriteAnime(
                                 reader.GetInt32(reader.GetOrdinal("AnimeLoverId")),
                                 reader.GetInt32(reader.GetOrdinal("AnimeId"))
                             );
@@ -40,40 +40,39 @@ namespace AnimeRS.Data.Repositories
                     }
                 }
             }
-
             return favoriteAnimes;
         }
 
-        public async Task<bool> AddFavoriteAnimeAsync(FavoriteAnime favoriteAnime)
+        public bool AddFavoriteAnime(FavoriteAnime favoriteAnime)
         {
-            var query = @"
+            string query = @"
                 INSERT INTO FavoriteAnimes (AnimeLoverId, AnimeId)
                 VALUES (@AnimeLoverId, @AnimeId)";
 
-            using (var connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                await connection.OpenAsync();
-                using (var command = new SqlCommand(query, connection))
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@AnimeLoverId", favoriteAnime.AnimeLoverId);
                     command.Parameters.AddWithValue("@AnimeId", favoriteAnime.AnimeId);
-                    int rowsAffected = await command.ExecuteNonQueryAsync();
+                    int rowsAffected = command.ExecuteNonQuery();
                     return rowsAffected > 0;
                 }
             }
         }
 
-        public async Task<bool> RemoveFavoriteAnimeAsync(int id)
+        public bool RemoveFavoriteAnime(int id)
         {
-            var query = "DELETE FROM FavoriteAnimes WHERE Id = @Id";
+            string query = "DELETE FROM FavoriteAnimes WHERE Id = @Id";
 
-            using (var connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                await connection.OpenAsync();
-                using (var command = new SqlCommand(query, connection))
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Id", id);
-                    int rowsAffected = await command.ExecuteNonQueryAsync();
+                    int rowsAffected = command.ExecuteNonQuery();
                     return rowsAffected > 0;
                 }
             }

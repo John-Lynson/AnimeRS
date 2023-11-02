@@ -1,0 +1,52 @@
+/* AnimeRS.styles.css */
+
+/* Algemene Stijlen */
+body {
+    font-family: 'Open Sans', Arial, sans-serif;
+    background-color: #eaeaea;
+}
+
+/* Header Stijlen */
+header {
+    background-color: #20232a;
+    color: #61dafb;
+    padding: 10px 0;
+}
+
+    header #logo {
+        max-width: 150px;
+        height: auto;
+    }
+
+/* Navigatiebalk Stijlen */
+nav ul {
+    padding-left: 0;
+    list-style-type: none;
+    display: flex;
+    justify-content: space-around;
+}
+
+nav li a {
+    color: #61dafb;
+    text-decoration: none;
+    padding: 5px 10px;
+}
+
+    nav li a:hover {
+        text-decoration: underline;
+    }
+
+/* Footer Stijlen */
+footer {
+    background-color: #20232a;
+    color: #61dafb;
+    padding: 10px 0;
+    text-align: center;
+}
+
+/* Aanpassingen voor kleinere schermen */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+    }
+}

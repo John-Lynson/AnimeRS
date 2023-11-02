@@ -18,21 +18,21 @@ namespace AnimeRS.Data.Repositories
             _connectionString = connectionString;
         }
 
-        public async Task<IEnumerable<AnimeLover>> GetAllAnimeLoversAsync()
+        public IEnumerable<AnimeLover> GetAllAnimeLovers()
         {
-            var animeLovers = new List<AnimeLover>();
-            var query = "SELECT * FROM AnimeLovers";
+            List<AnimeLover> animeLovers = new List<AnimeLover>();
+            string query = "SELECT * FROM AnimeLovers";
 
-            using (var connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                await connection.OpenAsync();
-                using (var command = new SqlCommand(query, connection))
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    using (var reader = await command.ExecuteReaderAsync())
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        while (await reader.ReadAsync())
+                        while (reader.Read())
                         {
-                            var animeLover = new AnimeLover(
+                            AnimeLover animeLover = new AnimeLover(
                                 reader.GetInt32(reader.GetOrdinal("Id")),
                                 reader["Username"]?.ToString(),
                                 reader["Email"].ToString(),
@@ -50,20 +50,20 @@ namespace AnimeRS.Data.Repositories
 
 
 
-        public async Task<AnimeLover> GetAnimeLoverByIdAsync(int id)
+        public AnimeLover GetAnimeLoverById(int id)
         {
             AnimeLover animeLover = null!;
-            var query = "SELECT * FROM AnimeLovers WHERE Id = @Id";
+            string query = "SELECT * FROM AnimeLovers WHERE Id = @Id";
 
-            using (var connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                await connection.OpenAsync();
-                using (var command = new SqlCommand(query, connection))
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Id", id);
-                    using (var reader = await command.ExecuteReaderAsync())
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        if (await reader.ReadAsync())
+                        if (reader.Read())
                         {
                             animeLover = new AnimeLover(
                                 reader.GetInt32(reader.GetOrdinal("Id")),
@@ -82,17 +82,17 @@ namespace AnimeRS.Data.Repositories
 
 
 
-        public async Task<AnimeLover> GetAnimeLoverByUsernameAsync(string username)
+        public AnimeLover GetAnimeLoverByUsername(string username)
         {
-            var query = "SELECT * FROM AnimeLovers WHERE Username = @Username";
-            using (var connection = new SqlConnection(_connectionString))
-            using (var command = new SqlCommand(query, connection))
+            string query = "SELECT * FROM AnimeLovers WHERE Username = @Username";
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@Username", username);
-                await connection.OpenAsync();
-                using (var reader = await command.ExecuteReaderAsync())
+                connection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    if (await reader.ReadAsync())
+                    if (reader.Read())
                     {
                         var id = reader.GetInt32(reader.GetOrdinal("Id"));
                         var email = reader.GetString(reader.GetOrdinal("Email"));
@@ -106,62 +106,62 @@ namespace AnimeRS.Data.Repositories
         }
 
 
-        public async Task<bool> AddAnimeLoverAsync(AnimeLover animeLover)
+        public bool AddAnimeLover(AnimeLover animeLover)
         {
-            var query = @"
+            string query = @"
         INSERT INTO AnimeLovers (Username, Email, PasswordHash, Role)
         VALUES (@Username, @Email, @PasswordHash, @Role)";
 
-            using (var connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                await connection.OpenAsync();
-                using (var command = new SqlCommand(query, connection))
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Username", animeLover.Username);
                     command.Parameters.AddWithValue("@Email", animeLover.Email);
                     command.Parameters.AddWithValue("@PasswordHash", animeLover.PasswordHash);
                     command.Parameters.AddWithValue("@Role", animeLover.Role);
-                    int rowsAffected = await command.ExecuteNonQueryAsync();
+                    int rowsAffected = command.ExecuteNonQuery();
                     return rowsAffected > 0;
                 }
             }
         }
 
 
-        public async Task<bool> UpdateAnimeLoverAsync(AnimeLover animeLover)
+        public bool UpdateAnimeLover(AnimeLover animeLover)
         {
-            var query = @"
+            string query = @"
         UPDATE AnimeLovers
         SET Username = @Username, Email = @Email, PasswordHash = @PasswordHash, Role = @Role
         WHERE Id = @Id";
 
-            using (var connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                await connection.OpenAsync();
-                using (var command = new SqlCommand(query, connection))
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Id", animeLover.Id);
                     command.Parameters.AddWithValue("@Username", animeLover.Username);
                     command.Parameters.AddWithValue("@Email", animeLover.Email);
                     command.Parameters.AddWithValue("@PasswordHash", animeLover.PasswordHash);
                     command.Parameters.AddWithValue("@Role", animeLover.Role);
-                    int rowsAffected = await command.ExecuteNonQueryAsync();
+                    int rowsAffected = command.ExecuteNonQuery();
                     return rowsAffected > 0;
                 }
             }
         }
 
 
-        public async Task<bool> DeleteAnimeLoverAsync(int id)
+        public bool DeleteAnimeLover(int id)
         {
-            var query = "DELETE FROM AnimeLovers WHERE Id = @Id";
-            using (var connection = new SqlConnection(_connectionString))
+            string query = "DELETE FROM AnimeLovers WHERE Id = @Id";
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                await connection.OpenAsync();
-                using (var command = new SqlCommand(query, connection))
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Id", id);
-                    int rowsAffected = await command.ExecuteNonQueryAsync();
+                    int rowsAffected = command.ExecuteNonQuery();
                     return rowsAffected > 0;
                 }
             }

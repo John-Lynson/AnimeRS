@@ -16,19 +16,19 @@ namespace AnimeRS.Data.Repositories
             _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
         }
 
-        public async Task<IEnumerable<Anime>> GetAllAnimesAsync()
+        public IEnumerable<Anime> GetAllAnimes()
         {
             var animes = new List<Anime>();
-            var query = "SELECT * FROM Animes";
+            string query = "SELECT * FROM Animes";
 
-            using (var connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                await connection.OpenAsync();
-                using (var command = new SqlCommand(query, connection))
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    using (var reader = await command.ExecuteReaderAsync())
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        while (await reader.ReadAsync())
+                        while (reader.Read())
                         {
                             var anime = new Anime(
                                 Convert.ToInt32(reader["Id"].ToString()),
@@ -40,6 +40,7 @@ namespace AnimeRS.Data.Repositories
                                 DateTime.Parse(reader["ReleaseDate"].ToString())
                             );
                             animes.Add(anime);
+                            return default;
                         }
                     }
                 }
@@ -48,20 +49,20 @@ namespace AnimeRS.Data.Repositories
             return animes;
         }
 
-        public async Task<Anime> GetAnimeByIdAsync(int id)
+        public Anime GetAnimeById(int id)
         {
             Anime anime = null;
-            var query = "SELECT * FROM Animes WHERE Id = @Id";
+            string query = "SELECT * FROM Animes WHERE Id = @Id";
 
-            using (var connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                await connection.OpenAsync();
-                using (var command = new SqlCommand(query, connection))
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Id", id);
-                    using (var reader = await command.ExecuteReaderAsync())
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        if (await reader.ReadAsync())
+                        if (reader.Read())
                         {
                             anime = new Anime(
                                 reader.GetInt32(reader.GetOrdinal("Id")),
@@ -72,6 +73,7 @@ namespace AnimeRS.Data.Repositories
                                 reader.GetString(reader.GetOrdinal("Status")),
                                 DateTime.Parse(reader["ReleaseDate"].ToString())  // Deze regel is aangepast
                             );
+                            return default;
                         }
                     }
                 }
@@ -81,16 +83,16 @@ namespace AnimeRS.Data.Repositories
         }
 
 
-        public async Task AddAnimeAsync(Anime anime)
+        public Task AddAnime(Anime anime)
         {
-            var query = @"
+            string query = @"
                 INSERT INTO Animes (Title, Description, Genre, Episodes, Status, ReleaseDate)
                 VALUES (@Title, @Description, @Genre, @Episodes, @Status, @ReleaseDate)";
 
-            using (var connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                await connection.OpenAsync();
-                using (var command = new SqlCommand(query, connection))
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Title", anime.Title);
                     command.Parameters.AddWithValue("@Description", anime.Description);
@@ -98,23 +100,24 @@ namespace AnimeRS.Data.Repositories
                     command.Parameters.AddWithValue("@Episodes", anime.Episodes);
                     command.Parameters.AddWithValue("@Status", anime.Status);
                     command.Parameters.AddWithValue("@ReleaseDate", anime.ReleaseDate);
-                    await command.ExecuteNonQueryAsync();
+                    command.ExecuteNonQuery();
+                    return default;
                 }
             }
         }
 
-        public async Task UpdateAnimeAsync(Anime anime)
+        public Task UpdateAnime(Anime anime)
         {
-            var query = @"
+            string query = @"
                 UPDATE Animes
                 SET Title = @Title, Description = @Description, Genre = @Genre,
                     Episodes = @Episodes, Status = @Status, AiringDate = @AiringDate
                 WHERE Id = @Id";
 
-            using (var connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                await connection.OpenAsync();
-                using (var command = new SqlCommand(query, connection))
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Id", anime.Id);
                     command.Parameters.AddWithValue("@Title", anime.Title);
@@ -123,22 +126,24 @@ namespace AnimeRS.Data.Repositories
                     command.Parameters.AddWithValue("@Episodes", anime.Episodes);
                     command.Parameters.AddWithValue("@Status", anime.Status);
                     command.Parameters.AddWithValue("@ReleaseDate", anime.ReleaseDate);
-                    await command.ExecuteNonQueryAsync();
+                    command.ExecuteNonQuery();
+                    return default;
                 }
             }
         }
 
-        public async Task DeleteAnimeAsync(int id)
+        public Task DeleteAnime(int id)
         {
-            var query = "DELETE FROM Animes WHERE Id = @Id";
+            string query = "DELETE FROM Animes WHERE Id = @Id";
 
-            using (var connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                await connection.OpenAsync();
-                using (var command = new SqlCommand(query, connection))
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Id", id);
-                    await command.ExecuteNonQueryAsync();
+                    command.ExecuteNonQuery();
+                    return default;
                 }
             }
         }
