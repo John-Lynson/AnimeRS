@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Threading.Tasks;
 using AnimeRS.Core.Interfaces;
 using AnimeRS.Core.Models;
 
@@ -11,9 +10,9 @@ namespace AnimeRS.Data.Repositories
     {
         private readonly string _connectionString;
 
-        public AnimeRepository(DatabaseSettings databaseSettings)
+        public AnimeRepository(string connectionString)
         {
-            _connectionString = databaseSettings.DefaultConnection;
+            _connectionString = connectionString;
         }
 
         public IEnumerable<Anime> GetAllAnimes()
@@ -40,7 +39,6 @@ namespace AnimeRS.Data.Repositories
                                 DateTime.Parse(reader["ReleaseDate"].ToString())
                             );
                             animes.Add(anime);
-                            return default;
                         }
                     }
                 }
@@ -48,6 +46,7 @@ namespace AnimeRS.Data.Repositories
 
             return animes;
         }
+
 
         public Anime GetAnimeById(int id)
         {
@@ -83,16 +82,13 @@ namespace AnimeRS.Data.Repositories
         }
 
 
-        public Task AddAnime(Anime anime)
+        public void AddAnime(Anime anime)
         {
-            string query = @"
-                INSERT INTO Animes (Title, Description, Genre, Episodes, Status, ReleaseDate)
-                VALUES (@Title, @Description, @Genre, @Episodes, @Status, @ReleaseDate)";
-
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            string query = @"INSERT INTO Animes (Title, Description, Genre, Episodes, Status, ReleaseDate)
+                     VALUES (@Title, @Description, @Genre, @Episodes, @Status, @ReleaseDate)";
+            using (var connection = new SqlConnection(_connectionString))
             {
-                connection.Open();
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (var command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Title", anime.Title);
                     command.Parameters.AddWithValue("@Description", anime.Description);
@@ -100,19 +96,20 @@ namespace AnimeRS.Data.Repositories
                     command.Parameters.AddWithValue("@Episodes", anime.Episodes);
                     command.Parameters.AddWithValue("@Status", anime.Status);
                     command.Parameters.AddWithValue("@ReleaseDate", anime.ReleaseDate);
+
+                    connection.Open();
                     command.ExecuteNonQuery();
-                    return default;
                 }
             }
         }
 
-        public Task UpdateAnime(Anime anime)
+        public void UpdateAnime(Anime anime)
         {
             string query = @"
-                UPDATE Animes
-                SET Title = @Title, Description = @Description, Genre = @Genre,
-                    Episodes = @Episodes, Status = @Status, AiringDate = @AiringDate
-                WHERE Id = @Id";
+        UPDATE Animes
+        SET Title = @Title, Description = @Description, Genre = @Genre,
+            Episodes = @Episodes, Status = @Status, AiringDate = @AiringDate
+        WHERE Id = @Id";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -127,12 +124,12 @@ namespace AnimeRS.Data.Repositories
                     command.Parameters.AddWithValue("@Status", anime.Status);
                     command.Parameters.AddWithValue("@ReleaseDate", anime.ReleaseDate);
                     command.ExecuteNonQuery();
-                    return default;
                 }
             }
         }
 
-        public Task DeleteAnime(int id)
+
+        public void DeleteAnime(int id)
         {
             string query = "DELETE FROM Animes WHERE Id = @Id";
 
@@ -143,7 +140,6 @@ namespace AnimeRS.Data.Repositories
                 {
                     command.Parameters.AddWithValue("@Id", id);
                     command.ExecuteNonQuery();
-                    return default;
                 }
             }
         }

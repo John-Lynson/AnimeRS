@@ -1,10 +1,12 @@
-using AnimeRS.Core.Models;
 using AnimeRS.Core.Interfaces;
+using AnimeRS.Core.Models;
+using AnimeRS.Data.Database;
 using AnimeRS.Data.Repositories;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options; // Zorg ervoor dat je deze using toevoegt
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +18,12 @@ builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("C
 
 // Registreer de IAnimeRepository en zijn implementatie AnimeRepository, 
 // en zorg ervoor dat de AnimeRepository de DatabaseSettings krijgt die uit de configuratie zijn geladen.
-builder.Services.AddScoped<IAnimeRepository, AnimeRepository>();
+// Dit gebruikt een factory om de AnimeRepository te creëren met de IOptions wrapper.
+builder.Services.AddScoped<IAnimeRepository>(serviceProvider =>
+{
+    var databaseSettings = serviceProvider.GetRequiredService<IOptions<DatabaseSettings>>().Value;
+    return new AnimeRepository(databaseSettings.DefaultConnection); // Pass the connection string, not the settings object
+});
 
 var app = builder.Build();
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AnimeRS.Core.Models
+namespace AnimeRS.Data.Database
 {
     public class DatabaseSettings
     {
