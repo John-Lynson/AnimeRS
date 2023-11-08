@@ -1,12 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AnimeRS.Core.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AnimeRS.Web.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IAnimeRepository _animeRepository;
+
+        public HomeController(IAnimeRepository animeRepository)
+        {
+            _animeRepository = animeRepository;
+        }
+
         public IActionResult Index()
         {
-            return View();
+            var animes = _animeRepository.GetAllAnimes();
+            return View(animes);
         }
 
         public IActionResult Privacy()
@@ -14,6 +23,6 @@ namespace AnimeRS.Web.Controllers
             return View();
         }
 
-        // ... andere acties
+        // ... andere acties ...
     }
 }

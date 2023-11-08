@@ -7,13 +7,13 @@ using AnimeRS.Core.Models;
 
 namespace AnimeRS.Data.Repositories
 {
-    internal class AnimeRepository : IAnimeRepository
+    public class AnimeRepository : IAnimeRepository
     {
         private readonly string _connectionString;
 
-        public AnimeRepository(string connectionString)
+        public AnimeRepository(DatabaseSettings databaseSettings)
         {
-            _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
+            _connectionString = databaseSettings.DefaultConnection;
         }
 
         public IEnumerable<Anime> GetAllAnimes()

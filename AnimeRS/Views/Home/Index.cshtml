@@ -12,10 +12,14 @@
     <!-- Je zou hier je carousel component implementeren -->
 </section>
 
-<section id="most-viewed-animes" class="my-5">
-    <h2>Meest Bekeken Animes</h2>
-    <!-- Sectie voor meest bekeken animes -->
-    <!-- Dynamische content zou hier komen -->
+<section id="top-animes" class="my-5">
+    <h2>Top Animes</h2>
+    <ul>
+        @foreach (var anime in Model)
+        {
+                <li>@anime.Title - @anime.Genre</li>
+        }
+    </ul>
 </section>
 
 <section id="new-reviews" class="my-5">
