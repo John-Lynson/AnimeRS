@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<AnimeRS.Core.Models.Anime> 
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -14,12 +16,19 @@
 
 <section id="top-animes" class="my-5">
     <h2>Top Animes</h2>
-    <ul>
-        @foreach (var anime in Model)
-        {
+    @if (Model != null && Model.Any())
+    {
+        <ul>
+            @foreach (var anime in Model)
+            {
                 <li>@anime.Title - @anime.Genre</li>
-        }
-    </ul>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>Er zijn momenteel geen animes beschikbaar.</p>
+    }
 </section>
 
 <section id="new-reviews" class="my-5">

@@ -15,4 +15,8 @@
     <ProjectReference Include="..\AnimeRS.Data\AnimeRS.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>
