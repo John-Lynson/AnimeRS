@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AnimeRS.Data.Repositories
 {
-    internal class AnimeLoverRepository : IAnimeLoverRepository
+    public class AnimeLoverRepository : IAnimeLoverRepository
     {
         private readonly string _connectionString;
 
@@ -119,7 +119,6 @@ namespace AnimeRS.Data.Repositories
                 {
                     command.Parameters.AddWithValue("@Username", animeLover.Username);
                     command.Parameters.AddWithValue("@Email", animeLover.Email);
-                    command.Parameters.AddWithValue("@PasswordHash", animeLover.PasswordHash);
                     command.Parameters.AddWithValue("@Role", animeLover.Role);
                     int rowsAffected = command.ExecuteNonQuery();
                     return rowsAffected > 0;
@@ -143,13 +142,36 @@ namespace AnimeRS.Data.Repositories
                     command.Parameters.AddWithValue("@Id", animeLover.Id);
                     command.Parameters.AddWithValue("@Username", animeLover.Username);
                     command.Parameters.AddWithValue("@Email", animeLover.Email);
-                    command.Parameters.AddWithValue("@PasswordHash", animeLover.PasswordHash);
                     command.Parameters.AddWithValue("@Role", animeLover.Role);
                     int rowsAffected = command.ExecuteNonQuery();
                     return rowsAffected > 0;
                 }
             }
         }
+
+        public AnimeLover GetByAuth0UserId(string auth0UserId)
+        {
+            string query = "SELECT * FROM AnimeLovers WHERE Auth0UserId = @Auth0UserId";
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@Auth0UserId", auth0UserId);
+                connection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        var id = reader.GetInt32(reader.GetOrdinal("Id"));
+                        var username = reader.GetString(reader.GetOrdinal("Username"));
+                        var email = reader.GetString(reader.GetOrdinal("Email"));
+                        var role = reader.GetString(reader.GetOrdinal("Role"));
+                        return new AnimeLover(id, username, email, role, auth0UserId);
+                    }
+                    return null;
+                }
+            }
+        }
+
 
 
         public bool DeleteAnimeLover(int id)

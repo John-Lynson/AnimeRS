@@ -19,8 +19,27 @@
                     <li class="nav-item"><a class="nav-link text-white" href="/Genres">Genres</a></li>
                     <!-- Andere links -->
                 </ul>
+                <ul class="navbar-nav">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-controller="Account" asp-action="Profile">Profiel</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-controller="Account" asp-action="Logout">Uitloggen</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-controller="Account" asp-action="Login">Inloggen</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-controller="Account" asp-action="Signup">Registreren</a>
+                        </li>
+                    }
+                </ul>
             </nav>
-            <a class="btn btn-primary" href="/Login">Inloggen/Registreren</a>
         </div>
     </header>
     <div class="container">

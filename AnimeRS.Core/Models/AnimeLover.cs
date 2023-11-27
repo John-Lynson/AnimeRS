@@ -11,17 +11,18 @@ namespace AnimeRS.Core.Models
         public int Id { get; private set; }
         public string Username { get; private set; }
         public string Email { get; private set; }
-        public string PasswordHash { get; private set; }
 
         public string Role { get; private set; }
 
-        public AnimeLover(int id, string username, string email, string passwordHash, string role)
+        public string Auth0UserId { get; private set; }
+
+        public AnimeLover(int id, string username, string email, string role, string auth0UserId)
         {
             Id = id;
             Username = username;
             Email = email;
-            PasswordHash = passwordHash;
             Role = role;
+            Auth0UserId = auth0UserId;
         }
     }
 }

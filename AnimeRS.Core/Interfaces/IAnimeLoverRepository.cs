@@ -8,6 +8,7 @@ namespace AnimeRS.Core.Interfaces
         IEnumerable<AnimeLover> GetAllAnimeLovers();
         AnimeLover GetAnimeLoverById(int id);
         AnimeLover GetAnimeLoverByUsername(string username);
+        AnimeLover GetByAuth0UserId(string auth0UserId);
         bool AddAnimeLover(AnimeLover animeLover);
         bool UpdateAnimeLover(AnimeLover animeLover);
         bool DeleteAnimeLover(int id);
