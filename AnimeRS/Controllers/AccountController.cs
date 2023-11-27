@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using AnimeRS.Core.Models; // Zorg ervoor dat dit pad overeenkomt met uw AnimeLover model
 using Microsoft.AspNetCore.Authentication.Cookies;
+using static System.Net.WebRequestMethods;
 // Overige using statements...
 
 namespace AnimeRS.Controllers
