@@ -4,101 +4,161 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<!-- Anime Lijst -->
-<table id="animeTable" class="table">
-    <thead>
-        <tr>
-            <th>Titel</th>
-            <th>Genre</th>
-            <th>Episodes</th>
-            <th>Acties</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Anime rijen worden hier ingeladen via JavaScript -->
-    </tbody>
-</table>
+<!-- Sectie voor het tonen van anime lijst -->
+<section>
+    <h3>Anime Lijst</h3>
+    <table id="animeTable" class="table">
+        <thead>
+            <tr>
+                <th>Titel</th>
+                <th>Beschrijving</th>
+                <th>Genre</th>
+                <th>Episodes</th>
+                <th>Status</th>
+                <th>Release Datum</th>
+                <th>Acties</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Anime rijen worden hier ingeladen via JavaScript -->
+        </tbody>
+    </table>
+</section>
 
-<!-- Toevoegen/Edit Modal -->
-<div id="animeModal" class="modal" style="display:none;">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <form id="animeForm">
-            <input type="hidden" id="animeId" />
-            <input type="text" id="animeTitle" placeholder="Titel" />
-            <input type="text" id="animeGenre" placeholder="Genre" />
-            <input type="number" id="animeEpisodes" placeholder="Aantal Episodes" />
-            <button type="submit">Opslaan</button>
-        </form>
-    </div>
-</div>
+<!-- Sectie voor het toevoegen/bewerken van anime -->
+<section>
+    <h3>Anime Beheren</h3>
+    <form id="animeForm">
+        <input type="hidden" id="animeId" />
+        <div>
+            <label for="animeTitle">Titel:</label>
+            <input type="text" id="animeTitle" placeholder="Titel" required />
+        </div>
+        <div>
+            <label for="animeDescription">Beschrijving:</label>
+            <textarea id="animeDescription" placeholder="Beschrijving" required></textarea>
+        </div>
+        <div>
+            <label for="animeGenre">Genre:</label>
+            <input type="text" id="animeGenre" placeholder="Genre" required />
+        </div>
+        <div>
+            <label for="animeEpisodes">Aantal Episodes:</label>
+            <input type="number" id="animeEpisodes" placeholder="Aantal Episodes" required />
+        </div>
+        <div>
+            <label for="animeStatus">Status:</label>
+            <select id="animeStatus">
+                <option value="Airing">Airing</option>
+                <option value="Completed">Completed</option>
+                <option value="Planned">Planned</option>
+            </select>
+        </div>
+        <div>
+            <label for="animeReleaseDate">Release Datum:</label>
+            <input type="date" id="animeReleaseDate" required />
+        </div>
+        <button type="submit">Opslaan</button>
+    </form>
+</section>
 
 @section Scripts {
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script>
-        // Laad Animes
+        $(document).ready(function () {
+            loadAnimes();
+
+            $('#animeForm').submit(function (e) {
+                e.preventDefault();
+                submitAnimeForm();
+            });
+        });
+
         function loadAnimes() {
             $.ajax({
-                url: '/api/animes',
+                url: '/api/anime',
                 method: 'GET',
                 success: function (data) {
-                    // Vul de tabel met anime data
+                    var animeTable = $('#animeTable tbody');
+                    animeTable.empty();
+                    data.forEach(function (anime) {
+                        animeTable.append('<tr>' +
+                            '<td>' + anime.title + '</td>' +
+                            '<td>' + anime.description + '</td>' +
+                            '<td>' + anime.genre + '</td>' +
+                            '<td>' + anime.episodes + '</td>' +
+                            '<td>' + anime.status + '</td>' +
+                            '<td>' + new Date(anime.releaseDate).toLocaleDateString() + '</td>' +
+                            '<td><button onclick="openModal(' + anime.id + ')">Bewerken</button>' +
+                            '<button onclick="deleteAnime(' + anime.id + ')">Verwijderen</button></td>' +
+                            '</tr>');
+                    });
                 }
             });
         }
 
-        // Voeg Anime toe / Bewerk Anime
-        $('#animeForm').submit(function (e) {
-            e.preventDefault();
+        function openModal(animeId) {
+            if (animeId) {
+                $.ajax({
+                    url: '/api/anime/' + animeId,
+                    method: 'GET',
+                    success: function (anime) {
+                        $('#animeId').val(anime.id);
+                        $('#animeTitle').val(anime.title);
+                        $('#animeDescription').val(anime.description);
+                        $('#animeGenre').val(anime.genre);
+                        $('#animeEpisodes').val(anime.episodes);
+                        $('#animeStatus').val(anime.status);
+                        $('#animeReleaseDate').val(new Date(anime.releaseDate).toISOString().split('T')[0]);
+                    }
+                });
+            } else {
+                $('#animeForm')[0].reset();
+                $('#animeId').val('');
+            }
+            $('#animeModal').show(); // Zorg ervoor dat je een modal hebt of pas dit aan
+        }
+
+        function submitAnimeForm() {
             var animeId = $('#animeId').val();
             var animeData = {
                 title: $('#animeTitle').val(),
+                description: $('#animeDescription').val(),
                 genre: $('#animeGenre').val(),
-                episodes: $('#animeEpisodes').val()
+                episodes: parseInt($('#animeEpisodes').val(), 10),
+                status: $('#animeStatus').val(),
+                releaseDate: $('#animeReleaseDate').val()
             };
 
-            var url = animeId ? '/api/animes/' + animeId : '/api/animes';
+            var url = animeId ? '/api/anime/' + animeId : '/api/anime';
             var method = animeId ? 'PUT' : 'POST';
 
             $.ajax({
                 url: url,
                 method: method,
-                data: animeData,
+                contentType: 'application/json',
+                data: JSON.stringify(animeData),
                 success: function () {
-                    // Sluit modal en herlaad animes
+                    $('#animeModal').hide(); // Pas dit aan naar je modal
+                    loadAnimes();
                 }
             });
-        });
+        }
 
-        // Verwijder Anime
         function deleteAnime(animeId) {
-            $.ajax({
-                url: '/api/animes/' + animeId,
-                method: 'DELETE',
-                success: function () {
-                    // Verwijder rij uit tabel
-                }
-            });
-        }
-
-        // Open Modal voor Toevoegen/Bewerken
-        function openModal(animeId) {
-            if (animeId) {
-                // Vul het formulier met anime data voor bewerken
-            } else {
-                // Leeg het formulier voor toevoegen
+            if (confirm('Weet je zeker dat je deze anime wilt verwijderen?')) {
+                $.ajax({
+                    url: '/api/anime/' + animeId,
+                    method: 'DELETE',
+                    success: function () {
+                        loadAnimes();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Fout opgetreden: ", error);
+                    }
+                });
             }
-            $('#animeModal').show();
         }
 
-        // Sluit Modal
-        function closeModal() {
-            $('#animeModal').hide();
-        }
-
-        // Initialiseren
-        $(document).ready(function () {
-            loadAnimes();
-        });
     </script>
 }

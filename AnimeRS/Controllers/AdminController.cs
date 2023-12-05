@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AnimeRS.Web.Controllers
 {
-    [Authorize(Roles = "Admin")] // Zorg ervoor dat alleen beheerders toegang hebben
     public class AdminController : Controller
     {
         private readonly IAnimeRepository _animeRepository;
