@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Authentication;
 using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-using AnimeRS.Core.Models; // Zorg ervoor dat dit pad overeenkomt met uw AnimeLover model
+using AnimeRS.Core.Models;
+using AnimeRS.Core.Interfaces; // Voeg deze toe
+using AnimeRS.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using static System.Net.WebRequestMethods;
 // Overige using statements...
 
 namespace AnimeRS.Controllers
@@ -13,10 +14,12 @@ namespace AnimeRS.Controllers
     public class AccountController : Controller
     {
         private readonly AnimeLoverService _animeLoverService;
+        private readonly IAnimeLoverRepository _animeLoverRepository;
 
-        public AccountController(AnimeLoverService animeLoverService)
+        public AccountController(AnimeLoverService animeLoverService, IAnimeLoverRepository animeLoverRepository)
         {
             _animeLoverService = animeLoverService;
+            _animeLoverRepository = animeLoverRepository;
         }
 
         // Login actie
@@ -43,25 +46,20 @@ namespace AnimeRS.Controllers
         [Authorize]
         public IActionResult Profile()
         {
-            // Veronderstel dat deze waarden uit de gebruikersclaims of een andere bron komen
             var auth0UserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var username = User.Identity.Name;
-            var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
 
-            // Aanname: u heeft een methode om te controleren of de gebruiker al bestaat
             var animeLover = _animeLoverService.GetByAuth0UserId(auth0UserId);
 
             if (animeLover == null)
             {
-                // Gebruik de constructor om een nieuwe AnimeLover instantie te maken
-                animeLover = new AnimeLover(0, username, email, "role", auth0UserId); // Pas de parameters aan volgens uw behoeften
+                animeLover = new AnimeLover(username, "User", auth0UserId);
                 _animeLoverService.Create(animeLover);
             }
 
-            // Voer hier eventuele extra logica uit...
-
-            return View(animeLover); // Zorg ervoor dat u een passende View heeft
+            return View(animeLover);
         }
+
 
         [Authorize]
         public async Task Logout()
@@ -72,6 +70,25 @@ namespace AnimeRS.Controllers
 
             await HttpContext.SignOutAsync(Auth0Constants.AuthenticationScheme, authenticationProperties);
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> PostLogin()
+        {
+            var auth0UserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var animeLover = _animeLoverRepository.GetByAuth0UserId(auth0UserId);
+
+            if (animeLover == null)
+            {
+                animeLover = new AnimeLover(
+                    User.Identity.Name, // Username
+                    "User", // Role
+                    auth0UserId // Auth0UserId
+                );
+                _animeLoverRepository.AddAnimeLover(animeLover);
+            }
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

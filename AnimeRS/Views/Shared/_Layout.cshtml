@@ -15,27 +15,35 @@
             <input type="search" class="form-control" id="searchBar" placeholder="Zoek animes..." />
             <nav class="navbar navbar-expand-md">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link text-white" href="/">Home</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
                     <li class="nav-item"><a class="nav-link text-white" href="/Genres">Genres</a></li>
-                    <!-- Andere links -->
-                </ul>
-                <ul class="navbar-nav">
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-controller="Account" asp-action="Profile">Profiel</a>
+                            <img src="@User.Claims.FirstOrDefault(c => c.Type == "picture")?.Value" alt="Profile Picture" style="height: 40px; border-radius: 50%;">
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-controller="Account" asp-action="Logout">Uitloggen</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Account" asp-action="Profile">Profile</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                        </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-controller="Admin" asp-action="Index">Admin Dashboard</a>
+                            </li>
+                        }
                     }
                     else
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-controller="Account" asp-action="Login">Inloggen</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-controller="Account" asp-action="Signup">Registreren</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Account" asp-action="Signup">Signup</a>
                         </li>
                     }
                 </ul>

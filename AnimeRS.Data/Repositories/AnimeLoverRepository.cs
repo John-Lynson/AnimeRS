@@ -1,11 +1,7 @@
-﻿using AnimeRS.Core.Models;
-using AnimeRS.Core.Interfaces;
-using System;
+﻿using AnimeRS.Core.Interfaces;
+using AnimeRS.Core.Models;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AnimeRS.Data.Repositories
 {
@@ -32,12 +28,10 @@ namespace AnimeRS.Data.Repositories
                     {
                         while (reader.Read())
                         {
-                            AnimeLover animeLover = new AnimeLover(
-                                reader.GetInt32(reader.GetOrdinal("Id")),
-                                reader["Username"]?.ToString(),
-                                reader["Email"].ToString(),
-                                reader["PasswordHash"].ToString(),
-                                reader["Role"].ToString()
+                            var animeLover = new AnimeLover(
+                                reader["Username"].ToString(),
+                                reader["Role"].ToString(),
+                                reader["Auth0UserId"].ToString()
                             );
                             animeLovers.Add(animeLover);
                         }
@@ -52,7 +46,7 @@ namespace AnimeRS.Data.Repositories
 
         public AnimeLover GetAnimeLoverById(int id)
         {
-            AnimeLover animeLover = null!;
+            AnimeLover animeLover = null;
             string query = "SELECT * FROM AnimeLovers WHERE Id = @Id";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -66,11 +60,9 @@ namespace AnimeRS.Data.Repositories
                         if (reader.Read())
                         {
                             animeLover = new AnimeLover(
-                                reader.GetInt32(reader.GetOrdinal("Id")),
-                                reader["Username"]?.ToString(),
-                                reader["Email"].ToString(),
-                                reader["PasswordHash"].ToString(),
-                                reader["Role"].ToString()
+                                reader["Username"].ToString(),
+                                reader["Role"].ToString(),
+                                reader["Auth0UserId"].ToString()
                             );
                         }
                     }
@@ -79,6 +71,7 @@ namespace AnimeRS.Data.Repositories
 
             return animeLover;
         }
+
 
 
 
@@ -94,11 +87,10 @@ namespace AnimeRS.Data.Repositories
                 {
                     if (reader.Read())
                     {
-                        var id = reader.GetInt32(reader.GetOrdinal("Id"));
-                        var email = reader.GetString(reader.GetOrdinal("Email"));
-                        var passwordHash = reader.GetString(reader.GetOrdinal("PasswordHash"));
                         var role = reader.GetString(reader.GetOrdinal("Role"));
-                        return new AnimeLover(id, username, email, passwordHash, role);
+                        var auth0UserId = reader.GetString(reader.GetOrdinal("Auth0UserId"));
+
+                        return new AnimeLover(username, role, auth0UserId);
                     }
                     return null;
                 }
@@ -106,11 +98,12 @@ namespace AnimeRS.Data.Repositories
         }
 
 
+
         public bool AddAnimeLover(AnimeLover animeLover)
         {
             string query = @"
-        INSERT INTO AnimeLovers (Username, Email, PasswordHash, Role)
-        VALUES (@Username, @Email, @PasswordHash, @Role)";
+        INSERT INTO AnimeLovers (Username, Role)
+        VALUES (@Username, @Role)";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -118,7 +111,6 @@ namespace AnimeRS.Data.Repositories
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Username", animeLover.Username);
-                    command.Parameters.AddWithValue("@Email", animeLover.Email);
                     command.Parameters.AddWithValue("@Role", animeLover.Role);
                     int rowsAffected = command.ExecuteNonQuery();
                     return rowsAffected > 0;
@@ -131,7 +123,7 @@ namespace AnimeRS.Data.Repositories
         {
             string query = @"
         UPDATE AnimeLovers
-        SET Username = @Username, Email = @Email, PasswordHash = @PasswordHash, Role = @Role
+        SET Username = @Username, Role = @Role
         WHERE Id = @Id";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -141,7 +133,6 @@ namespace AnimeRS.Data.Repositories
                 {
                     command.Parameters.AddWithValue("@Id", animeLover.Id);
                     command.Parameters.AddWithValue("@Username", animeLover.Username);
-                    command.Parameters.AddWithValue("@Email", animeLover.Email);
                     command.Parameters.AddWithValue("@Role", animeLover.Role);
                     int rowsAffected = command.ExecuteNonQuery();
                     return rowsAffected > 0;
@@ -151,27 +142,31 @@ namespace AnimeRS.Data.Repositories
 
         public AnimeLover GetByAuth0UserId(string auth0UserId)
         {
+            AnimeLover animeLover = null;
             string query = "SELECT * FROM AnimeLovers WHERE Auth0UserId = @Auth0UserId";
+
             using (SqlConnection connection = new SqlConnection(_connectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
             {
-                command.Parameters.AddWithValue("@Auth0UserId", auth0UserId);
                 connection.Open();
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    if (reader.Read())
+                    command.Parameters.AddWithValue("@Auth0UserId", auth0UserId);
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        var id = reader.GetInt32(reader.GetOrdinal("Id"));
-                        var username = reader.GetString(reader.GetOrdinal("Username"));
-                        var email = reader.GetString(reader.GetOrdinal("Email"));
-                        var role = reader.GetString(reader.GetOrdinal("Role"));
-                        return new AnimeLover(id, username, email, role, auth0UserId);
+                        if (reader.Read())
+                        {
+                            animeLover = new AnimeLover(
+                                reader["Username"].ToString(),
+                                reader["Role"].ToString(),
+                                auth0UserId
+                            );
+                        }
                     }
-                    return null;
                 }
             }
-        }
 
+            return animeLover;
+        }
 
 
         public bool DeleteAnimeLover(int id)
@@ -190,4 +185,5 @@ namespace AnimeRS.Data.Repositories
         }
     }
 }
+
 

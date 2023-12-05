@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Auth0.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,11 +17,12 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
 {
     options.Domain = builder.Configuration["Auth0:Domain"];
     options.ClientId = builder.Configuration["Auth0:ClientId"];
+    // Verwijder de regels die betrekking hebben op 'Events'
 });
 
 builder.Services.AddControllersWithViews();
 
-// Configureer de DatabaseSettings om de ConnectionStrings sectie uit het configuratiebestand te gebruiken
+// Configureer de DatabaseSettings
 builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("ConnectionStrings"));
 
 // Registreer uw repositories en services
@@ -30,14 +32,17 @@ builder.Services.AddScoped<IAnimeLoverRepository, AnimeLoverRepository>(serviceP
     return new AnimeLoverRepository(databaseSettings.DefaultConnection);
 });
 
-// Voeg de AnimeLoverService toe
 builder.Services.AddScoped<AnimeLoverService>();
-
-// Registreer IAnimeRepository met zijn implementatie
 builder.Services.AddScoped<IAnimeRepository, AnimeRepository>(serviceProvider =>
 {
     var databaseSettings = serviceProvider.GetRequiredService<IOptions<DatabaseSettings>>().Value;
     return new AnimeRepository(databaseSettings.DefaultConnection);
+});
+
+// Voeg autorisatie toe
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
 });
 
 var app = builder.Build();
