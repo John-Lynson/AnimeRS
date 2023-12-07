@@ -1,0 +1,99 @@
+﻿#animeManagementSection {
+    background-color: #f2f2f2;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+#animeCreationSection {
+    background-color: #e9ecef;
+    padding: 20px;
+}
+
+/* Algemene Layout binnen Admin Panel */
+.admin-panel {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+    .admin-panel .container {
+        width: 80%;
+        margin: auto;
+        overflow: hidden;
+    }
+
+    /* Koppen en Tekst binnen Admin Panel */
+    .admin-panel h2, .admin-panel h3 {
+        color: #333;
+    }
+
+    /* Tabel Styling binnen Admin Panel */
+    .admin-panel table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+
+    .admin-panel table, .admin-panel th, .admin-panel td {
+        border: 1px solid #ddd;
+    }
+
+    .admin-panel th, .admin-panel td {
+        padding: 10px;
+        text-align: left;
+    }
+
+    .admin-panel th {
+        background-color: #f8f8f8;
+    }
+
+    .admin-panel tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    /* Formulier Styling binnen Admin Panel */
+    .admin-panel form {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .admin-panel input[type="text"],
+    .admin-panel input[type="number"],
+    .admin-panel input[type="date"],
+    .admin-panel select,
+    .admin-panel textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    /* Knoppen binnen Admin Panel */
+    .admin-panel button {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .admin-panel button:hover {
+            background-color: #45a049;
+        }
+
+/* Responsiviteit binnen Admin Panel */
+@media screen and (max-width: 600px) {
+    .admin-panel .container {
+        width: 100%;
+    }
+}
