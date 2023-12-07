@@ -39,11 +39,6 @@ builder.Services.AddScoped<IAnimeRepository, AnimeRepository>(serviceProvider =>
     return new AnimeRepository(databaseSettings.DefaultConnection);
 });
 
-// Voeg autorisatie toe
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
-});
 
 var app = builder.Build();
 

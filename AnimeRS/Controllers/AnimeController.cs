@@ -20,6 +20,18 @@ public class AnimeController : ControllerBase
         return Ok(animes);
     }
 
+    [HttpGet("{id}")]
+    public IActionResult GetAnimeById(int id)
+    {
+        var anime = _animeRepository.GetAnimeById(id);
+        if (anime == null)
+        {
+            return NotFound();
+        }
+        return Ok(anime);
+    }
+
+
     [HttpPost]
     public IActionResult CreateAnime([FromBody] Anime anime)
     {
@@ -30,15 +42,34 @@ public class AnimeController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult UpdateAnime(int id, [FromBody] Anime anime)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        if (id != anime.Id)
+        {
+            return BadRequest("ID mismatch");
+        }
+
         var existingAnime = _animeRepository.GetAnimeById(id);
         if (existingAnime == null)
         {
             return NotFound();
         }
 
-        _animeRepository.UpdateAnime(anime);
-        return Ok(anime);
+        try
+        {
+            _animeRepository.UpdateAnime(anime);
+            return Ok(anime);
+        }
+        catch (Exception ex)
+        {
+            // Log de uitzondering
+            return StatusCode(500, "Internal server error");
+        }
     }
+
 
     [HttpDelete("{id}")]
     public IActionResult DeleteAnime(int id)
@@ -49,10 +80,15 @@ public class AnimeController : ControllerBase
             return NotFound();
         }
 
-        _animeRepository.DeleteAnime(id);
-        return Ok();
+        try
+        {
+            _animeRepository.DeleteAnime(id);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            // Log de uitzondering
+            return StatusCode(500, "Internal server error");
+        }
     }
-
-
-
 }

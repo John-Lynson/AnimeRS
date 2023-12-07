@@ -47,7 +47,6 @@ namespace AnimeRS.Data.Repositories
             return animes;
         }
 
-
         public Anime GetAnimeById(int id)
         {
             Anime anime = null;
@@ -70,9 +69,10 @@ namespace AnimeRS.Data.Repositories
                                 reader.GetString(reader.GetOrdinal("Genre")),
                                 reader.GetInt32(reader.GetOrdinal("Episodes")),
                                 reader.GetString(reader.GetOrdinal("Status")),
-                                DateTime.Parse(reader["ReleaseDate"].ToString())  // Deze regel is aangepast
+                                DateTime.Parse(reader["ReleaseDate"].ToString())
                             );
-                            return default;
+                            // Verander deze regel
+                            return anime;
                         }
                     }
                 }
@@ -80,6 +80,7 @@ namespace AnimeRS.Data.Repositories
 
             return anime;
         }
+
 
 
         public void AddAnime(Anime anime)
@@ -106,27 +107,35 @@ namespace AnimeRS.Data.Repositories
         public void UpdateAnime(Anime anime)
         {
             string query = @"
-        UPDATE Animes
-        SET Title = @Title, Description = @Description, Genre = @Genre,
-            Episodes = @Episodes, Status = @Status, AiringDate = @AiringDate
-        WHERE Id = @Id";
+    UPDATE Animes
+    SET Title = @Title, Description = @Description, Genre = @Genre,
+        Episodes = @Episodes, Status = @Status, ReleaseDate = @ReleaseDate
+    WHERE Id = @Id";
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            try
             {
-                connection.Open();
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
-                    command.Parameters.AddWithValue("@Id", anime.Id);
-                    command.Parameters.AddWithValue("@Title", anime.Title);
-                    command.Parameters.AddWithValue("@Description", anime.Description);
-                    command.Parameters.AddWithValue("@Genre", anime.Genre);
-                    command.Parameters.AddWithValue("@Episodes", anime.Episodes);
-                    command.Parameters.AddWithValue("@Status", anime.Status);
-                    command.Parameters.AddWithValue("@ReleaseDate", anime.ReleaseDate);
-                    command.ExecuteNonQuery();
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Id", anime.Id);
+                        command.Parameters.AddWithValue("@Title", anime.Title);
+                        command.Parameters.AddWithValue("@Description", anime.Description);
+                        command.Parameters.AddWithValue("@Genre", anime.Genre);
+                        command.Parameters.AddWithValue("@Episodes", anime.Episodes);
+                        command.Parameters.AddWithValue("@Status", anime.Status);
+                        command.Parameters.AddWithValue("@ReleaseDate", anime.ReleaseDate);
+                        command.ExecuteNonQuery();
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                throw; 
+            }
         }
+
 
 
         public void DeleteAnime(int id)
