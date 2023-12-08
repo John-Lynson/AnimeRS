@@ -13,6 +13,8 @@ namespace AnimeRS.Core.Models
         public string Role { get; private set; }
         public string Auth0UserId { get; private set; }
 
+        public virtual ICollection<Review> Reviews { get; private set; } = new List<Review>();
+
         public AnimeLover(string username, string role, string auth0UserId)
         {
             Username = username;

@@ -6,53 +6,26 @@
 
 <div class="text-center">
     <h1 class="display-4">Welkom bij AnimeRS</h1>
-    <p>Jouw one-stop bestemming voor alles wat met anime te maken heeft!</p>
 </div>
 
-<section id="featured-anime" class="my-5">
-    <!-- Carousel voor uitgelichte animes -->
-    <!-- Je zou hier je carousel component implementeren -->
+<!-- Intro Container -->
+<section id="intro-container" class="my-5">
+    <div class="anime-item">
+        <img src="images/Image.jpg" alt="Anime 1">
+        <button onclick="window.location.href='link-naar-anime1';">Bekijk Anime 1</button>
+    </div>
+    <div class="anime-item">
+        <img src="images/Image.jpg" alt="Anime 2">
+        <button onclick="window.location.href='link-naar-anime2';">Bekijk Anime 2</button>
+    </div>
+    <div class="anime-item">
+        <img src="images/Image.jpg" alt="Anime 3">
+        <button onclick="window.location.href='link-naar-anime3';">Bekijk Anime 3</button>
+    </div>
 </section>
 
-<section id="top-animes" class="my-5">
-    <h2>Top Animes</h2>
-    @if (Model != null && Model.Any())
-    {
-        <ul>
-            @foreach (var anime in Model)
-            {
-                <li>@anime.Title - @anime.Genre</li>
-            }
-        </ul>
-    }
-    else
-    {
-        <p>Er zijn momenteel geen animes beschikbaar.</p>
-    }
+<!-- Tekst over de applicatie -->
+<section id="about-app" class="my-5">
+    <h2>Over AnimeRS</h2>
+    <p>Hier komt de tekst over je applicatie...</p>
 </section>
-
-<section id="new-reviews" class="my-5">
-    <h2>Nieuwe Reviews</h2>
-    <!-- Sectie voor nieuwe reviews -->
-    <!-- Dynamische content zou hier komen -->
-</section>
-
-<section id="recommendations" class="my-5">
-    <h2>Aanbevolen voor Jou</h2>
-    <!-- Sectie voor aanbevolen animes -->
-    <!-- Dynamische content zou hier komen -->
-</section>
-
-<aside id="sidebar" class="my-5">
-    <h3>Top 10 Animes</h3>
-    <!-- Top 10 lijst van animes -->
-    <!-- Dynamische content zou hier komen -->
-
-    <h3>Genres</h3>
-    <!-- Lijst van genres -->
-    <!-- Dynamische content zou hier komen -->
-
-    <h3>Anime van de Week</h3>
-    <!-- Widget voor anime van de week -->
-    <!-- Dynamische content zou hier komen -->
-</aside>

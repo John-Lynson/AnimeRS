@@ -16,8 +16,7 @@ namespace AnimeRS.Core.Models
         public string Status { get; private set; }
         public DateTime ReleaseDate { get; private set; }
 
-
-
+        public virtual ICollection<Review> Reviews { get; private set; } = new List<Review>();
 
         public Anime(int id, string title, string description, string genre, int episodes, string status, DateTime releaseDate)
         {

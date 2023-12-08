@@ -1,0 +1,48 @@
+/* Intro Container */
+#intro-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    background-image: url('/Images/bg.png'); /* Je achtergrondafbeelding */
+    background-size: cover; /* Zorgt dat de achtergrond de container bedekt */
+    background-position: center; /* Centreert de achtergrondafbeelding */
+    background-attachment: fixed; /* Houdt de achtergrondafbeelding vast bij het scrollen */
+    padding: 20px; /* Padding voor ruimte binnen de container */
+    min-height: 100vh; /* Minimale hoogte van de viewport */
+    height: 100vh; /* Volledige hoogte van de viewport */
+}
+
+/* Anime Item Stijlen */
+.anime-item {
+    text-align: center;
+    margin: 10px;
+    flex-basis: 30%;
+    max-width: 350px;
+    min-width: 250px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    background-color: rgba(255, 255, 255, 0.8); /* Lichte achtergrond voor leesbaarheid */
+}
+
+    .anime-item img {
+        width: 100%; /* Volledige breedte van de container */
+        height: auto; /* Behoudt de aspect ratio */
+        border-radius: 10px; /* Afgeronde hoeken */
+    }
+
+    .anime-item button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+#about-app {
+    text-align: center;
+    padding: 20px;
+}

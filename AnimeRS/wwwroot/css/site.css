@@ -17,8 +17,16 @@ html {
     min-height: 100%;
 }
 
+#logo {
+    height: 60px; /* of een andere waarde */
+    width: auto; /* behoudt de aspectverhouding */
+    margin-bottom: 20px; /* voegt ruimte toe onder het logo */
+}
 body {
-    margin-bottom: 60px;
+    margin-bottom: px;
+    margin: 0;
+    padding: 0;
+    background-color: #140300;
 }
 
 footer {
@@ -29,6 +37,10 @@ footer {
     height: 4em;
     background-color: white;
     font-family: Calibri;
+}
+
+.bg-dark {
+    background-color: #0e0504 !important; /* Nog donkerdere bruine kleur */
 }
 
 .container {

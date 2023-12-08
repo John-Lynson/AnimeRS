@@ -33,6 +33,7 @@ namespace AnimeRS.Data.Repositories
                             Review review = new Review(
                                 reader.GetInt32(reader.GetOrdinal("Id")),
                                 reader.GetInt32(reader.GetOrdinal("AnimeId")),
+                                reader.GetInt32(reader.GetOrdinal("AnimeLoverId")),
                                 reader.GetString(reader.GetOrdinal("Comment")),
                                 reader.GetInt32(reader.GetOrdinal("Rating")),
                                 reader.GetDateTime(reader.GetOrdinal("DatePosted"))
@@ -61,6 +62,7 @@ namespace AnimeRS.Data.Repositories
                         return new Review(
                             reader.GetInt32(reader.GetOrdinal("Id")),
                             reader.GetInt32(reader.GetOrdinal("AnimeId")),
+                            reader.GetInt32(reader.GetOrdinal("AnimeLoverId")),
                             reader.GetString(reader.GetOrdinal("Comment")),
                             reader.GetInt32(reader.GetOrdinal("Rating")),
                             reader.GetDateTime(reader.GetOrdinal("DatePosted"))
@@ -73,11 +75,12 @@ namespace AnimeRS.Data.Repositories
 
         public void AddReview(Review review)
         {
-            string query = "INSERT INTO Reviews (AnimeId, Comment, Rating, DatePosted) VALUES (@AnimeId, @Comment, @Rating, @DatePosted)";
+            string query = "INSERT INTO Reviews (AnimeId, AnimeLoverId, Comment, Rating, DatePosted) VALUES (@AnimeId, @AnimeLoverId, @Comment, @Rating, @DatePosted)";
             using (SqlConnection connection = new SqlConnection(_connectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@AnimeId", review.AnimeId);
+                command.Parameters.AddWithValue("@AnimeLoverId", review.AnimeLoverId);
                 command.Parameters.AddWithValue("@Comment", review.Comment);
                 command.Parameters.AddWithValue("@Rating", review.Rating);
                 command.Parameters.AddWithValue("@DatePosted", review.DatePosted);
