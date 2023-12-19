@@ -1,7 +1,7 @@
-﻿using AnimeRS.Core.Interfaces;
-using AnimeRS.Core.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
+using AnimeRS.Data.Interfaces;
+using AnimeRS.Data.dto;
 
 namespace AnimeRS.Data.Repositories
 {
@@ -14,9 +14,9 @@ namespace AnimeRS.Data.Repositories
             _connectionString = connectionString;
         }
 
-        public IEnumerable<AnimeLover> GetAllAnimeLovers()
+        public IEnumerable<AnimeLoverDTO> GetAllAnimeLovers()
         {
-            List<AnimeLover> animeLovers = new List<AnimeLover>();
+            List<AnimeLoverDTO> animeLovers = new List<AnimeLoverDTO>();
             string query = "SELECT * FROM AnimeLovers";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -28,11 +28,12 @@ namespace AnimeRS.Data.Repositories
                     {
                         while (reader.Read())
                         {
-                            var animeLover = new AnimeLover(
-                                reader["Username"].ToString(),
-                                reader["Role"].ToString(),
-                                reader["Auth0UserId"].ToString()
-                            );
+                            var animeLover = new AnimeLoverDTO
+                            {
+                                Username = reader["Username"].ToString(),
+                                Role = reader["Role"].ToString(),
+                                Auth0UserId = reader["Auth0UserId"].ToString()
+                            };
                             animeLovers.Add(animeLover);
                         }
                     }
@@ -42,11 +43,9 @@ namespace AnimeRS.Data.Repositories
             return animeLovers;
         }
 
-
-
-        public AnimeLover GetAnimeLoverById(int id)
+        public AnimeLoverDTO GetAnimeLoverById(int id)
         {
-            AnimeLover animeLover = null;
+            AnimeLoverDTO animeLover = null;
             string query = "SELECT * FROM AnimeLovers WHERE Id = @Id";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -59,11 +58,12 @@ namespace AnimeRS.Data.Repositories
                     {
                         if (reader.Read())
                         {
-                            animeLover = new AnimeLover(
-                                reader["Username"].ToString(),
-                                reader["Role"].ToString(),
-                                reader["Auth0UserId"].ToString()
-                            );
+                            animeLover = new AnimeLoverDTO
+                            {
+                                Username = reader["Username"].ToString(),
+                                Role = reader["Role"].ToString(),
+                                Auth0UserId = reader["Auth0UserId"].ToString()
+                            };
                         }
                     }
                 }
@@ -72,10 +72,7 @@ namespace AnimeRS.Data.Repositories
             return animeLover;
         }
 
-
-
-
-        public AnimeLover GetAnimeLoverByUsername(string username)
+        public AnimeLoverDTO GetAnimeLoverByUsername(string username)
         {
             string query = "SELECT * FROM AnimeLovers WHERE Username = @Username";
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -87,19 +84,19 @@ namespace AnimeRS.Data.Repositories
                 {
                     if (reader.Read())
                     {
-                        var role = reader.GetString(reader.GetOrdinal("Role"));
-                        var auth0UserId = reader.GetString(reader.GetOrdinal("Auth0UserId"));
-
-                        return new AnimeLover(username, role, auth0UserId);
+                        return new AnimeLoverDTO
+                        {
+                            Username = username,
+                            Role = reader.GetString(reader.GetOrdinal("Role")),
+                            Auth0UserId = reader.GetString(reader.GetOrdinal("Auth0UserId"))
+                        };
                     }
                     return null;
                 }
             }
         }
 
-
-
-        public bool AddAnimeLover(AnimeLover animeLover)
+        public bool AddAnimeLover(AnimeLoverDTO animeLover)
         {
             string query = @"
         INSERT INTO AnimeLovers (Username, Role)
@@ -118,8 +115,7 @@ namespace AnimeRS.Data.Repositories
             }
         }
 
-
-        public bool UpdateAnimeLover(AnimeLover animeLover)
+        public bool UpdateAnimeLover(AnimeLoverDTO animeLover)
         {
             string query = @"
         UPDATE AnimeLovers
@@ -140,9 +136,9 @@ namespace AnimeRS.Data.Repositories
             }
         }
 
-        public AnimeLover GetByAuth0UserId(string auth0UserId)
+        public AnimeLoverDTO GetByAuth0UserId(string auth0UserId)
         {
-            AnimeLover animeLover = null;
+            AnimeLoverDTO animeLover = null;
             string query = "SELECT * FROM AnimeLovers WHERE Auth0UserId = @Auth0UserId";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -155,11 +151,12 @@ namespace AnimeRS.Data.Repositories
                     {
                         if (reader.Read())
                         {
-                            animeLover = new AnimeLover(
-                                reader["Username"].ToString(),
-                                reader["Role"].ToString(),
-                                auth0UserId
-                            );
+                            animeLover = new AnimeLoverDTO
+                            {
+                                Username = reader["Username"].ToString(),
+                                Role = reader["Role"].ToString(),
+                                Auth0UserId = auth0UserId
+                            };
                         }
                     }
                 }
@@ -167,7 +164,6 @@ namespace AnimeRS.Data.Repositories
 
             return animeLover;
         }
-
 
         public bool DeleteAnimeLover(int id)
         {
@@ -185,5 +181,3 @@ namespace AnimeRS.Data.Repositories
         }
     }
 }
-
-

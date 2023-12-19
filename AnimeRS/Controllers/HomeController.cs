@@ -1,4 +1,4 @@
-﻿using AnimeRS.Core.Interfaces;
+﻿using AnimeRS.Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnimeRS.Web.Controllers

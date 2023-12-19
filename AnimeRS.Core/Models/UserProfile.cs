@@ -8,16 +8,11 @@ namespace AnimeRS.Core.Models
 {
     public class UserProfile
     {
-        public int Id { get; private set; }
-        public int AnimeLoverId { get; private set; }
-        public string FavoriteGenre { get; private set; }
-        public List<int> WatchedAnimeIds { get; private set; }
+        public int Id { get; set; }
 
-        public UserProfile(int animeLoverId, string favoriteGenre, List<int> watchedAnimeIds)
-        {
-            AnimeLoverId = animeLoverId;
-            FavoriteGenre = favoriteGenre;
-            WatchedAnimeIds = watchedAnimeIds ?? new List<int>();
-        }
+        public int AnimeLoverId { get; set; }
+        public string FavoriteGenre { get; set; }
+        public List<int> WatchedAnimeIds { get; set; }
+
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using AnimeRS.Core.Interfaces;
+using AnimeRS.Data.Interfaces;
 using AnimeRS.Core.Models;
 
 [Route("api/[controller]")]

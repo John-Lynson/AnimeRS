@@ -4,7 +4,7 @@ using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using AnimeRS.Core.Models;
-using AnimeRS.Core.Interfaces; // Voeg deze toe
+using AnimeRS.Data.Interfaces;
 using AnimeRS.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 // Overige using statements...

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using AnimeRS.Core.Interfaces;
-using AnimeRS.Core.Models;
+using AnimeRS.Data.Interfaces;
+using AnimeRS.Data.dto;
 
 namespace AnimeRS.Data.Repositories
 {
@@ -15,9 +15,9 @@ namespace AnimeRS.Data.Repositories
             _connectionString = connectionString;
         }
 
-        public IEnumerable<Anime> GetAllAnimes()
+        public IEnumerable<AnimeDTO> GetAllAnimes()
         {
-            var animes = new List<Anime>();
+            var animes = new List<AnimeDTO>();
             string query = "SELECT * FROM Animes";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -29,15 +29,16 @@ namespace AnimeRS.Data.Repositories
                     {
                         while (reader.Read())
                         {
-                            var anime = new Anime(
-                                Convert.ToInt32(reader["Id"].ToString()),
-                                reader["Title"].ToString(),
-                                reader["Description"].ToString(),
-                                reader["Genre"].ToString(),
-                                reader.GetInt32(reader.GetOrdinal("Episodes")),
-                                reader["Status"].ToString(),
-                                DateTime.Parse(reader["ReleaseDate"].ToString())
-                            );
+                            var anime = new AnimeDTO
+                            {
+                                Id = Convert.ToInt32(reader["Id"].ToString()),
+                                Title = reader["Title"].ToString(),
+                                Description = reader["Description"].ToString(),
+                                Genre = reader["Genre"].ToString(),
+                                Episodes = reader.GetInt32(reader.GetOrdinal("Episodes")),
+                                Status = reader["Status"].ToString(),
+                                ReleaseDate = DateTime.Parse(reader["ReleaseDate"].ToString())
+                            };
                             animes.Add(anime);
                         }
                     }
@@ -47,9 +48,9 @@ namespace AnimeRS.Data.Repositories
             return animes;
         }
 
-        public Anime GetAnimeById(int id)
+        public AnimeDTO GetAnimeById(int id)
         {
-            Anime anime = null;
+            AnimeDTO anime = null;
             string query = "SELECT * FROM Animes WHERE Id = @Id";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -62,17 +63,16 @@ namespace AnimeRS.Data.Repositories
                     {
                         if (reader.Read())
                         {
-                            anime = new Anime(
-                                reader.GetInt32(reader.GetOrdinal("Id")),
-                                reader.GetString(reader.GetOrdinal("Title")),
-                                reader.GetString(reader.GetOrdinal("Description")),
-                                reader.GetString(reader.GetOrdinal("Genre")),
-                                reader.GetInt32(reader.GetOrdinal("Episodes")),
-                                reader.GetString(reader.GetOrdinal("Status")),
-                                DateTime.Parse(reader["ReleaseDate"].ToString())
-                            );
-                            // Verander deze regel
-                            return anime;
+                            anime = new AnimeDTO
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                Title = reader.GetString(reader.GetOrdinal("Title")),
+                                Description = reader.GetString(reader.GetOrdinal("Description")),
+                                Genre = reader.GetString(reader.GetOrdinal("Genre")),
+                                Episodes = reader.GetInt32(reader.GetOrdinal("Episodes")),
+                                Status = reader.GetString(reader.GetOrdinal("Status")),
+                                ReleaseDate = DateTime.Parse(reader["ReleaseDate"].ToString())
+                            };
                         }
                     }
                 }
@@ -81,9 +81,7 @@ namespace AnimeRS.Data.Repositories
             return anime;
         }
 
-
-
-        public void AddAnime(Anime anime)
+        public void AddAnime(AnimeDTO anime)
         {
             string query = @"INSERT INTO Animes (Title, Description, Genre, Episodes, Status, ReleaseDate)
                      VALUES (@Title, @Description, @Genre, @Episodes, @Status, @ReleaseDate)";
@@ -104,7 +102,7 @@ namespace AnimeRS.Data.Repositories
             }
         }
 
-        public void UpdateAnime(Anime anime)
+        public void UpdateAnime(AnimeDTO anime)
         {
             string query = @"
     UPDATE Animes
@@ -132,11 +130,9 @@ namespace AnimeRS.Data.Repositories
             }
             catch (Exception ex)
             {
-                throw; 
+                throw; // Overweeg een meer specifieke foutafhandeling
             }
         }
-
-
 
         public void DeleteAnime(int id)
         {

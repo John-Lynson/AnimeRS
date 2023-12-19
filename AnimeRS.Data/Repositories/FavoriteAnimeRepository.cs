@@ -1,9 +1,7 @@
-﻿
-using AnimeRS.Core.Interfaces;
-using AnimeRS.Core.Models;
-using System;
+﻿using AnimeRS.Data.Interfaces;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using AnimeRS.Data.dto;
 
 namespace AnimeRS.Data.Repositories
 {
@@ -16,9 +14,9 @@ namespace AnimeRS.Data.Repositories
             _connectionString = connectionString;
         }
 
-        public IEnumerable<FavoriteAnime> GetFavoriteAnimesByAnimeLoverId(int animeLoverId)
+        public IEnumerable<FavoriteAnimeDTO> GetFavoriteAnimesByAnimeLoverId(int animeLoverId)
         {
-            List<FavoriteAnime> favoriteAnimes = new List<FavoriteAnime>();
+            var favoriteAnimes = new List<FavoriteAnimeDTO>();
             string query = "SELECT * FROM FavoriteAnimes WHERE AnimeLoverId = @AnimeLoverId";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -31,10 +29,11 @@ namespace AnimeRS.Data.Repositories
                     {
                         while (reader.Read())
                         {
-                            FavoriteAnime favoriteAnime = new FavoriteAnime(
-                                reader.GetInt32(reader.GetOrdinal("AnimeLoverId")),
-                                reader.GetInt32(reader.GetOrdinal("AnimeId"))
-                            );
+                            var favoriteAnime = new FavoriteAnimeDTO
+                            {
+                                AnimeLoverId = reader.GetInt32(reader.GetOrdinal("AnimeLoverId")),
+                                AnimeId = reader.GetInt32(reader.GetOrdinal("AnimeId"))
+                            };
                             favoriteAnimes.Add(favoriteAnime);
                         }
                     }
@@ -43,7 +42,7 @@ namespace AnimeRS.Data.Repositories
             return favoriteAnimes;
         }
 
-        public bool AddFavoriteAnime(FavoriteAnime favoriteAnime)
+        public bool AddFavoriteAnime(FavoriteAnimeDTO favoriteAnime)
         {
             string query = @"
                 INSERT INTO FavoriteAnimes (AnimeLoverId, AnimeId)

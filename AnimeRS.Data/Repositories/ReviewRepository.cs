@@ -1,9 +1,8 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using AnimeRS.Core.Models;
-using AnimeRS.Core.Interfaces;
+using AnimeRS.Data.Interfaces;
+using AnimeRS.Data.dto;
 
 namespace AnimeRS.Data.Repositories
 {
@@ -16,9 +15,9 @@ namespace AnimeRS.Data.Repositories
             _connectionString = connectionString;
         }
 
-        public IEnumerable<Review> GetAllReviews()
+        public IEnumerable<ReviewDTO> GetAllReviews()
         {
-            List<Review> reviews = new List<Review>();
+            var reviews = new List<ReviewDTO>();
             string query = "SELECT * FROM Reviews";
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -30,14 +29,15 @@ namespace AnimeRS.Data.Repositories
                     {
                         while (reader.Read())
                         {
-                            Review review = new Review(
-                                reader.GetInt32(reader.GetOrdinal("Id")),
-                                reader.GetInt32(reader.GetOrdinal("AnimeId")),
-                                reader.GetInt32(reader.GetOrdinal("AnimeLoverId")),
-                                reader.GetString(reader.GetOrdinal("Comment")),
-                                reader.GetInt32(reader.GetOrdinal("Rating")),
-                                reader.GetDateTime(reader.GetOrdinal("DatePosted"))
-                            );
+                            var review = new ReviewDTO
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                AnimeId = reader.GetInt32(reader.GetOrdinal("AnimeId")),
+                                AnimeLoverId = reader.GetInt32(reader.GetOrdinal("AnimeLoverId")),
+                                Comment = reader.GetString(reader.GetOrdinal("Comment")),
+                                Rating = reader.GetInt32(reader.GetOrdinal("Rating")),
+                                DatePosted = reader.GetDateTime(reader.GetOrdinal("DatePosted"))
+                            };
                             reviews.Add(review);
                         }
                     }
@@ -47,7 +47,7 @@ namespace AnimeRS.Data.Repositories
             return reviews;
         }
 
-        public Review GetReviewById(int id)
+        public ReviewDTO GetReviewById(int id)
         {
             string query = "SELECT * FROM Reviews WHERE Id = @Id";
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -59,21 +59,22 @@ namespace AnimeRS.Data.Repositories
                 {
                     if (reader.Read())
                     {
-                        return new Review(
-                            reader.GetInt32(reader.GetOrdinal("Id")),
-                            reader.GetInt32(reader.GetOrdinal("AnimeId")),
-                            reader.GetInt32(reader.GetOrdinal("AnimeLoverId")),
-                            reader.GetString(reader.GetOrdinal("Comment")),
-                            reader.GetInt32(reader.GetOrdinal("Rating")),
-                            reader.GetDateTime(reader.GetOrdinal("DatePosted"))
-                        );
+                        return new ReviewDTO
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            AnimeId = reader.GetInt32(reader.GetOrdinal("AnimeId")),
+                            AnimeLoverId = reader.GetInt32(reader.GetOrdinal("AnimeLoverId")),
+                            Comment = reader.GetString(reader.GetOrdinal("Comment")),
+                            Rating = reader.GetInt32(reader.GetOrdinal("Rating")),
+                            DatePosted = reader.GetDateTime(reader.GetOrdinal("DatePosted"))
+                        };
                     }
                 }
             }
             return null;  // No review found with the specified ID
         }
 
-        public void AddReview(Review review)
+        public void AddReview(ReviewDTO review)
         {
             string query = "INSERT INTO Reviews (AnimeId, AnimeLoverId, Comment, Rating, DatePosted) VALUES (@AnimeId, @AnimeLoverId, @Comment, @Rating, @DatePosted)";
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -89,7 +90,7 @@ namespace AnimeRS.Data.Repositories
             }
         }
 
-        public void UpdateReview(Review review)
+        public void UpdateReview(ReviewDTO review)
         {
             string query = "UPDATE Reviews SET AnimeId = @AnimeId, Comment = @Comment, Rating = @Rating, DatePosted = @DatePosted WHERE Id = @Id";
             using (SqlConnection connection = new SqlConnection(_connectionString))

@@ -1,4 +1,4 @@
-﻿using AnimeRS.Core.Interfaces;
+﻿using AnimeRS.Data.Interfaces;
 using AnimeRS.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

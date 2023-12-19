@@ -8,15 +8,9 @@ namespace AnimeRS.Core.Models
 {
     public class FavoriteAnime
     {
-        public int Id { get; private set; }
-        public int AnimeLoverId { get; private set; } // Fkey
-        public int AnimeId { get; private set; } // Fkey
-
-        public FavoriteAnime(int animeLoverId, int animeId)
-        {
-            AnimeLoverId = animeLoverId;
-            AnimeId = animeId;
-        }
+        public int Id { get; set; }
+        public int AnimeLoverId { get; set; } // Fkey
+        public int AnimeId { get; set; } // Fkey
 
     }
 }

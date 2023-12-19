@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AnimeRS.Core\AnimeRS.Core.csproj" />
-    <ProjectReference Include="..\AnimeRS.Data\AnimeRS.Data.csproj" />
   </ItemGroup>
 
 </Project>
