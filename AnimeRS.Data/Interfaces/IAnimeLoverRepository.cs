@@ -1,16 +1,16 @@
-﻿using AnimeRS.Core.Models;
-using System.Collections.Generic;
+﻿using AnimeRS.Data.dto;
+using System.Xml.Linq;
 
-namespace AnimeRS.Core.Interfaces
+namespace AnimeRS.Data.Interfaces
 {
     public interface IAnimeLoverRepository
     {
-        IEnumerable<AnimeLover> GetAllAnimeLovers();
-        AnimeLover GetAnimeLoverById(int id);
-        AnimeLover GetAnimeLoverByUsername(string username);
-        AnimeLover GetByAuth0UserId(string auth0UserId);
-        bool AddAnimeLover(AnimeLover animeLover);
-        bool UpdateAnimeLover(AnimeLover animeLover);
+        IEnumerable<AnimeLoverDTO> GetAllAnimeLovers();
+        AnimeLoverDTO GetAnimeLoverById(int id);
+        AnimeLoverDTO GetAnimeLoverByUsername(string username);
+        AnimeLoverDTO GetByAuth0UserId(string auth0UserId);
+        bool AddAnimeLover(AnimeLoverDTO animeLover);
+        bool UpdateAnimeLover(AnimeLoverDTO animeLover);
         bool DeleteAnimeLover(int id);
     }
 }

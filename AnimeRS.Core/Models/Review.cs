@@ -15,8 +15,5 @@ namespace AnimeRS.Core.Models
         public string Comment { get; set; }
         public int Rating { get; set; }
         public DateTime DatePosted { get; set; }
-
-        public virtual Anime Anime { get; set; }
-        public virtual AnimeLover AnimeLover { get; set; }
     }
 }

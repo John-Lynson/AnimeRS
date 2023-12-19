@@ -7,6 +7,7 @@ using AnimeRS.Core.Models;
 using AnimeRS.Data.Interfaces;
 using AnimeRS.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using AnimeRS.Data.dto;
 // Overige using statements...
 
 namespace AnimeRS.Controllers
@@ -49,15 +50,20 @@ namespace AnimeRS.Controllers
             var auth0UserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var username = User.Identity.Name;
 
-            var animeLover = _animeLoverService.GetByAuth0UserId(auth0UserId);
+            var animeLoverDTO = _animeLoverService.GetByAuth0UserId(auth0UserId);
 
-            if (animeLover == null)
+            if (animeLoverDTO == null)
             {
-                animeLover = new AnimeLover(username, "User", auth0UserId);
-                _animeLoverService.Create(animeLover);
+                animeLoverDTO = new AnimeLoverDTO
+                {
+                    Username = username,
+                    Role = "User",
+                    Auth0UserId = auth0UserId
+                };
+                _animeLoverService.AddAnimeLover(animeLoverDTO);
             }
 
-            return View(animeLover);
+            return View(animeLoverDTO);
         }
 
 
@@ -76,16 +82,17 @@ namespace AnimeRS.Controllers
         public async Task<IActionResult> PostLogin()
         {
             var auth0UserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var animeLover = _animeLoverRepository.GetByAuth0UserId(auth0UserId);
+            var animeLoverDTO = _animeLoverService.GetByAuth0UserId(auth0UserId);
 
-            if (animeLover == null)
+            if (animeLoverDTO == null)
             {
-                animeLover = new AnimeLover(
-                    User.Identity.Name, // Username
-                    "User", // Role
-                    auth0UserId // Auth0UserId
-                );
-                _animeLoverRepository.AddAnimeLover(animeLover);
+                animeLoverDTO = new AnimeLoverDTO
+                {
+                    Username = User.Identity.Name, // Username
+                    Role = "User", // Role
+                    Auth0UserId = auth0UserId // Auth0UserId
+                };
+                _animeLoverService.AddAnimeLover(animeLoverDTO);
             }
 
             return RedirectToAction("Index", "Home");

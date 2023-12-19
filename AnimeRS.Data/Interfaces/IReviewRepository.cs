@@ -1,15 +1,14 @@
-﻿
-using System.Collections.Generic;
-using AnimeRS.Core.Models;
+﻿using AnimeRS.Data.dto;
+using System.Xml.Linq;
 
-namespace AnimeRS.Core.Interfaces
+namespace AnimeRS.Data.Interfaces
 {
     public interface IReviewRepository
     {
-        IEnumerable<Review> GetAllReviews();
-        Review GetReviewById(int id);
-        void AddReview(Review review);
-        void UpdateReview(Review review);
+        IEnumerable<ReviewDTO> GetAllReviews();
+        ReviewDTO GetReviewById(int id);
+        void AddReview(ReviewDTO review);
+        void UpdateReview(ReviewDTO review);
         void DeleteReview(int id);
     }
 }

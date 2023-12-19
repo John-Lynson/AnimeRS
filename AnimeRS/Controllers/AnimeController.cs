@@ -1,29 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using AnimeRS.Data.Interfaces;
-using AnimeRS.Core.Models;
+using AnimeRS.Core.Services;
+using AnimeRS.Data.dto;
 
 [Route("api/[controller]")]
 [ApiController]
 public class AnimeController : ControllerBase
 {
-    private readonly IAnimeRepository _animeRepository;
+    private readonly AnimeService _animeService;
 
-    public AnimeController(IAnimeRepository animeRepository)
+    public AnimeController(AnimeService animeService)
     {
-        _animeRepository = animeRepository;
+        _animeService = animeService;
     }
 
     [HttpGet]
     public IActionResult GetAllAnimes()
     {
-        var animes = _animeRepository.GetAllAnimes();
+        var animes = _animeService.GetAllAnimes();
         return Ok(animes);
     }
 
     [HttpGet("{id}")]
     public IActionResult GetAnimeById(int id)
     {
-        var anime = _animeRepository.GetAnimeById(id);
+        var anime = _animeService.GetAnimeById(id);
         if (anime == null)
         {
             return NotFound();
@@ -31,64 +31,41 @@ public class AnimeController : ControllerBase
         return Ok(anime);
     }
 
-
     [HttpPost]
-    public IActionResult CreateAnime([FromBody] Anime anime)
+    public IActionResult CreateAnime([FromBody] AnimeDTO animeDTO)
     {
-        _animeRepository.AddAnime(anime);
-        return Ok(anime);
+        _animeService.AddAnime(animeDTO);
+        return Ok(animeDTO);
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateAnime(int id, [FromBody] Anime anime)
+    public IActionResult UpdateAnime(int id, [FromBody] AnimeDTO animeDTO)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        if (id != anime.Id)
-        {
-            return BadRequest("ID mismatch");
-        }
-
-        var existingAnime = _animeRepository.GetAnimeById(id);
+        var existingAnime = _animeService.GetAnimeById(id);
         if (existingAnime == null)
         {
             return NotFound();
         }
 
-        try
-        {
-            _animeRepository.UpdateAnime(anime);
-            return Ok(anime);
-        }
-        catch (Exception ex)
-        {
-            // Log de uitzondering
-            return StatusCode(500, "Internal server error");
-        }
+        _animeService.UpdateAnime(animeDTO);
+        return Ok(animeDTO);
     }
-
 
     [HttpDelete("{id}")]
     public IActionResult DeleteAnime(int id)
     {
-        var anime = _animeRepository.GetAnimeById(id);
+        var anime = _animeService.GetAnimeById(id);
         if (anime == null)
         {
             return NotFound();
         }
 
-        try
-        {
-            _animeRepository.DeleteAnime(id);
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            // Log de uitzondering
-            return StatusCode(500, "Internal server error");
-        }
+        _animeService.DeleteAnime(id);
+        return Ok();
     }
 }

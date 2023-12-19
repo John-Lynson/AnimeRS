@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace AnimeRS.Data.dto
 {
-    internal class FavoriteAnimeDTO
+    public class FavoriteAnimeDTO
     {
+        public int AnimeLoverId { get; set; }
+        public int AnimeId { get; set; }
+        // Voeg andere relevante velden toe
     }
 }

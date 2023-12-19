@@ -1,14 +1,14 @@
-﻿using AnimeRS.Core.Models;
+﻿using AnimeRS.Data.dto;
 using System.Collections.Generic;
 
-namespace AnimeRS.Core.Interfaces
+namespace AnimeRS.Data.Interfaces
 {
     public interface IAnimeRepository
     {
-        IEnumerable<Anime> GetAllAnimes();
-        Anime GetAnimeById(int id);
-        void AddAnime(Anime anime); 
-        void UpdateAnime(Anime anime);
-        void DeleteAnime(int id); 
+        IEnumerable<AnimeDTO> GetAllAnimes();
+        AnimeDTO GetAnimeById(int id);
+        void AddAnime(AnimeDTO anime);
+        void UpdateAnime(AnimeDTO anime);
+        void DeleteAnime(int id);
     }
 }

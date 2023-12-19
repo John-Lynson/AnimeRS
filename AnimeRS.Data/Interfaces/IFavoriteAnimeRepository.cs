@@ -1,13 +1,12 @@
-﻿
-using AnimeRS.Core.Models;
-using System.Collections.Generic;
+﻿using AnimeRS.Data.dto;
+using System.Xml.Linq;
 
-namespace AnimeRS.Core.Interfaces
+namespace AnimeRS.Data.Interfaces
 {
     public interface IFavoriteAnimeRepository
     {
-        IEnumerable<FavoriteAnime> GetFavoriteAnimesByAnimeLoverId(int animeLoverId);
-        bool AddFavoriteAnime(FavoriteAnime favoriteAnime);
+        IEnumerable<FavoriteAnimeDTO> GetFavoriteAnimesByAnimeLoverId(int animeLoverId);
+        bool AddFavoriteAnime(FavoriteAnimeDTO favoriteAnime);
         bool RemoveFavoriteAnime(int id);
     }
 }

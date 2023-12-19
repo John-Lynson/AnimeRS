@@ -1,16 +1,12 @@
-using AnimeRS.Data.Interfaces;
-using AnimeRS.Core.Models;
 using AnimeRS.Data.Database;
+using AnimeRS.Data.Interfaces;
 using AnimeRS.Data.Repositories;
+using AnimeRS.Core.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Auth0.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using AnimeRS.Core.Services;
-using AnimeRS.Data.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,22 +17,21 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
     options.ClientId = builder.Configuration["Auth0:ClientId"];
 });
 
-
 builder.Services.AddControllersWithViews();
 
-// Configureer de DatabaseSettings
-builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("ConnectionStrings"));
+// Haal de databaseverbindingstring op en registreer DatabaseConnection
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddSingleton(new DatabaseConnection(connectionString));
 
-// Registreer uw repositories en services
-var builder = WebApplication.CreateBuilder(args);
-
-// Voeg services toe aan de DI-container
+// Registreer repositories
 builder.Services.AddScoped<IAnimeRepository, AnimeRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IAnimeLoverRepository, AnimeLoverRepository>();
 
+// Registreer services
 builder.Services.AddScoped<AnimeService>();
 builder.Services.AddScoped<ReviewService>();
+builder.Services.AddScoped<AnimeLoverService>();
 
 var app = builder.Build();
 
