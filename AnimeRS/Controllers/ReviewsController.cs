@@ -1,18 +1,25 @@
-﻿using AnimeRS.Data.Repositories;
-using AnimeRS.Data.Interfaces;
+﻿using AnimeRS.Core.Services;
 using Microsoft.AspNetCore.Mvc;
+using AnimeRS.Core.Models;
 
 namespace AnimeRS.Web.Controllers
 {
     public class ReviewController : Controller
     {
-        private readonly IReviewRepository _reviewRepository;
+        private readonly ReviewService _reviewService;
 
-        public ReviewController(IReviewRepository reviewRepository)
+        public ReviewController(ReviewService reviewService)
         {
-            _reviewRepository = reviewRepository;
+            _reviewService = reviewService;
         }
 
-        // ... actiemethoden voor het plaatsen, bekijken, bewerken en verwijderen van reviews
+        public IActionResult Index()
+        {
+            var reviewDTOs = _reviewService.GetAllReviews();
+            var reviews = reviewDTOs.Select(AnimeRSConverter.ConvertToDomain).ToList();
+            return View(reviews);
+        }
+
+        // ... andere actiemethoden voor het plaatsen, bekijken, bewerken en verwijderen van reviews
     }
 }

@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using AnimeRS.Data.Interfaces;
 using AnimeRS.Data.dto;
+using AnimeRS.Data.Database;
 
 namespace AnimeRS.Data.Repositories
 {
     public class AnimeRepository : IAnimeRepository
     {
-        private readonly string _connectionString;
+        private readonly DatabaseConnection _databaseConnection;
 
-        public AnimeRepository(string connectionString)
+        public AnimeRepository(DatabaseConnection databaseConnection)
         {
-            _connectionString = connectionString;
+            _databaseConnection = databaseConnection;
         }
 
         public IEnumerable<AnimeDTO> GetAllAnimes()
@@ -20,7 +21,7 @@ namespace AnimeRS.Data.Repositories
             var animes = new List<AnimeDTO>();
             string query = "SELECT * FROM Animes";
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -53,7 +54,7 @@ namespace AnimeRS.Data.Repositories
             AnimeDTO anime = null;
             string query = "SELECT * FROM Animes WHERE Id = @Id";
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -85,7 +86,7 @@ namespace AnimeRS.Data.Repositories
         {
             string query = @"INSERT INTO Animes (Title, Description, Genre, Episodes, Status, ReleaseDate)
                      VALUES (@Title, @Description, @Genre, @Episodes, @Status, @ReleaseDate)";
-            using (var connection = new SqlConnection(_connectionString))
+            using (var connection = new SqlConnection(_databaseConnection.ConnectionString))
             {
                 using (var command = new SqlCommand(query, connection))
                 {
@@ -112,7 +113,7 @@ namespace AnimeRS.Data.Repositories
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
                 {
                     connection.Open();
                     using (SqlCommand command = new SqlCommand(query, connection))
@@ -138,7 +139,7 @@ namespace AnimeRS.Data.Repositories
         {
             string query = "DELETE FROM Animes WHERE Id = @Id";
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(query, connection))

@@ -8,5 +8,7 @@ namespace AnimeRS.Web.Controllers
         {
             return View();
         }
+
+        // ... eventuele andere acties gerelateerd aan zoeken
     }
 }

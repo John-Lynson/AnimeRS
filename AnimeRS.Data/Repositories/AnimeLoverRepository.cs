@@ -2,16 +2,17 @@
 using System.Data.SqlClient;
 using AnimeRS.Data.Interfaces;
 using AnimeRS.Data.dto;
+using AnimeRS.Data.Database;
 
 namespace AnimeRS.Data.Repositories
 {
     public class AnimeLoverRepository : IAnimeLoverRepository
     {
-        private readonly string _connectionString;
+        private readonly DatabaseConnection _databaseConnection;
 
-        public AnimeLoverRepository(string connectionString)
+        public AnimeLoverRepository(DatabaseConnection databaseConnection)
         {
-            _connectionString = connectionString;
+            _databaseConnection = databaseConnection;
         }
 
         public IEnumerable<AnimeLoverDTO> GetAllAnimeLovers()
@@ -19,7 +20,7 @@ namespace AnimeRS.Data.Repositories
             List<AnimeLoverDTO> animeLovers = new List<AnimeLoverDTO>();
             string query = "SELECT * FROM AnimeLovers";
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -48,7 +49,7 @@ namespace AnimeRS.Data.Repositories
             AnimeLoverDTO animeLover = null;
             string query = "SELECT * FROM AnimeLovers WHERE Id = @Id";
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -75,7 +76,7 @@ namespace AnimeRS.Data.Repositories
         public AnimeLoverDTO GetAnimeLoverByUsername(string username)
         {
             string query = "SELECT * FROM AnimeLovers WHERE Username = @Username";
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@Username", username);
@@ -102,7 +103,7 @@ namespace AnimeRS.Data.Repositories
         INSERT INTO AnimeLovers (Username, Role)
         VALUES (@Username, @Role)";
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -122,7 +123,7 @@ namespace AnimeRS.Data.Repositories
         SET Username = @Username, Role = @Role
         WHERE Id = @Id";
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -141,7 +142,7 @@ namespace AnimeRS.Data.Repositories
             AnimeLoverDTO animeLover = null;
             string query = "SELECT * FROM AnimeLovers WHERE Auth0UserId = @Auth0UserId";
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -168,7 +169,8 @@ namespace AnimeRS.Data.Repositories
         public bool DeleteAnimeLover(int id)
         {
             string query = "DELETE FROM AnimeLovers WHERE Id = @Id";
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(query, connection))

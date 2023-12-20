@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AnimeRS.Core.Services;
 using AnimeRS.Data.dto;
+using AnimeRS.Core.Models;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -16,51 +17,55 @@ public class AnimeController : ControllerBase
     [HttpGet]
     public IActionResult GetAllAnimes()
     {
-        var animes = _animeService.GetAllAnimes();
+        var animeDTOs = _animeService.GetAllAnimes();
+        var animes = animeDTOs.Select(AnimeRSConverter.ConvertToDomain).ToList();
         return Ok(animes);
     }
 
     [HttpGet("{id}")]
     public IActionResult GetAnimeById(int id)
     {
-        var anime = _animeService.GetAnimeById(id);
-        if (anime == null)
+        var animeDTO = _animeService.GetAnimeById(id);
+        if (animeDTO == null)
         {
             return NotFound();
         }
+        var anime = AnimeRSConverter.ConvertToDomain(animeDTO);
         return Ok(anime);
     }
 
     [HttpPost]
-    public IActionResult CreateAnime([FromBody] AnimeDTO animeDTO)
+    public IActionResult CreateAnime([FromBody] Anime anime)
     {
+        var animeDTO = AnimeRSConverter.ConvertToDto(anime);
         _animeService.AddAnime(animeDTO);
-        return Ok(animeDTO);
+        return Ok(anime); // Of return CreatedAtAction als je de locatie van de nieuwe resource wilt meegeven
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateAnime(int id, [FromBody] AnimeDTO animeDTO)
+    public IActionResult UpdateAnime(int id, [FromBody] Anime anime)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        var existingAnime = _animeService.GetAnimeById(id);
-        if (existingAnime == null)
+        var existingAnimeDTO = _animeService.GetAnimeById(id);
+        if (existingAnimeDTO == null)
         {
             return NotFound();
         }
 
-        _animeService.UpdateAnime(animeDTO);
-        return Ok(animeDTO);
+        var updatedAnimeDTO = AnimeRSConverter.ConvertToDto(anime);
+        _animeService.UpdateAnime(updatedAnimeDTO);
+        return Ok(anime);
     }
 
     [HttpDelete("{id}")]
     public IActionResult DeleteAnime(int id)
     {
-        var anime = _animeService.GetAnimeById(id);
-        if (anime == null)
+        var animeDTO = _animeService.GetAnimeById(id);
+        if (animeDTO == null)
         {
             return NotFound();
         }

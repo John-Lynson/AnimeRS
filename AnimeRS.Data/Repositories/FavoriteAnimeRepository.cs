@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using AnimeRS.Data.dto;
+using AnimeRS.Data.Database; 
 
 namespace AnimeRS.Data.Repositories
 {
     internal class FavoriteAnimeRepository : IFavoriteAnimeRepository
     {
-        private readonly string _connectionString;
+        private readonly DatabaseConnection _databaseConnection;
 
-        public FavoriteAnimeRepository(string connectionString)
+        public FavoriteAnimeRepository(DatabaseConnection databaseConnection)
         {
-            _connectionString = connectionString;
+            _databaseConnection = databaseConnection;
         }
 
         public IEnumerable<FavoriteAnimeDTO> GetFavoriteAnimesByAnimeLoverId(int animeLoverId)
@@ -19,7 +20,7 @@ namespace AnimeRS.Data.Repositories
             var favoriteAnimes = new List<FavoriteAnimeDTO>();
             string query = "SELECT * FROM FavoriteAnimes WHERE AnimeLoverId = @AnimeLoverId";
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -48,7 +49,7 @@ namespace AnimeRS.Data.Repositories
                 INSERT INTO FavoriteAnimes (AnimeLoverId, AnimeId)
                 VALUES (@AnimeLoverId, @AnimeId)";
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -65,7 +66,7 @@ namespace AnimeRS.Data.Repositories
         {
             string query = "DELETE FROM FavoriteAnimes WHERE Id = @Id";
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(query, connection))

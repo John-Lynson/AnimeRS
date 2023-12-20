@@ -4,23 +4,19 @@ using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using AnimeRS.Core.Models;
-using AnimeRS.Data.Interfaces;
-using AnimeRS.Data.Repositories;
+using AnimeRS.Core.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using AnimeRS.Data.dto;
-// Overige using statements...
 
 namespace AnimeRS.Controllers
 {
     public class AccountController : Controller
     {
         private readonly AnimeLoverService _animeLoverService;
-        private readonly IAnimeLoverRepository _animeLoverRepository;
 
-        public AccountController(AnimeLoverService animeLoverService, IAnimeLoverRepository animeLoverRepository)
+        public AccountController(AnimeLoverService animeLoverService)
         {
             _animeLoverService = animeLoverService;
-            _animeLoverRepository = animeLoverRepository;
         }
 
         // Login actie
@@ -63,9 +59,9 @@ namespace AnimeRS.Controllers
                 _animeLoverService.AddAnimeLover(animeLoverDTO);
             }
 
-            return View(animeLoverDTO);
+            var animeLover = AnimeRSConverter.ConvertToDomain(animeLoverDTO);
+            return View(animeLover);
         }
-
 
         [Authorize]
         public async Task Logout()
@@ -88,9 +84,9 @@ namespace AnimeRS.Controllers
             {
                 animeLoverDTO = new AnimeLoverDTO
                 {
-                    Username = User.Identity.Name, // Username
-                    Role = "User", // Role
-                    Auth0UserId = auth0UserId // Auth0UserId
+                    Username = User.Identity.Name,
+                    Role = "User",
+                    Auth0UserId = auth0UserId
                 };
                 _animeLoverService.AddAnimeLover(animeLoverDTO);
             }

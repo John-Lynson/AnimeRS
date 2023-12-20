@@ -1,20 +1,20 @@
-﻿using AnimeRS.Data.Interfaces;
+﻿using AnimeRS.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnimeRS.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IAnimeRepository _animeRepository;
+        private readonly AnimeService _animeService;
 
-        public HomeController(IAnimeRepository animeRepository)
+        public HomeController(AnimeService animeService)
         {
-            _animeRepository = animeRepository;
+            _animeService = animeService;
         }
 
         public IActionResult Index()
         {
-            var animes = _animeRepository.GetAllAnimes();
+            var animes = _animeService.GetAllAnimes(); // Zorgt dat dit Core Modellen retourneert
             return View(animes);
         }
 
@@ -22,7 +22,4 @@ namespace AnimeRS.Web.Controllers
         {
             return View();
         }
-
-        // ... andere acties ...
     }
-}

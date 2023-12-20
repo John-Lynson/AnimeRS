@@ -1,143 +1,113 @@
 ﻿using AnimeRS.Core.Models;
 using AnimeRS.Data.dto;
+using System.Collections.Generic;
+using System.Linq;
 
 public static class AnimeRSConverter
 {
-    public static AnimeLoverDTO ConvertToDto(AnimeLover animeLover)
+    // AnimeLover Conversies
+    public static AnimeLover ConvertToDomain(AnimeLoverDTO dto)
     {
-        return new AnimeLoverDTO
+        return dto == null ? null : new AnimeLover
         {
-            Id = animeLover.Id,
-            Username = animeLover.Username,
-            Role = animeLover.Role
+            Id = dto.Id,
+            Username = dto.Username,
+            Role = dto.Role,
+            Auth0UserId = dto.Auth0UserId
             // Voeg andere relevante velden toe
         };
     }
 
-    public static AnimeLover ConvertToDomain(AnimeLoverDTO animeLoverDTO)
+    public static AnimeLoverDTO ConvertToDto(AnimeLover domain)
     {
-        return new AnimeLover
+        return domain == null ? null : new AnimeLoverDTO
         {
-            // Aannemende dat AnimeLover een constructor heeft die deze velden accepteert
-            Username = animeLoverDTO.Username,
-            Role = animeLoverDTO.Role,
-            // Voeg andere velden toe indien nodig
-        };
-    }
-
-    public static AnimeDTO ConvertToAnimeDto(Anime anime)
-    {
-        if (anime == null) return null;
-
-        return new AnimeDTO
-        {
-            Id = anime.Id,
-            Title = anime.Title,
-            Description = anime.Description,
-            Genre = anime.Genre,
-            Episodes = anime.Episodes,
-            Status = anime.Status,
-            ReleaseDate = anime.ReleaseDate
+            Id = domain.Id,
+            Username = domain.Username,
+            Role = domain.Role,
+            Auth0UserId = domain.Auth0UserId
             // Voeg andere relevante velden toe
         };
     }
 
-    public static AnimeLoverDTO ConvertToAnimeLoverDto(AnimeLover animeLover)
+    // Anime Conversies
+    public static Anime ConvertToDomain(AnimeDTO dto)
     {
-        if (animeLover == null) return null;
-
-        return new AnimeLoverDTO
+        return dto == null ? null : new Anime
         {
-            Id = animeLover.Id,
-            Username = animeLover.Username,
-            Role = animeLover.Role,
-            Auth0UserId = animeLover.Auth0UserId
+            Id = dto.Id,
+            Title = dto.Title,
+            Description = dto.Description,
+            Genre = dto.Genre,
+            Episodes = dto.Episodes,
+            Status = dto.Status,
+            ReleaseDate = dto.ReleaseDate
             // Voeg andere relevante velden toe
         };
     }
 
-    public static AnimeLover ConvertToAnimeLover(AnimeLoverDTO animeLoverDTO)
+    public static AnimeDTO ConvertToDto(Anime domain)
     {
-        if (animeLoverDTO == null) return null;
-
-        return new AnimeLover
+        return domain == null ? null : new AnimeDTO
         {
-            Id = animeLoverDTO.Id,
-            Username = animeLoverDTO.Username,
-            Role = animeLoverDTO.Role,
-            Auth0UserId = animeLoverDTO.Auth0UserId
-            // Voeg andere velden toe indien nodig
-        };
-    }
-
-    public static Anime ConvertToAnime(AnimeDTO animeDTO)
-    {
-        if (animeDTO == null) return null;
-
-        return new Anime
-        {
-            Title = animeDTO.Title,
-            Description = animeDTO.Description,
-            Genre = animeDTO.Genre,
-            Episodes = animeDTO.Episodes,
-            Status = animeDTO.Status,
-            ReleaseDate = animeDTO.ReleaseDate
-            // Voeg andere velden toe indien nodig
-        };
-    }
-
-    public static FavoriteAnimeDTO ConvertToFavoriteAnimeDto(FavoriteAnime favoriteAnime)
-    {
-        if (favoriteAnime == null) return null;
-
-        return new FavoriteAnimeDTO
-        {
-            AnimeLoverId = favoriteAnime.AnimeLoverId,
-            AnimeId = favoriteAnime.AnimeId
+            Id = domain.Id,
+            Title = domain.Title,
+            Description = domain.Description,
+            Genre = domain.Genre,
+            Episodes = domain.Episodes,
+            Status = domain.Status,
+            ReleaseDate = domain.ReleaseDate
             // Voeg andere relevante velden toe
         };
     }
 
-    public static FavoriteAnime ConvertToFavoriteAnime(FavoriteAnimeDTO favoriteAnimeDTO)
+    // FavoriteAnime Conversies
+    public static FavoriteAnime ConvertToDomain(FavoriteAnimeDTO dto)
     {
-        if (favoriteAnimeDTO == null) return null;
-
-        return new FavoriteAnime
+        return dto == null ? null : new FavoriteAnime
         {
-            AnimeLoverId = favoriteAnimeDTO.AnimeLoverId,
-            AnimeId = favoriteAnimeDTO.AnimeId
-            // Voeg andere velden toe indien nodig
-        };
-    }
-
-    public static ReviewDTO ConvertToReviewDto(Review review)
-    {
-        if (review == null) return null;
-
-        return new ReviewDTO
-        {
-            Id = review.Id,
-            AnimeId = review.AnimeId,
-            AnimeLoverId = review.AnimeLoverId,
-            Comment = review.Comment,
-            Rating = review.Rating,
-            DatePosted = review.DatePosted
+            AnimeLoverId = dto.AnimeLoverId,
+            AnimeId = dto.AnimeId
             // Voeg andere relevante velden toe
         };
     }
 
-    public static Review ConvertToReview(ReviewDTO reviewDTO)
+    public static FavoriteAnimeDTO ConvertToDto(FavoriteAnime domain)
     {
-        if (reviewDTO == null) return null;
-
-        return new Review
+        return domain == null ? null : new FavoriteAnimeDTO
         {
-            AnimeId = reviewDTO.AnimeId,
-            AnimeLoverId = reviewDTO.AnimeLoverId,
-            Comment = reviewDTO.Comment,
-            Rating = reviewDTO.Rating,
-            DatePosted = reviewDTO.DatePosted
-            // Voeg andere velden toe indien nodig
+            AnimeLoverId = domain.AnimeLoverId,
+            AnimeId = domain.AnimeId
+            // Voeg andere relevante velden toe
+        };
+    }
+
+    // Review Conversies
+    public static Review ConvertToDomain(ReviewDTO dto)
+    {
+        return dto == null ? null : new Review
+        {
+            Id = dto.Id,
+            AnimeId = dto.AnimeId,
+            AnimeLoverId = dto.AnimeLoverId,
+            Comment = dto.Comment,
+            Rating = dto.Rating,
+            DatePosted = dto.DatePosted
+            // Voeg andere relevante velden toe
+        };
+    }
+
+    public static ReviewDTO ConvertToDto(Review domain)
+    {
+        return domain == null ? null : new ReviewDTO
+        {
+            Id = domain.Id,
+            AnimeId = domain.AnimeId,
+            AnimeLoverId = domain.AnimeLoverId,
+            Comment = domain.Comment,
+            Rating = domain.Rating,
+            DatePosted = domain.DatePosted
+            // Voeg andere relevante velden toe
         };
     }
 }

@@ -10,19 +10,13 @@ namespace AnimeRS.Data.Database
 {
     public class DatabaseConnection
     {
-        public readonly string connectionString;
+        public string ConnectionString { get; private set; }
+
         public DatabaseConnection(string connectionString)
         {
-            this.connectionString = connectionString;
+            ConnectionString = connectionString;
         }
 
-        public void OpenConnection(Action<DbConnection> action)
-        {
-            using (DbConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                action.Invoke(connection);
-            }
-        }
+        // Andere methodes en logica...
     }
 }

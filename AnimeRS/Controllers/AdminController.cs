@@ -1,5 +1,5 @@
-﻿using AnimeRS.Data.Interfaces;
-using AnimeRS.Core.Models;
+﻿using AnimeRS.Core.Models;
+using AnimeRS.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,16 +7,17 @@ namespace AnimeRS.Web.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly IAnimeRepository _animeRepository;
+        private readonly AnimeService _animeService;
 
-        public AdminController(IAnimeRepository animeRepository)
+        public AdminController(AnimeService animeService)
         {
-            _animeRepository = animeRepository;
+            _animeService = animeService;
         }
 
         public IActionResult Index()
         {
-            var animes = _animeRepository.GetAllAnimes();
+            var animeDTOs = _animeService.GetAllAnimes();
+            var animes = animeDTOs.Select(AnimeRSConverter.ConvertToDomain).ToList();
             return View(animes);
         }
     }
