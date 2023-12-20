@@ -15,8 +15,7 @@ namespace AnimeRS.Web.Controllers
 
         public IActionResult Index()
         {
-            var reviewDTOs = _reviewService.GetAllReviews();
-            var reviews = reviewDTOs.Select(AnimeRSConverter.ConvertToDomain).ToList();
+            var reviews = _reviewService.GetAllReviews();
             return View(reviews);
         }
 

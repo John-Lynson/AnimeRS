@@ -23,3 +23,4 @@ namespace AnimeRS.Web.Controllers
             return View();
         }
     }
+}

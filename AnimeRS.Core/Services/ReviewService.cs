@@ -1,6 +1,8 @@
 ﻿using AnimeRS.Data.Interfaces;
 using AnimeRS.Data.dto;
+using AnimeRS.Core.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AnimeRS.Core.Services
 {
@@ -13,23 +15,27 @@ namespace AnimeRS.Core.Services
             _reviewRepository = reviewRepository;
         }
 
-        public IEnumerable<ReviewDTO> GetAllReviews()
+        public IEnumerable<Review> GetAllReviews()
         {
-            return _reviewRepository.GetAllReviews();
+            var reviewDTOs = _reviewRepository.GetAllReviews();
+            return reviewDTOs.Select(AnimeRSConverter.ConvertToDomain).ToList();
         }
 
-        public ReviewDTO GetReviewById(int id)
+        public Review GetReviewById(int id)
         {
-            return _reviewRepository.GetReviewById(id);
+            var reviewDTO = _reviewRepository.GetReviewById(id);
+            return AnimeRSConverter.ConvertToDomain(reviewDTO);
         }
 
-        public void AddReview(ReviewDTO reviewDTO)
+        public void AddReview(Review review)
         {
+            var reviewDTO = AnimeRSConverter.ConvertToDto(review);
             _reviewRepository.AddReview(reviewDTO);
         }
 
-        public void UpdateReview(ReviewDTO reviewDTO)
+        public void UpdateReview(Review review)
         {
+            var reviewDTO = AnimeRSConverter.ConvertToDto(review);
             _reviewRepository.UpdateReview(reviewDTO);
         }
 

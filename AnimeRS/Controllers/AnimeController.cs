@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AnimeRS.Core.Services;
-using AnimeRS.Data.dto;
 using AnimeRS.Core.Models;
 
 [Route("api/[controller]")]
@@ -17,29 +16,26 @@ public class AnimeController : ControllerBase
     [HttpGet]
     public IActionResult GetAllAnimes()
     {
-        var animeDTOs = _animeService.GetAllAnimes();
-        var animes = animeDTOs.Select(AnimeRSConverter.ConvertToDomain).ToList();
+        var animes = _animeService.GetAllAnimes();
         return Ok(animes);
     }
 
     [HttpGet("{id}")]
     public IActionResult GetAnimeById(int id)
     {
-        var animeDTO = _animeService.GetAnimeById(id);
-        if (animeDTO == null)
+        var anime = _animeService.GetAnimeById(id);
+        if (anime == null)
         {
             return NotFound();
         }
-        var anime = AnimeRSConverter.ConvertToDomain(animeDTO);
         return Ok(anime);
     }
 
     [HttpPost]
     public IActionResult CreateAnime([FromBody] Anime anime)
     {
-        var animeDTO = AnimeRSConverter.ConvertToDto(anime);
-        _animeService.AddAnime(animeDTO);
-        return Ok(anime); // Of return CreatedAtAction als je de locatie van de nieuwe resource wilt meegeven
+        _animeService.AddAnime(anime);
+        return Ok(anime); // Of return CreatedAtAction voor de locatie van de nieuwe resource
     }
 
     [HttpPut("{id}")]
@@ -50,22 +46,21 @@ public class AnimeController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var existingAnimeDTO = _animeService.GetAnimeById(id);
-        if (existingAnimeDTO == null)
+        var existingAnime = _animeService.GetAnimeById(id);
+        if (existingAnime == null)
         {
             return NotFound();
         }
 
-        var updatedAnimeDTO = AnimeRSConverter.ConvertToDto(anime);
-        _animeService.UpdateAnime(updatedAnimeDTO);
+        _animeService.UpdateAnime(anime);
         return Ok(anime);
     }
 
     [HttpDelete("{id}")]
     public IActionResult DeleteAnime(int id)
     {
-        var animeDTO = _animeService.GetAnimeById(id);
-        if (animeDTO == null)
+        var anime = _animeService.GetAnimeById(id);
+        if (anime == null)
         {
             return NotFound();
         }

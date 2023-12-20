@@ -1,6 +1,8 @@
 ﻿using AnimeRS.Data.Interfaces;
 using AnimeRS.Data.dto;
+using AnimeRS.Core.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 public class AnimeLoverService
 {
@@ -11,33 +13,39 @@ public class AnimeLoverService
         _animeLoverRepository = animeLoverRepository;
     }
 
-    public IEnumerable<AnimeLoverDTO> GetAllAnimeLovers()
+    public IEnumerable<AnimeLover> GetAllAnimeLovers()
     {
-        return _animeLoverRepository.GetAllAnimeLovers();
+        var animeLoverDTOs = _animeLoverRepository.GetAllAnimeLovers();
+        return animeLoverDTOs.Select(AnimeRSConverter.ConvertToDomain).ToList();
     }
 
-    public AnimeLoverDTO GetAnimeLoverById(int id)
+    public AnimeLover GetAnimeLoverById(int id)
     {
-        return _animeLoverRepository.GetAnimeLoverById(id);
+        var animeLoverDTO = _animeLoverRepository.GetAnimeLoverById(id);
+        return AnimeRSConverter.ConvertToDomain(animeLoverDTO);
     }
 
-    public AnimeLoverDTO GetAnimeLoverByUsername(string username)
+    public AnimeLover GetAnimeLoverByUsername(string username)
     {
-        return _animeLoverRepository.GetAnimeLoverByUsername(username);
+        var animeLoverDTO = _animeLoverRepository.GetAnimeLoverByUsername(username);
+        return AnimeRSConverter.ConvertToDomain(animeLoverDTO);
     }
 
-    public AnimeLoverDTO GetByAuth0UserId(string auth0UserId)
+    public AnimeLover GetByAuth0UserId(string auth0UserId)
     {
-        return _animeLoverRepository.GetByAuth0UserId(auth0UserId);
+        var animeLoverDTO = _animeLoverRepository.GetByAuth0UserId(auth0UserId);
+        return AnimeRSConverter.ConvertToDomain(animeLoverDTO);
     }
 
-    public void AddAnimeLover(AnimeLoverDTO animeLoverDTO)
+    public void AddAnimeLover(AnimeLover animeLover)
     {
+        var animeLoverDTO = AnimeRSConverter.ConvertToDto(animeLover);
         _animeLoverRepository.AddAnimeLover(animeLoverDTO);
     }
 
-    public void UpdateAnimeLover(AnimeLoverDTO animeLoverDTO)
+    public void UpdateAnimeLover(AnimeLover animeLover)
     {
+        var animeLoverDTO = AnimeRSConverter.ConvertToDto(animeLover);
         _animeLoverRepository.UpdateAnimeLover(animeLoverDTO);
     }
 

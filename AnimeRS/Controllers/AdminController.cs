@@ -16,8 +16,7 @@ namespace AnimeRS.Web.Controllers
 
         public IActionResult Index()
         {
-            var animeDTOs = _animeService.GetAllAnimes();
-            var animes = animeDTOs.Select(AnimeRSConverter.ConvertToDomain).ToList();
+            var animes = _animeService.GetAllAnimes();
             return View(animes);
         }
     }

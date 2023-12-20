@@ -6,7 +6,6 @@ using System.Security.Claims;
 using AnimeRS.Core.Models;
 using AnimeRS.Core.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using AnimeRS.Data.dto;
 
 namespace AnimeRS.Controllers
 {
@@ -46,20 +45,19 @@ namespace AnimeRS.Controllers
             var auth0UserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var username = User.Identity.Name;
 
-            var animeLoverDTO = _animeLoverService.GetByAuth0UserId(auth0UserId);
+            var animeLover = _animeLoverService.GetByAuth0UserId(auth0UserId);
 
-            if (animeLoverDTO == null)
+            if (animeLover == null)
             {
-                animeLoverDTO = new AnimeLoverDTO
+                animeLover = new AnimeLover
                 {
                     Username = username,
                     Role = "User",
                     Auth0UserId = auth0UserId
                 };
-                _animeLoverService.AddAnimeLover(animeLoverDTO);
+                _animeLoverService.AddAnimeLover(animeLover);
             }
 
-            var animeLover = AnimeRSConverter.ConvertToDomain(animeLoverDTO);
             return View(animeLover);
         }
 
@@ -78,17 +76,17 @@ namespace AnimeRS.Controllers
         public async Task<IActionResult> PostLogin()
         {
             var auth0UserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var animeLoverDTO = _animeLoverService.GetByAuth0UserId(auth0UserId);
+            var animeLover = _animeLoverService.GetByAuth0UserId(auth0UserId);
 
-            if (animeLoverDTO == null)
+            if (animeLover == null)
             {
-                animeLoverDTO = new AnimeLoverDTO
+                animeLover = new AnimeLover
                 {
                     Username = User.Identity.Name,
                     Role = "User",
                     Auth0UserId = auth0UserId
                 };
-                _animeLoverService.AddAnimeLover(animeLoverDTO);
+                _animeLoverService.AddAnimeLover(animeLover);
             }
 
             return RedirectToAction("Index", "Home");
