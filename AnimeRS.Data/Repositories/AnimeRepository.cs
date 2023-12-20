@@ -38,7 +38,8 @@ namespace AnimeRS.Data.Repositories
                                 Genre = reader["Genre"].ToString(),
                                 Episodes = reader.GetInt32(reader.GetOrdinal("Episodes")),
                                 Status = reader["Status"].ToString(),
-                                ReleaseDate = DateTime.Parse(reader["ReleaseDate"].ToString())
+                                ReleaseDate = DateTime.Parse(reader["ReleaseDate"].ToString()),
+                                ImageURL = reader["Image_url"] == DBNull.Value ? null : reader["Image_url"].ToString()
                             };
                             animes.Add(anime);
                         }
@@ -72,7 +73,8 @@ namespace AnimeRS.Data.Repositories
                                 Genre = reader.GetString(reader.GetOrdinal("Genre")),
                                 Episodes = reader.GetInt32(reader.GetOrdinal("Episodes")),
                                 Status = reader.GetString(reader.GetOrdinal("Status")),
-                                ReleaseDate = DateTime.Parse(reader["ReleaseDate"].ToString())
+                                ReleaseDate = DateTime.Parse(reader["ReleaseDate"].ToString()),
+                                ImageURL = reader["Image_url"] == DBNull.Value ? null : reader["Image_url"].ToString()
                             };
                         }
                     }
@@ -85,7 +87,7 @@ namespace AnimeRS.Data.Repositories
         public void AddAnime(AnimeDTO anime)
         {
             string query = @"INSERT INTO Animes (Title, Description, Genre, Episodes, Status, ReleaseDate)
-                     VALUES (@Title, @Description, @Genre, @Episodes, @Status, @ReleaseDate)";
+                     VALUES (@Title, @Description, @Genre, @Episodes, @Status, @ReleaseDate, @ImageURL)";
             using (var connection = new SqlConnection(_databaseConnection.ConnectionString))
             {
                 using (var command = new SqlCommand(query, connection))
@@ -96,6 +98,7 @@ namespace AnimeRS.Data.Repositories
                     command.Parameters.AddWithValue("@Episodes", anime.Episodes);
                     command.Parameters.AddWithValue("@Status", anime.Status);
                     command.Parameters.AddWithValue("@ReleaseDate", anime.ReleaseDate);
+                    command.Parameters.AddWithValue("@ImageURL", anime.ImageURL);
 
                     connection.Open();
                     command.ExecuteNonQuery();
@@ -108,7 +111,7 @@ namespace AnimeRS.Data.Repositories
             string query = @"
     UPDATE Animes
     SET Title = @Title, Description = @Description, Genre = @Genre,
-        Episodes = @Episodes, Status = @Status, ReleaseDate = @ReleaseDate
+        Episodes = @Episodes, Status = @Status, ReleaseDate = @ReleaseDate, ImageURL = @Image_url
     WHERE Id = @Id";
 
             try
@@ -125,6 +128,7 @@ namespace AnimeRS.Data.Repositories
                         command.Parameters.AddWithValue("@Episodes", anime.Episodes);
                         command.Parameters.AddWithValue("@Status", anime.Status);
                         command.Parameters.AddWithValue("@ReleaseDate", anime.ReleaseDate);
+                        command.Parameters.AddWithValue("@ImageURL", anime.ImageURL);
                         command.ExecuteNonQuery();
                     }
                 }

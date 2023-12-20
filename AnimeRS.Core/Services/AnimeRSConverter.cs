@@ -41,7 +41,8 @@ public static class AnimeRSConverter
             Genre = dto.Genre,
             Episodes = dto.Episodes,
             Status = dto.Status,
-            ReleaseDate = dto.ReleaseDate
+            ReleaseDate = dto.ReleaseDate,
+            ImageURL = dto.ImageURL
             // Voeg andere relevante velden toe
         };
     }
@@ -56,7 +57,8 @@ public static class AnimeRSConverter
             Genre = domain.Genre,
             Episodes = domain.Episodes,
             Status = domain.Status,
-            ReleaseDate = domain.ReleaseDate
+            ReleaseDate = domain.ReleaseDate,
+            ImageURL = domain.ImageURL
             // Voeg andere relevante velden toe
         };
     }

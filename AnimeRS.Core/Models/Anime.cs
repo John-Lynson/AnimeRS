@@ -16,5 +16,7 @@ namespace AnimeRS.Core.Models
         public string Status { get; set; }
         public DateTime ReleaseDate { get; set; }
 
+        public string ImageURL { get; set; }
+
     }
 }

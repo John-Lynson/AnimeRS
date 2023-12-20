@@ -15,6 +15,7 @@ function loadAnimes() {
             var animeTable = $('#animeTable tbody');
             animeTable.empty();
             data.forEach(function (anime) {
+                var imageUrlHtml = anime.imageURL ? '<img src="' + anime.imageURL + '" alt="Afbeelding" style="max-width:100px; max-height:100px;" />' : 'Geen afbeelding';
                 animeTable.append('<tr>' +
                     '<td>' + anime.title + '</td>' +
                     '<td>' + anime.description + '</td>' +
@@ -22,8 +23,11 @@ function loadAnimes() {
                     '<td>' + anime.episodes + '</td>' +
                     '<td>' + anime.status + '</td>' +
                     '<td>' + new Date(anime.releaseDate).toLocaleDateString() + '</td>' +
-                    '<td><button onclick="openModal(' + anime.id + ')">Bewerken</button>' +
-                    '<button onclick="deleteAnime(' + anime.id + ')">Verwijderen</button></td>' +
+                    '<td>' + imageUrlHtml + '</td>' + // Afbeeldings-URL of tekst
+                    '<td>' + // Actieknoppen in deze kolom
+                    '<button onclick="openModal(' + anime.id + ')">Bewerken</button>' +
+                    '<button onclick="deleteAnime(' + anime.id + ')">Verwijderen</button>' +
+                    '</td>' +
                     '</tr>');
             });
         }
@@ -43,6 +47,7 @@ function openModal(animeId) {
                 $('#animeEpisodes').val(anime.episodes);
                 $('#animeStatus').val(anime.status);
                 $('#animeReleaseDate').val(new Date(anime.releaseDate).toISOString().split('T')[0]);
+                $('#animeImageUrl').val(anime.imageURL || '');
             }
         });
     } else {
@@ -61,6 +66,7 @@ function submitAnimeForm() {
         episodes: parseInt($('#animeEpisodes').val(), 10),
         status: $('#animeStatus').val(),
         releaseDate: $('#animeReleaseDate').val()
+        imageURL: $('#animeImageUrl').val() 
     };
 
     // Voeg de id alleen toe bij bewerken
