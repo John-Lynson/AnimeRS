@@ -86,7 +86,7 @@ namespace AnimeRS.Data.Repositories
 
         public void AddAnime(AnimeDTO anime)
         {
-            string query = @"INSERT INTO Animes (Title, Description, Genre, Episodes, Status, ReleaseDate)
+            string query = @"INSERT INTO Animes (Title, Description, Genre, Episodes, Status, ReleaseDate, image_url)
                      VALUES (@Title, @Description, @Genre, @Episodes, @Status, @ReleaseDate, @ImageURL)";
             using (var connection = new SqlConnection(_databaseConnection.ConnectionString))
             {
@@ -98,7 +98,7 @@ namespace AnimeRS.Data.Repositories
                     command.Parameters.AddWithValue("@Episodes", anime.Episodes);
                     command.Parameters.AddWithValue("@Status", anime.Status);
                     command.Parameters.AddWithValue("@ReleaseDate", anime.ReleaseDate);
-                    command.Parameters.AddWithValue("@ImageURL", anime.ImageURL);
+                    command.Parameters.AddWithValue("@ImageURL", anime.ImageURL ?? (object)DBNull.Value);
 
                     connection.Open();
                     command.ExecuteNonQuery();
