@@ -39,6 +39,12 @@ namespace AnimeRS.Core.Services
             _animeRepository.UpdateAnime(animeDTO);
         }
 
+        public IEnumerable<Anime> SearchAnimes(string name, string genre)
+        {
+            var animeDTOs = _animeRepository.SearchAnimes(name, genre);
+            return animeDTOs.Select(AnimeRSConverter.ConvertToDomain).ToList();
+        }
+
         public void DeleteAnime(int id)
         {
             _animeRepository.DeleteAnime(id);

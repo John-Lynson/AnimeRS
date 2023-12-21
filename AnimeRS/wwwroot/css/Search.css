@@ -15,3 +15,24 @@
     border: 1px solid #ddd;
     border-radius: 4px;
 }
+
+#animeList {
+    list-style-type: none;
+    padding: 0;
+}
+
+    #animeList li {
+        margin-bottom: 5px;
+        padding: 5px;
+        border-bottom: 1px solid #ddd;
+    }
+
+        #animeList li a {
+            text-decoration: none;
+            color: #000;
+        }
+
+            #animeList li a:hover {
+                text-decoration: underline;
+            }
+
