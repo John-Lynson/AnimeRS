@@ -109,10 +109,10 @@ namespace AnimeRS.Data.Repositories
         public void UpdateAnime(AnimeDTO anime)
         {
             string query = @"
-    UPDATE Animes
-    SET Title = @Title, Description = @Description, Genre = @Genre,
-        Episodes = @Episodes, Status = @Status, ReleaseDate = @ReleaseDate, ImageURL = @Image_url
-    WHERE Id = @Id";
+UPDATE Animes
+SET Title = @Title, Description = @Description, Genre = @Genre,
+    Episodes = @Episodes, Status = @Status, ReleaseDate = @ReleaseDate, Image_url = @ImageURL
+WHERE Id = @Id";
 
             try
             {
@@ -128,7 +128,7 @@ namespace AnimeRS.Data.Repositories
                         command.Parameters.AddWithValue("@Episodes", anime.Episodes);
                         command.Parameters.AddWithValue("@Status", anime.Status);
                         command.Parameters.AddWithValue("@ReleaseDate", anime.ReleaseDate);
-                        command.Parameters.AddWithValue("@ImageURL", anime.ImageURL);
+                        command.Parameters.AddWithValue("@ImageURL", anime.ImageURL ?? (object)DBNull.Value); // Zorg voor consistentie in parameter naam
                         command.ExecuteNonQuery();
                     }
                 }

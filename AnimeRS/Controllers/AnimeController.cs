@@ -56,7 +56,7 @@ public class AnimeController : ControllerBase
         return Ok(anime);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("search")]
     public IActionResult SearchAnimes(string name, string genre)
     {
         var animes = _animeService.SearchAnimes(name, genre);

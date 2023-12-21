@@ -65,8 +65,8 @@ function submitAnimeForm() {
         genre: $('#animeGenre').val(),
         episodes: parseInt($('#animeEpisodes').val(), 10),
         status: $('#animeStatus').val(),
-        releaseDate: $('#animeReleaseDate').val()
-        imageURL: $('#animeImageUrl').val() 
+        releaseDate: $('#animeReleaseDate').val(),
+        imageURL: $('#animeImageUrl').val()
     };
 
     // Voeg de id alleen toe bij bewerken
@@ -77,7 +77,6 @@ function submitAnimeForm() {
     var url = animeId ? '/api/anime/' + animeId : '/api/anime';
     var method = animeId ? 'PUT' : 'POST';
 
-    // Deactiveer de knop om dubbele inzendingen te voorkomen
     $('#animeFormButton').prop('disabled', true);
 
     $.ajax({
