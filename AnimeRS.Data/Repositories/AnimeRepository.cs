@@ -139,6 +139,44 @@ namespace AnimeRS.Data.Repositories
             }
         }
 
+        public IEnumerable<AnimeDTO> SearchAnimes(string name, string genre)
+        {
+            var animes = new List<AnimeDTO>();
+            string query = "SELECT * FROM Animes WHERE (@Name IS NULL OR Title LIKE @Name) AND (@Genre IS NULL OR Genre LIKE @Genre)";
+
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Name", string.IsNullOrEmpty(name) ? (object)DBNull.Value : $"%{name}%");
+                    command.Parameters.AddWithValue("@Genre", string.IsNullOrEmpty(genre) ? (object)DBNull.Value : $"%{genre}%");
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var anime = new AnimeDTO
+                            {
+                                Id = Convert.ToInt32(reader["Id"].ToString()),
+                                Title = reader["Title"].ToString(),
+                                Description = reader["Description"].ToString(),
+                                Genre = reader["Genre"].ToString(),
+                                Episodes = reader.GetInt32(reader.GetOrdinal("Episodes")),
+                                Status = reader["Status"].ToString(),
+                                ReleaseDate = DateTime.Parse(reader["ReleaseDate"].ToString()),
+                                ImageURL = reader["Image_url"] == DBNull.Value ? null : reader["Image_url"].ToString()
+                            };
+                            animes.Add(anime);
+                        }
+                    }
+                }
+            }
+
+            return animes;
+        }
+
+
         public void DeleteAnime(int id)
         {
             string query = "DELETE FROM Animes WHERE Id = @Id";

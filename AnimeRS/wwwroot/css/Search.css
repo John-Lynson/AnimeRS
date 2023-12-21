@@ -1,0 +1,17 @@
+.search-container {
+    text-align: center;
+    padding: 20px;
+}
+
+#searchResults {
+    margin-top: 20px;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+.search-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
