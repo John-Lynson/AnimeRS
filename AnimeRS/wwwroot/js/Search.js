@@ -2,17 +2,17 @@
     loadAllAnimes();
 
     // Live zoeken implementeren
-    $('#searchName, #searchGenre').on('keyup', debounce(function () {
-        var name = $('#searchName').val();
+    $('#searchTitle, #searchGenre').on('keyup', debounce(function () {
+        var title = $('#searchTitle').val();
         var genre = $('#searchGenre').val();
-        searchAnimes(name, genre);
+        searchAnimes(title, genre);
     }, 500)); // 500 ms debounce tijd
 
     // Oorspronkelijke zoekknop functionaliteit
     $('#searchButton').click(function () {
-        var name = $('#searchName').val();
+        var title = $('#searchTitle').val(); // Zorg dat dit overeenkomt met het ID van je invoerveld
         var genre = $('#searchGenre').val();
-        searchAnimes(name, genre);
+        searchAnimes(title, genre);
     });
 });
 
@@ -29,9 +29,9 @@ function loadAllAnimes() {
     });
 }
 
-function searchAnimes(name, genre) {
+function searchAnimes(title, genre) {
     $.ajax({
-        url: '/api/anime?name=' + encodeURIComponent(name) + '&genre=' + encodeURIComponent(genre),
+        url: '/api/anime/search?title=' + encodeURIComponent(title) + '&genre=' + encodeURIComponent(genre),
         method: 'GET',
         success: function (animes) {
             displayAnimes(animes);
@@ -41,6 +41,7 @@ function searchAnimes(name, genre) {
         }
     });
 }
+
 
 function displayAnimes(animes) {
     var listContainer = $('#animeList');

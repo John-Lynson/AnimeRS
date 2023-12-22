@@ -139,17 +139,17 @@ WHERE Id = @Id";
             }
         }
 
-        public IEnumerable<AnimeDTO> SearchAnimes(string name, string genre)
+        public IEnumerable<AnimeDTO> SearchAnimes(string title, string genre)
         {
             var animes = new List<AnimeDTO>();
-            string query = "SELECT * FROM Animes WHERE (@Name IS NULL OR Title LIKE @Name) AND (@Genre IS NULL OR Genre LIKE @Genre)";
+            string query = "SELECT * FROM Animes WHERE (@Title IS NULL OR Title LIKE @Title) AND (@Genre IS NULL OR Genre LIKE @Genre)";
 
             using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@Name", string.IsNullOrEmpty(name) ? (object)DBNull.Value : $"%{name}%");
+                    command.Parameters.AddWithValue("@Title", string.IsNullOrEmpty(title) ? (object)DBNull.Value : $"%{title}%");
                     command.Parameters.AddWithValue("@Genre", string.IsNullOrEmpty(genre) ? (object)DBNull.Value : $"%{genre}%");
 
                     using (SqlDataReader reader = command.ExecuteReader())
@@ -175,6 +175,7 @@ WHERE Id = @Id";
 
             return animes;
         }
+
 
 
         public void DeleteAnime(int id)
