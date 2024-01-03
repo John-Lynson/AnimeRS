@@ -1,0 +1,65 @@
+.page-container {
+    padding: 20px;
+    margin-top: 20px; 
+}
+
+
+.anime-details-container {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.anime-image {
+    flex: 1;
+    padding-right: 20px;
+}
+
+    .anime-image img {
+        width: 100%;
+        height: auto;
+    }
+
+.anime-info {
+    flex: 2;
+}
+
+.reviews-section {
+    margin-top: 20px;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#reviewForm {
+    margin-top: 20px;
+}
+
+#reviewComment {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#reviewRating {
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+    button[type="submit"]:hover {
+        background-color: #0056b3;
+    }

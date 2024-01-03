@@ -1,0 +1,42 @@
+﻿@model AnimeRS.Core.Models.Anime
+
+<div class="page-container">
+    <div class="anime-details-container">
+    <div class="anime-image">
+        <img src="@Model.ImageURL" alt="@Model.Title" />
+    </div>
+    <div class="anime-info">
+        <h2>@Model.Title</h2>
+        <p><strong>Genre:</strong> @Model.Genre</p>
+        <p><strong>Aantal Afleveringen:</strong> @Model.Episodes</p>
+        <p><strong>Status:</strong> @Model.Status</p>
+        <p><strong>Release Datum:</strong> @Model.ReleaseDate.ToString("dd-MM-yyyy")</p>
+        <p><strong>Omschrijving:</strong> @Model.Description</p>
+    </div>
+</div>
+
+<!-- Review sectie -->
+<section class="reviews-section">
+    <h3>Reviews</h3>
+    <div id="reviewsContainer">
+        <!-- Reviews worden hier ingeladen -->
+    </div>
+
+    <!-- Review formulier -->
+    <form id="reviewForm">
+        <input type="hidden" id="animeId" value="@Model.Id">
+        <textarea id="reviewComment" placeholder="Uw review..."></textarea>
+        <select id="reviewRating">
+            <option value="1">1 Ster</option>
+            <option value="2">2 Sterren</option>
+            <option value="3">3 Sterren</option>
+            <option value="4">4 Sterren</option>
+            <option value="5">5 Sterren</option>
+        </select>
+        <button type="submit">Review Plaatsen</button>
+    </form>
+</section>
+
+@section Scripts {
+    <script src="~/js/animeDetailsScript.js"></script>
+}
