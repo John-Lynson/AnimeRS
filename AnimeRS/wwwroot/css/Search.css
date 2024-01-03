@@ -36,3 +36,22 @@
                 text-decoration: underline;
             }
 
+.autocomplete-suggestions {
+    max-height: 200px; /* of een andere passende hoogte */
+    overflow-y: auto; /* maakt het scrollbaar */
+    width: 100%; /* zorgt dat de breedte overeenkomt met de zoekbalk */
+    position: absolute; /* zorgt dat de lijst boven andere elementen zweeft */
+    background-color: white; /* achtergrondkleur */
+    border: 1px solid #ddd; /* rand */
+    list-style-type: none; /* verwijdert bullet points */
+    padding: 0; /* verwijdert standaard padding */
+}
+
+    .autocomplete-suggestions li {
+        padding: 5px 10px; /* padding voor elk item */
+        cursor: pointer; /* verandert de cursor naar een handje */
+    }
+
+        .autocomplete-suggestions li:hover {
+            background-color: #f0f0f0; /* hover effect */
+        }

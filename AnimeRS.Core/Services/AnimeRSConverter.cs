@@ -99,6 +99,15 @@ public static class AnimeRSConverter
         };
     }
 
+    public static Anime ConvertToAutocompleteDomain(AnimeDTO dto)
+    {
+        return new Anime
+        {
+            Id = dto.Id,
+            Title = dto.Title
+        };
+    }
+
     public static ReviewDTO ConvertToDto(Review domain)
     {
         return domain == null ? null : new ReviewDTO

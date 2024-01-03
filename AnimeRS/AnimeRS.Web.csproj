@@ -20,4 +20,8 @@
     <ProjectReference Include="..\AnimeRS.Core\AnimeRS.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Account\" />
+  </ItemGroup>
+
 </Project>
