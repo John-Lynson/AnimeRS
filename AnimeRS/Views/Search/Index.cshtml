@@ -2,35 +2,27 @@
     ViewData["Title"] = "Anime Zoeken";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>@ViewData["Title"]</title>
-</head>
-<body>
-    <div class="search-container">
-        <h2>@ViewData["Title"]</h2>
+<div class="search-container">
+    <h2>@ViewData["Title"]</h2>
 
-        <!-- Sectie voor het zoeken van anime -->
-        <section id="animeSearchSection">
-            <h3>Zoek Anime</h3>
-            <input type="text" id="searchTitle" placeholder="Zoek op titel...">
-            <input type="text" id="searchGenre" placeholder="Zoek op genre...">
-            <button id="searchButton">Zoeken</button>
-        </section>
+    <!-- Sectie voor het zoeken van anime -->
+    <section id="animeSearchSection">
+        <h3>Zoek Anime</h3>
+        <input type="text" id="searchTitle" placeholder="Zoek op titel...">
+        <input type="text" id="searchGenre" placeholder="Zoek op genre...">
+        <button id="searchButton">Zoeken</button>
+    </section>
 
-        <!-- Sectie voor het weergeven van zoekresultaten -->
-        <section id="animeResultsSection">
-            <h3>Zoekresultaten</h3>
-            <ul id="animeList">
-                <!-- Anime zoekresultaten worden hier dynamisch ingeladen -->
-            </ul>
-        </section>
-    </div>
+    <!-- Sectie voor het weergeven van zoekresultaten -->
+    <section id="animeResultsSection">
+        <h3>Zoekresultaten</h3>
+        <div id="animeList">
+            <!-- Anime zoekresultaten worden hier dynamisch ingeladen -->
+        </div>
+    </section>
+</div>
 
-    @section Scripts {
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    }
-</body>
-</html>
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/searchAnimeScript.js"></script> <!-- Verwijzing naar uw JavaScript bestand -->
+}

@@ -76,12 +76,34 @@ function searchAnimes(title, genre) {
 function displayAnimes(animes) {
     var listContainer = $('#animeList');
     listContainer.empty();
-    animes.sort((a, b) => a.title.localeCompare(b.title)).forEach(function (anime) {
-        var listItem = $('<li>');
-        listItem.html('<a href="/anime/' + anime.id + '">' + anime.title + ' (' + new Date(anime.releaseDate).toLocaleDateString() + ')</a>');
-        listContainer.append(listItem);
+
+    // Groepeer animes op basis van de eerste letter van hun titel
+    var groupedAnimes = animes.reduce((acc, anime) => {
+        let firstLetter = anime.title.charAt(0).toUpperCase();
+        if (!acc[firstLetter]) {
+            acc[firstLetter] = [];
+        }
+        acc[firstLetter].push(anime);
+        return acc;
+    }, {});
+
+    // Sorteer en toon de gegroepeerde animes
+    Object.keys(groupedAnimes).sort().forEach(letter => {
+        var section = $('<section>', { class: 'anime-letter-section' });
+        section.append($('<h4>').text(letter));
+        var ul = $('<ul>');
+
+        groupedAnimes[letter].forEach(anime => {
+            var listItem = $('<li>');
+            listItem.html('<a href="/anime/' + anime.id + '">' + anime.title + ' (' + new Date(anime.releaseDate).toLocaleDateString() + ')</a>');
+            ul.append(listItem);
+        });
+
+        section.append(ul);
+        listContainer.append(section);
     });
 }
+
 
 function debounce(func, delay) {
     var inDebounce;

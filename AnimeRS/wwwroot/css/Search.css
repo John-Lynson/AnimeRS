@@ -3,55 +3,67 @@
     padding: 20px;
 }
 
-#searchResults {
-    margin-top: 20px;
-    border-top: 1px solid #ddd;
-    padding-top: 20px;
+#animeSearchSection {
+    margin-bottom: 30px;
 }
 
-.search-item {
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
+    #animeSearchSection input[type="text"] {
+        margin: 0 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+#searchButton {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
     border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-#animeList {
+    #searchButton:hover {
+        background-color: #0056b3;
+    }
+
+#animeResultsSection {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.anime-letter-section {
+    margin-top: 20px;
+}
+
+    .anime-letter-section h4 {
+        background-color: #f8f9fa;
+        padding: 10px;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+#animeList ul {
     list-style-type: none;
     padding: 0;
 }
 
-    #animeList li {
-        margin-bottom: 5px;
-        padding: 5px;
-        border-bottom: 1px solid #ddd;
-    }
-
-        #animeList li a {
-            text-decoration: none;
-            color: #000;
-        }
-
-            #animeList li a:hover {
-                text-decoration: underline;
-            }
-
-.autocomplete-suggestions {
-    max-height: 200px; /* of een andere passende hoogte */
-    overflow-y: auto; /* maakt het scrollbaar */
-    width: 100%; /* zorgt dat de breedte overeenkomt met de zoekbalk */
-    position: absolute; /* zorgt dat de lijst boven andere elementen zweeft */
-    background-color: white; /* achtergrondkleur */
-    border: 1px solid #ddd; /* rand */
-    list-style-type: none; /* verwijdert bullet points */
-    padding: 0; /* verwijdert standaard padding */
+#animeList li {
+    margin-bottom: 5px;
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
 }
 
-    .autocomplete-suggestions li {
-        padding: 5px 10px; /* padding voor elk item */
-        cursor: pointer; /* verandert de cursor naar een handje */
+    #animeList li a {
+        text-decoration: none;
+        color: #000;
+        display: block;
+        padding: 5px;
+        transition: background-color 0.3s ease;
     }
 
-        .autocomplete-suggestions li:hover {
-            background-color: #f0f0f0; /* hover effect */
+        #animeList li a:hover {
+            background-color: #f0f0f0;
+            text-decoration: none;
         }
