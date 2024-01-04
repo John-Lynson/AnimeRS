@@ -57,11 +57,12 @@ public class AnimeController : ControllerBase
     }
 
     [HttpGet("search")]
-    public IActionResult SearchAnimes(string title, string genre)
+    public IActionResult SearchAnimes(string query)
     {
-        var animes = _animeService.SearchAnimes(title, genre);
+        var animes = _animeService.SearchAnimes(query);
         return Ok(animes);
     }
+
 
 
     [HttpDelete("{id}")]

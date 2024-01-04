@@ -139,18 +139,17 @@ WHERE Id = @Id";
             }
         }
 
-        public IEnumerable<AnimeDTO> SearchAnimes(string title, string genre)
+        public IEnumerable<AnimeDTO> SearchAnimes(string query)
         {
             var animes = new List<AnimeDTO>();
-            string query = "SELECT * FROM Animes WHERE (@Title IS NULL OR Title LIKE @Title) AND (@Genre IS NULL OR Genre LIKE @Genre)";
+            string sqlQuery = "SELECT * FROM Animes WHERE Title LIKE @Query OR Genre LIKE @Query";
 
             using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
             {
                 connection.Open();
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlCommand command = new SqlCommand(sqlQuery, connection))
                 {
-                    command.Parameters.AddWithValue("@Title", string.IsNullOrEmpty(title) ? (object)DBNull.Value : $"%{title}%");
-                    command.Parameters.AddWithValue("@Genre", string.IsNullOrEmpty(genre) ? (object)DBNull.Value : $"%{genre}%");
+                    command.Parameters.AddWithValue("@Query", string.IsNullOrEmpty(query) ? (object)DBNull.Value : $"%{query}%");
 
                     using (SqlDataReader reader = command.ExecuteReader())
                     {

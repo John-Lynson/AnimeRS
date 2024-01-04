@@ -1,48 +1,22 @@
 ﻿$(document).ready(function () {
     loadAllAnimes();
 
-    // Live zoeken implementeren
-    $('#searchTitle, #searchGenre').on('keyup', debounce(function () {
-        var title = $('#searchTitle').val();
-        var genre = $('#searchGenre').val();
-        searchAnimes(title, genre);
+    // Gecombineerde zoekfunctionaliteit
+    $('#searchQuery').on('keyup', debounce(function () {
+        var query = $('#searchQuery').val();
+        if (query) {
+            searchAnimes(query);
+        } else {
+            loadAllAnimes(); // Laad alle animes als de zoekbalk leeg is
+        }
     }, 500)); // 500 ms debounce tijd
 
-    // Oorspronkelijke zoekknop functionaliteit
     $('#searchButton').click(function () {
-        var title = $('#searchTitle').val();
-        var genre = $('#searchGenre').val();
-        searchAnimes(title, genre);
-    });
-
-    // Autocomplete zoekfunctionaliteit
-    $('#searchBar').on('keyup', function () {
-        var query = $(this).val();
-        if (query.length > 1) {
-            $.ajax({
-                url: '/api/anime/autocomplete?query=' + encodeURIComponent(query),
-                method: 'GET',
-                success: function (data) {
-                    var suggestions = $('#suggestions');
-                    suggestions.empty();
-                    data.forEach(function (anime) {
-                        suggestions.append('<li>' + anime.title + '</li>');
-                    });
-                    suggestions.show();
-                },
-                error: function (error) {
-                    console.error('Fout bij het zoeken:', error);
-                }
-            });
+        var query = $('#searchQuery').val();
+        if (query) {
+            searchAnimes(query);
         } else {
-            $('#suggestions').hide();
-        }
-    });
-
-    // Verberg de suggesties wanneer er ergens anders wordt geklikt
-    $(document).on('click', function (event) {
-        if (!$(event.target).closest('#searchBar').length) {
-            $('#suggestions').hide();
+            loadAllAnimes(); // Laad alle animes als de zoekbalk leeg is
         }
     });
 });
@@ -60,12 +34,17 @@ function loadAllAnimes() {
     });
 }
 
-function searchAnimes(title, genre) {
+function searchAnimes(query) {
+    console.log("Zoekopdracht:", query); // Voor debugging
     $.ajax({
-        url: '/api/anime/search?title=' + encodeURIComponent(title) + '&genre=' + encodeURIComponent(genre),
+        url: '/api/anime/search?query=' + encodeURIComponent(query),
         method: 'GET',
         success: function (animes) {
-            displayAnimes(animes);
+            if (animes.length > 0) {
+                displayAnimes(animes);
+            } else {
+                displayAnimes([]); // Toon geen resultaten als er geen overeenkomsten zijn
+            }
         },
         error: function (xhr, status, error) {
             console.error('Fout bij het zoeken van animes:', error);
@@ -77,17 +56,8 @@ function displayAnimes(animes) {
     var listContainer = $('#animeList');
     listContainer.empty();
 
-    // Groepeer animes op basis van de eerste letter van hun titel
-    var groupedAnimes = animes.reduce((acc, anime) => {
-        let firstLetter = anime.title.charAt(0).toUpperCase();
-        if (!acc[firstLetter]) {
-            acc[firstLetter] = [];
-        }
-        acc[firstLetter].push(anime);
-        return acc;
-    }, {});
+    var groupedAnimes = groupAnimesByFirstLetter(animes);
 
-    // Sorteer en toon de gegroepeerde animes
     Object.keys(groupedAnimes).sort().forEach(letter => {
         var section = $('<section>', { class: 'anime-letter-section' });
         section.append($('<h4>').text(letter));
@@ -104,6 +74,16 @@ function displayAnimes(animes) {
     });
 }
 
+function groupAnimesByFirstLetter(animes) {
+    return animes.reduce((acc, anime) => {
+        let firstLetter = anime.title.charAt(0).toUpperCase();
+        if (!acc[firstLetter]) {
+            acc[firstLetter] = [];
+        }
+        acc[firstLetter].push(anime);
+        return acc;
+    }, {});
+}
 
 function debounce(func, delay) {
     var inDebounce;

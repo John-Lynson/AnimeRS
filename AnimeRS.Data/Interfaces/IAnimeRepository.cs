@@ -7,7 +7,7 @@ namespace AnimeRS.Data.Interfaces
     {
         IEnumerable<AnimeDTO> GetAllAnimes();
 
-        IEnumerable<AnimeDTO> SearchAnimes(string title, string genre);
+        IEnumerable<AnimeDTO> SearchAnimes(string query);
         AnimeDTO GetAnimeById(int id);
         void AddAnime(AnimeDTO anime);
         void UpdateAnime(AnimeDTO anime);
