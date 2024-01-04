@@ -35,16 +35,14 @@ function loadAllAnimes() {
 }
 
 function searchAnimes(query) {
-    console.log("Zoekopdracht:", query); // Voor debugging
     $.ajax({
         url: '/api/anime/search?query=' + encodeURIComponent(query),
         method: 'GET',
         success: function (animes) {
             if (animes.length > 0) {
                 displayAnimes(animes);
-            } else {
-                displayAnimes([]); // Toon geen resultaten als er geen overeenkomsten zijn
             }
+            // Als er geen resultaten zijn, wordt de lijst niet bijgewerkt
         },
         error: function (xhr, status, error) {
             console.error('Fout bij het zoeken van animes:', error);
