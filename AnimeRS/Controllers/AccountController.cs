@@ -74,25 +74,29 @@ namespace AnimeRS.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> PostLogin(string returnUrl = "/")
+        public async Task<IActionResult> PostLogin()
         {
-            Console.WriteLine("PostLogin methode aangeroepen");
-
             var auth0UserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var animeLover = _animeLoverService.GetByAuth0UserId(auth0UserId);
 
             if (animeLover == null)
             {
-                animeLover = new AnimeLover
-                {
-                    Username = User.Identity.Name,
-                    Role = "User",
-                    Auth0UserId = auth0UserId
-                };
-                _animeLoverService.AddAnimeLover(animeLover);
+                // Maak een nieuwe AnimeLover aan als deze niet bestaat
+            }
+            else
+            {
+                // Voeg de rol toe aan de claims
+                var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Role, animeLover.Role)
+        };
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var authProperties = new AuthenticationProperties();
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
             }
 
-            return LocalRedirect(returnUrl);
+            return RedirectToAction("Index", "Home");
         }
     }
 }

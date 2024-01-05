@@ -15,14 +15,26 @@
         </div>
     </div>
 
-    <!-- Review sectie -->
     <section class="reviews-section">
         <h3>Reviews</h3>
         @foreach (var review in Model.Reviews)
         {
             <div class="review">
+                <div class="review-header">
+                    <img src="@User.Claims.FirstOrDefault(c => c.Type == "picture")?.Value" alt="Profile Picture" class="profile-picture">
+                    <div class="review-rating">
+                        @for (int i = 0; i < review.Rating; i++)
+                        {
+                            <span class="star">&#9733;</span> <!-- Gevulde ster -->
+                        }
+                        @for (int i = review.Rating; i < 5; i++)
+                        {
+                            <span class="star">&#9734;</span> <!-- Lege ster -->
+                        }
+                    </div>
+                </div>
                 <p>@review.Comment</p>
-                <!-- Voeg hier meer details toe, zoals de gebruikersafbeelding, beoordeling, etc. -->
+                <p class="review-date">Geplaatst op: @review.DatePosted.ToString("dd-MM-yyyy")</p>
             </div>
         }
     </section>

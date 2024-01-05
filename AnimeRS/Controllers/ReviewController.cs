@@ -48,5 +48,26 @@ namespace AnimeRS.Web.Controllers
             _reviewService.AddReview(review);
             return Ok();
         }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim == null)
+            {
+                return Unauthorized(); // Gebruiker is niet geauthenticeerd of de ID is niet gevonden
+            }
+
+            var review = _reviewService.GetReviewById(id);
+            if (review != null && review.AnimeLoverId.ToString() == userIdClaim)
+            {
+                _reviewService.DeleteReview(id);
+                // Redirect naar de juiste pagina of stuur een succesvolle response
+                return Ok(); // Of een andere passende response
+            }
+
+            return Unauthorized(); // Of een andere passende response als de review niet bestaat of de gebruiker niet de eigenaar is
+        }
     }
 }
