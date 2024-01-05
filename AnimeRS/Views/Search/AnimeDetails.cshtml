@@ -33,11 +33,19 @@
                         }
                     </div>
                 </div>
-                <p>@review.Comment</p>
-                <p class="review-date">Geplaatst op: @review.DatePosted.ToString("dd-MM-yyyy")</p>
+                <p class="review-text" data-review-id="@review.Id">@review.Comment</p>
+                <textarea class="edit-review-text" data-review-id="@review.Id" hidden>@review.Comment</textarea>
+
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <button class="edit-review-btn" data-review-id="@review.Id" onclick="editReview(@review.Id)">Bewerken</button>
+                    <form method="post" action="/Review/Delete/@review.Id">
+                        <button type="submit" class="delete-review-btn">X</button>
+                    </form>
+                }
             </div>
         }
-    </section>
 
     <!-- Review formulier -->
     <form id="reviewForm">

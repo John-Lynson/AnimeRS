@@ -49,6 +49,37 @@ namespace AnimeRS.Web.Controllers
             return Ok();
         }
 
+        [HttpPost("edit/{id}")]
+        [Authorize]
+        public IActionResult EditReview(int id, [FromBody] string newComment)
+        {
+            Console.WriteLine($"EditReview aangeroepen met id: {id} en newComment: {newComment}");
+
+            if (string.IsNullOrWhiteSpace(newComment))
+            {
+                return BadRequest("Commentaar mag niet leeg zijn.");
+            }
+
+            var review = _reviewService.GetReviewById(id);
+            if (review == null)
+            {
+                return NotFound("Review niet gevonden.");
+            }
+
+            // Log de huidige staat van de review en de nieuwe commentaar
+            Console.WriteLine($"Review ID: {review.Id}, Huidige Commentaar: {review.Comment}, Nieuwe Commentaar: {newComment}");
+
+            review.Comment = newComment;
+
+            // Log de review details voordat deze wordt bijgewerkt
+            Console.WriteLine($"Bijwerken review: {review.Id}, Nieuwe Commentaar: {review.Comment}");
+
+            _reviewService.UpdateReview(review);
+
+            return Ok("Review succesvol bijgewerkt.");
+        }
+
+
         [HttpDelete("{id}")]
         [Authorize]
         public IActionResult Delete(int id)
