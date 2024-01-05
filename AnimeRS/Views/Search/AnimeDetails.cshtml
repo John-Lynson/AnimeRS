@@ -40,9 +40,7 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <button class="edit-review-btn" data-review-id="@review.Id" onclick="editReview(@review.Id)">Bewerken</button>
-                    <form method="post" action="/Review/Delete/@review.Id">
-                        <button type="submit" class="delete-review-btn">X</button>
-                    </form>
+                    <button class="delete-review-btn" onclick="deleteReview(@review.Id)">X</button>
                 }
             </div>
         }

@@ -145,15 +145,24 @@ namespace AnimeRS.Data.Repositories
         {
             string query = "DELETE FROM Reviews WHERE Id = @Id";
 
-            using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
+            try
             {
-                connection.Open();
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
                 {
-                    command.Parameters.AddWithValue("@Id", id);
-                    command.ExecuteNonQuery();
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Id", id);
+                        command.ExecuteNonQuery();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Fout bij het verwijderen van review: {ex.Message}");
+                throw; // Of handel de uitzondering op een andere manier af
             }
         }
     }
 }
+

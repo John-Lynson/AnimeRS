@@ -79,26 +79,39 @@ namespace AnimeRS.Web.Controllers
             return Ok("Review succesvol bijgewerkt.");
         }
 
-
         [HttpDelete("{id}")]
         [Authorize]
         public IActionResult Delete(int id)
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userIdClaim == null)
+            Console.WriteLine($"Delete methode aangeroepen voor review ID: {id}");
+
+            var auth0UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            Console.WriteLine($"Gebruikers-ID claim: {auth0UserId}");
+
+            if (auth0UserId == null)
             {
                 return Unauthorized(); // Gebruiker is niet geauthenticeerd of de ID is niet gevonden
             }
 
             var review = _reviewService.GetReviewById(id);
-            if (review != null && review.AnimeLoverId.ToString() == userIdClaim)
+            if (review == null)
             {
-                _reviewService.DeleteReview(id);
-                // Redirect naar de juiste pagina of stuur een succesvolle response
-                return Ok(); // Of een andere passende response
+                return NotFound(); // Review niet gevonden
             }
 
-            return Unauthorized(); // Of een andere passende response als de review niet bestaat of de gebruiker niet de eigenaar is
+            var animeLover = _animeLoverService.GetByAuth0UserId(auth0UserId);
+            if (animeLover == null)
+            {
+                return Unauthorized(); // Gebruiker is niet gevonden in het systeem
+            }
+
+            if (review.AnimeLoverId != animeLover.Id)
+            {
+                return Unauthorized(); // Gebruiker is niet gemachtigd om deze review te verwijderen
+            }
+
+            _reviewService.DeleteReview(id);
+            return Ok(); // Succesvolle response
         }
     }
 }

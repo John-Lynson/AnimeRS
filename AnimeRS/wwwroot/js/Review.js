@@ -16,9 +16,7 @@
             data: JSON.stringify(reviewData),
             success: function () {
                 alert("Review succesvol geplaatst.");
-                // Voeg hier code toe om de pagina bij te werken, bijvoorbeeld:
-                // location.reload();
-                // of het toevoegen van de nieuwe review aan de DOM
+                // Voeg hier code toe om de pagina bij te werken
             },
             error: function (error) {
                 console.error('Fout bij het plaatsen van review:', error);
@@ -45,7 +43,6 @@
         }
     };
 
-
     // Functie om een bewerkte review op te slaan
     window.saveReview = function (reviewId) {
         var editReviewTextElement = document.querySelector(`.edit-review-text[data-review-id="${reviewId}"]`);
@@ -57,21 +54,39 @@
             contentType: 'application/json',
             data: JSON.stringify(editReviewText),
             success: function () {
-                // Update de review tekst in de DOM
                 var reviewTextElement = document.querySelector(`.review-text[data-review-id="${reviewId}"]`);
                 reviewTextElement.textContent = editReviewText;
 
-                // Verberg de textarea en toon de bijgewerkte review tekst
                 editReviewTextElement.style.display = 'none';
                 reviewTextElement.style.display = 'block';
 
-                // Verander de "Opslaan" knop terug naar "Bewerken"
                 var editButton = document.querySelector(`.edit-review-btn[data-review-id="${reviewId}"]`);
                 editButton.textContent = 'Bewerken';
                 editButton.onclick = function () { editReview(reviewId); };
             },
             error: function (error) {
                 console.error('Fout bij het bijwerken van review:', error);
+            }
+        });
+    };
+
+    // Functie om een review te verwijderen
+    window.deleteReview = function (reviewId) {
+        if (!confirm('Weet u zeker dat u deze review wilt verwijderen?')) {
+            return;
+        }
+
+        $.ajax({
+            url: `/api/review/${reviewId}`,
+            method: 'DELETE',
+            success: function () {
+                // Verwijder de review uit de DOM
+                $(`.review-item[data-review-id="${reviewId}"]`).remove();
+                alert("Review succesvol verwijderd.");
+            },
+            error: function (error) {
+                console.error('Fout bij het verwijderen van review:', error);
+                alert("Er is een fout opgetreden bij het verwijderen van de review.");
             }
         });
     };
