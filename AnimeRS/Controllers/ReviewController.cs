@@ -49,7 +49,7 @@ namespace AnimeRS.Web.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpDelete("{id}")]
         [Authorize]
         public IActionResult Delete(int id)
         {
