@@ -1,0 +1,27 @@
+﻿@model AnimeRS.Core.Models.AnimeLover
+
+@{
+    ViewData["Title"] = "Profiel";
+}
+
+<h2>@ViewData["Title"]</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <h3>Gebruikersgegevens</h3>
+        <dl class="dl-horizontal">
+            <dt>Gebruikersnaam</dt>
+            <dd>@Model.Username</dd>
+
+            <dt>Rol</dt>
+            <dd>@Model.Role</dd>
+
+            <!-- Voeg hier meer eigenschappen toe indien nodig -->
+        </dl>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-controller="Home">Terug naar Home</a>
+</div>

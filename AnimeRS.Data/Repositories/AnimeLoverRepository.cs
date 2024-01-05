@@ -100,8 +100,8 @@ namespace AnimeRS.Data.Repositories
         public bool AddAnimeLover(AnimeLoverDTO animeLover)
         {
             string query = @"
-        INSERT INTO AnimeLovers (Username, Role)
-        VALUES (@Username, @Role)";
+              INSERT INTO AnimeLovers (Username, Role, Auth0UserId)
+              VALUES (@Username, @Role, @Auth0UserId)";
 
             using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
             {
@@ -110,11 +110,13 @@ namespace AnimeRS.Data.Repositories
                 {
                     command.Parameters.AddWithValue("@Username", animeLover.Username);
                     command.Parameters.AddWithValue("@Role", animeLover.Role);
+                    command.Parameters.AddWithValue("@Auth0UserId", animeLover.Auth0UserId);
                     int rowsAffected = command.ExecuteNonQuery();
                     return rowsAffected > 0;
                 }
             }
         }
+
 
         public bool UpdateAnimeLover(AnimeLoverDTO animeLover)
         {
@@ -154,6 +156,7 @@ namespace AnimeRS.Data.Repositories
                         {
                             animeLover = new AnimeLoverDTO
                             {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")), // Voeg deze regel toe
                                 Username = reader["Username"].ToString(),
                                 Role = reader["Role"].ToString(),
                                 Auth0UserId = auth0UserId
@@ -165,6 +168,7 @@ namespace AnimeRS.Data.Repositories
 
             return animeLover;
         }
+
 
         public bool DeleteAnimeLover(int id)
         {

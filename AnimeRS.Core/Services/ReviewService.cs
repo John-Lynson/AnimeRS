@@ -29,14 +29,23 @@ namespace AnimeRS.Core.Services
 
         public void AddReview(Review review)
         {
-            var reviewDTO = AnimeRSConverter.ConvertToDto(review);
+            review.DatePosted = DateTime.UtcNow; // Stel de huidige UTC tijd in
+            var reviewDTO = AnimeRSConverter.ConvertToReviewDto(review);
             _reviewRepository.AddReview(reviewDTO);
+
+            Console.WriteLine($"AnimeId: {review.AnimeId}");
         }
 
         public void UpdateReview(Review review)
         {
-            var reviewDTO = AnimeRSConverter.ConvertToDto(review);
+            var reviewDTO = AnimeRSConverter.ConvertToReviewDto(review);
             _reviewRepository.UpdateReview(reviewDTO);
+        }
+
+        public IEnumerable<Review> GetReviewsByAnimeId(int animeId)
+        {
+            var reviewDTOs = _reviewRepository.GetReviewsByAnimeId(animeId);
+            return reviewDTOs.Select(AnimeRSConverter.ConvertToDomain).ToList();
         }
 
         public void DeleteReview(int id)

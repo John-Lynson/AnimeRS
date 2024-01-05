@@ -6,6 +6,7 @@ using System.Security.Claims;
 using AnimeRS.Core.Models;
 using AnimeRS.Core.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Threading.Tasks;
 
 namespace AnimeRS.Controllers
 {
@@ -40,7 +41,7 @@ namespace AnimeRS.Controllers
         }
 
         [Authorize]
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
             var auth0UserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var username = User.Identity.Name;
@@ -73,8 +74,10 @@ namespace AnimeRS.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> PostLogin()
+        public async Task<IActionResult> PostLogin(string returnUrl = "/")
         {
+            Console.WriteLine("PostLogin methode aangeroepen");
+
             var auth0UserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var animeLover = _animeLoverService.GetByAuth0UserId(auth0UserId);
 
@@ -89,7 +92,7 @@ namespace AnimeRS.Controllers
                 _animeLoverService.AddAnimeLover(animeLover);
             }
 
-            return RedirectToAction("Index", "Home");
+            return LocalRedirect(returnUrl);
         }
     }
 }

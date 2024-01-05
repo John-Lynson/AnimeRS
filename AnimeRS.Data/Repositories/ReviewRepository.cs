@@ -107,6 +107,40 @@ namespace AnimeRS.Data.Repositories
             }
         }
 
+        public IEnumerable<ReviewDTO> GetReviewsByAnimeId(int animeId)
+        {
+            var reviews = new List<ReviewDTO>();
+            string query = "SELECT * FROM Reviews WHERE AnimeId = @AnimeId";
+
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@AnimeId", animeId);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var review = new ReviewDTO
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                AnimeId = reader.GetInt32(reader.GetOrdinal("AnimeId")),
+                                AnimeLoverId = reader.GetInt32(reader.GetOrdinal("AnimeLoverId")),
+                                Comment = reader.GetString(reader.GetOrdinal("Comment")),
+                                Rating = reader.GetInt32(reader.GetOrdinal("Rating")),
+                                DatePosted = reader.GetDateTime(reader.GetOrdinal("DatePosted"))
+                            };
+                            reviews.Add(review);
+                        }
+                    }
+                }
+            }
+
+            return reviews;
+        }
+
         public void DeleteReview(int id)
         {
             string query = "DELETE FROM Reviews WHERE Id = @Id";

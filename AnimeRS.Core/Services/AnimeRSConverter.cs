@@ -108,7 +108,7 @@ public static class AnimeRSConverter
         };
     }
 
-    public static ReviewDTO ConvertToDto(Review domain)
+    public static ReviewDTO ConvertToReviewDto(Review domain)
     {
         return domain == null ? null : new ReviewDTO
         {
