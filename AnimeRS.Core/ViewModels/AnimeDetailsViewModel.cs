@@ -9,6 +9,8 @@ namespace AnimeRS.Core.ViewModels
         public Anime Anime { get; set; }
         public bool FavoriteAnime { get; set; }
         public IEnumerable<Review> Reviews { get; set; }
+
+        public double AverageScore { get; set; }
     }
 
 }

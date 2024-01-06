@@ -69,7 +69,6 @@ namespace AnimeRS.Core.Services
             return topAnimes;
         }
 
-
         public void DeleteAnime(int id)
         {
             _animeRepository.DeleteAnime(id);

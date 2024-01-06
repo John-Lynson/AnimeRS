@@ -10,7 +10,6 @@ using AnimeRS.Core.ViewModels;
 public class AnimeController : ControllerBase
 {
     private readonly AnimeService _animeService;
-    private readonly FavoriteAnimeService _favoriteAnimeService;
 
     public AnimeController(AnimeService animeService)
     {

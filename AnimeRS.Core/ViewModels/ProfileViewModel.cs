@@ -7,7 +7,6 @@ namespace AnimeRS.Core.ViewModels
     {
         public AnimeLover AnimeLover { get; set; }
         public IEnumerable<FavoriteAnimeViewModel> FavoriteAnimes { get; set; }
+        public IEnumerable<ReviewViewModel> UserReviews { get; set; }
     }
 }
-
-

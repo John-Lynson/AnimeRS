@@ -52,11 +52,14 @@ namespace AnimeRS.Web.Controllers
                 }
             }
 
+            double averageScore = _reviewService.GetAverageScore(id); 
+
             var viewModel = new AnimeDetailsViewModel
             {
                 Anime = anime,
-                Reviews = reviews ?? new List<Review>(), // Zorg ervoor dat reviews niet null is
-                FavoriteAnime = isFavorite
+                Reviews = reviews ?? new List<Review>(),
+                FavoriteAnime = isFavorite,
+                AverageScore = averageScore // Voeg dit toe aan uw ViewModel
             };
 
             return View(viewModel);

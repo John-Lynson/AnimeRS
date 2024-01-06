@@ -34,6 +34,21 @@
     </div>
 </div>
 
+<!-- Voeg een sectie toe voor User Reviews -->
+<div class="col-md-8">
+    <h3>Uw Reviews</h3>
+    <ul>
+        @foreach (var review in Model.UserReviews)
+        {
+            <li>
+                Review voor "@review.AnimeTitle": @review.Comment
+            </li>
+        }
+    </ul>
+</div>
+
+
+
 <div>
     <a asp-action="Index" asp-controller="Home">Terug naar Home</a>
 </div>

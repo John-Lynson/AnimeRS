@@ -15,11 +15,13 @@ namespace AnimeRS.Controllers
     {
         private readonly AnimeLoverService _animeLoverService;
         private readonly FavoriteAnimeService _favoriteAnimeService;
+        private readonly ReviewService _reviewService;
 
-        public AccountController(AnimeLoverService animeLoverService, FavoriteAnimeService favoriteAnimeService)
+        public AccountController(AnimeLoverService animeLoverService, FavoriteAnimeService favoriteAnimeService, ReviewService reviewService)
         {
             _animeLoverService = animeLoverService;
             _favoriteAnimeService= favoriteAnimeService;
+            _reviewService=reviewService;
         }
 
         // Login actie
@@ -44,33 +46,29 @@ namespace AnimeRS.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Profile()
+        public IActionResult Profile()
         {
-            var auth0UserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var username = User.Identity.Name; // Voeg deze regel toe
-
+            var auth0UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var animeLover = _animeLoverService.GetByAuth0UserId(auth0UserId);
 
             if (animeLover == null)
             {
-                animeLover = new AnimeLover
-                {
-                    Username = username, // Gebruik de opgehaalde gebruikersnaam
-                    Role = "User",
-                    Auth0UserId = auth0UserId
-                };
-                _animeLoverService.AddAnimeLover(animeLover);
+                return RedirectToAction("Login");
             }
 
             var favoriteAnimes = _favoriteAnimeService.GetFavoriteAnimesByAnimeLoverId(animeLover.Id);
-            var model = new ProfileViewModel
+            var userReviews = _reviewService.GetReviewsByUserId(animeLover.Id);
+
+            var viewModel = new ProfileViewModel
             {
                 AnimeLover = animeLover,
-                FavoriteAnimes = favoriteAnimes
+                FavoriteAnimes = favoriteAnimes,
+                UserReviews = userReviews
             };
 
-            return View(model);
+            return View(viewModel);
         }
+
 
 
         [Authorize]

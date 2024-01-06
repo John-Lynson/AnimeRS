@@ -28,6 +28,10 @@
         </span>
     </div>
 
+    </span>
+    <span class="average-score">@Model.AverageScore.ToString("0.0")</span> <!-- Toon de gemiddelde score -->
+    </div>
+
     <section class="reviews-section">
         <h3>Reviews</h3>
         @foreach (var review in Model.Reviews)

@@ -3,16 +3,19 @@ using AnimeRS.Data.dto;
 using AnimeRS.Core.Models;
 using System.Collections.Generic;
 using System.Linq;
+using AnimeRS.Core.ViewModels;
 
 namespace AnimeRS.Core.Services
 {
     public class ReviewService
     {
         private readonly IReviewRepository _reviewRepository;
+        private readonly AnimeService _animeService;
 
-        public ReviewService(IReviewRepository reviewRepository)
+        public ReviewService(IReviewRepository reviewRepository, AnimeService animeService)
         {
             _reviewRepository = reviewRepository;
+            _animeService = animeService;
         }
 
         public IEnumerable<Review> GetAllReviews()
@@ -47,6 +50,39 @@ namespace AnimeRS.Core.Services
             var reviewDTOs = _reviewRepository.GetReviewsByAnimeId(animeId);
             return reviewDTOs.Select(AnimeRSConverter.ConvertToDomain).ToList();
         }
+
+        public double GetAverageScore(int animeId)
+        {
+            var reviewDTOs = _reviewRepository.GetReviewsByAnimeId(animeId);
+            if (!reviewDTOs.Any()) return 0; 
+
+            double totalScore = reviewDTOs.Sum(r => r.Rating) * 2; 
+            double averageScore = totalScore / reviewDTOs.Count(); 
+
+            return averageScore;
+        }
+
+        public IEnumerable<ReviewViewModel> GetReviewsByUserId(int userId)
+        {
+            var reviewDTOs = _reviewRepository.GetReviewsByAnimeLoverId(userId);
+            var reviewViewModels = reviewDTOs.Select(dto =>
+            {
+                var anime = _animeService.GetAnimeById(dto.AnimeId);
+                return new ReviewViewModel
+                {
+                    Id = dto.Id,
+                    AnimeId = dto.AnimeId,
+                    Comment = dto.Comment,
+                    Rating = dto.Rating,
+                    DatePosted = dto.DatePosted,
+                    AnimeTitle = anime?.Title
+                };
+            });
+
+            return reviewViewModels;
+        }
+
+
 
         public void DeleteReview(int id)
         {
