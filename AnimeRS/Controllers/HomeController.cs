@@ -14,8 +14,8 @@ namespace AnimeRS.Web.Controllers
 
         public IActionResult Index()
         {
-            var animes = _animeService.GetAllAnimes(); // Zorgt dat dit Core Modellen retourneert
-            return View(animes);
+            var topRatedAnimes = _animeService.GetTopAnimesByTotalRating();
+            return View(topRatedAnimes);
         }
 
         public IActionResult Privacy()

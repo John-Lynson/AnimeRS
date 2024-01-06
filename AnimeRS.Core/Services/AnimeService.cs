@@ -3,16 +3,19 @@ using AnimeRS.Data.dto;
 using AnimeRS.Core.Models;
 using System.Collections.Generic;
 using System.Linq;
+using AnimeRS.Data.Repositories;
 
 namespace AnimeRS.Core.Services
 {
     public class AnimeService
     {
         private readonly IAnimeRepository _animeRepository;
+        private readonly IReviewRepository _reviewRepository; // Zorg ervoor dat u toegang heeft tot de reviews
 
-        public AnimeService(IAnimeRepository animeRepository)
+        public AnimeService(IAnimeRepository animeRepository, IReviewRepository reviewRepository)
         {
             _animeRepository = animeRepository;
+            _reviewRepository = reviewRepository;
         }
 
         public IEnumerable<Anime> GetAllAnimes()
@@ -43,6 +46,27 @@ namespace AnimeRS.Core.Services
         {
             var animeDTOs = _animeRepository.SearchAnimes(query);
             return animeDTOs.Select(AnimeRSConverter.ConvertToDomain).ToList();
+        }
+
+        public IEnumerable<Anime> GetTopAnimesByTotalRating(int count = 3)
+        {
+
+            var allReviews = _reviewRepository.GetAllReviews();
+
+            var totalRatings = allReviews
+                .GroupBy(r => r.AnimeId)
+                .Select(g => new
+                {
+                    AnimeId = g.Key,
+                    TotalRating = g.Sum(r => r.Rating)
+                })
+                .OrderByDescending(g => g.TotalRating)
+                .Take(count);
+
+            var topAnimesDTOs = totalRatings.Select(rating => _animeRepository.GetAnimeById(rating.AnimeId));
+            var topAnimes = topAnimesDTOs.Select(dto => AnimeRSConverter.ConvertToDomain(dto));
+
+            return topAnimes;
         }
 
 

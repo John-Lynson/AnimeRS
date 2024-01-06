@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AnimeRS.Core.Models.Anime> 
+﻿@model IEnumerable<AnimeRS.Core.Models.Anime>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -10,18 +10,13 @@
 
 <!-- Intro Container -->
 <section id="intro-container" class="my-5">
-    <div class="anime-item">
-        <img src="images/Image.jpg" alt="Anime 1">
-        <button onclick="window.location.href='link-naar-anime1';">Bekijk Anime 1</button>
-    </div>
-    <div class="anime-item">
-        <img src="images/Image.jpg" alt="Anime 2">
-        <button onclick="window.location.href='link-naar-anime2';">Bekijk Anime 2</button>
-    </div>
-    <div class="anime-item">
-        <img src="images/Image.jpg" alt="Anime 3">
-        <button onclick="window.location.href='link-naar-anime3';">Bekijk Anime 3</button>
-    </div>
+    @foreach (var anime in Model)
+    {
+        <div class="anime-item">
+            <img src="@anime.ImageURL" alt="@anime.Title">
+            <button onclick="window.location.href='/Anime/@anime.Id';">@anime.Title</button>
+        </div>
+    }
 </section>
 
 <!-- Tekst over de applicatie -->
