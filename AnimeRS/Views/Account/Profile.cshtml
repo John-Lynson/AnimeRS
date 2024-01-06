@@ -27,7 +27,7 @@
         <ul>
             @foreach (var anime in Model.FavoriteAnimes)
             {
-                <li><a href="/Anime/Detail/@anime.AnimeId">@anime.AnimeTitle</a></li>
+                <li><a href="/Anime/@anime.AnimeId">@anime.AnimeTitle</a></li>
             }
 
         </ul>

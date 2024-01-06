@@ -3,6 +3,7 @@ using AnimeRS.Core.Services;
 using AnimeRS.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using AnimeRS.Core.ViewModels;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -59,13 +60,12 @@ public class AnimeController : ControllerBase
         return Ok(anime);
     }
 
-    [HttpGet("search")]
+[HttpGet("search")]
     public IActionResult SearchAnimes(string query)
     {
         var animes = _animeService.SearchAnimes(query);
         return Ok(animes);
     }
-
 
 
     [HttpDelete("{id}")]
