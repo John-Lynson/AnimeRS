@@ -1,0 +1,89 @@
+/* Profiel Pagina Stijlen */
+.profile-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.profile-header {
+    margin-bottom: 20px;
+}
+
+    .profile-header h2 {
+        color: #333;
+        font-size: 24px;
+    }
+
+/* Gebruikersgegevens Sectie */
+.user-details {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+    .user-details dl {
+        margin: 0;
+    }
+
+    .user-details dt {
+        font-weight: bold;
+    }
+
+/* Favoriete Anime Sectie */
+.favorite-animes {
+    background-color: #e9ecef;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+    .favorite-animes ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .favorite-animes li {
+        margin-bottom: 10px;
+    }
+
+    .favorite-animes a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+        .favorite-animes a:hover {
+            text-decoration: underline;
+        }
+
+/* User Reviews Sectie */
+.user-reviews {
+    background-color: #f2f2f2;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+    .user-reviews ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .user-reviews li {
+        margin-bottom: 10px;
+    }
+
+/* Responsieve Stijlen */
+@media (max-width: 768px) {
+    .profile-container {
+        padding: 10px;
+    }
+
+    .profile-header h2 {
+        font-size: 20px;
+    }
+}

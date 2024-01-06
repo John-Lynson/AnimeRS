@@ -1,54 +1,54 @@
 ﻿@model AnimeRS.Core.ViewModels.ProfileViewModel
 
-
 @{
     ViewData["Title"] = "Profiel";
 }
 
-<h2>@ViewData["Title"]]</h2>
-<hr />
+<div class="profile-container">
+    <div class="profile-header">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+    <hr />
 
-<div class="row">
-    <div class="col-md-4">
-        <h3>Gebruikersgegevens</h3>
-        <dl class="dl-horizontal">
-            <dt>Gebruikersnaam</dt>
-            <dd>@Model.AnimeLover.Username</dd>
+    <div class="row">
+        <div class="col-md-4 user-details">
+            <h3>Gebruikersgegevens</h3>
+            <dl>
+                <dt>Gebruikersnaam</dt>
+                <dd>@Model.AnimeLover.Username</dd>
 
-            <dt>Rol</dt>
-            <dd>@Model.AnimeLover.Role</dd>
+                <dt>Rol</dt>
+                <dd>@Model.AnimeLover.Role</dd>
 
-            <!-- Voeg hier meer eigenschappen toe indien nodig -->
-        </dl>
+                <!-- Voeg hier meer eigenschappen toe indien nodig -->
+            </dl>
+        </div>
+
+        <div class="col-md-8 favorite-animes">
+            <h3>Favoriete Anime</h3>
+            <ul>
+                @foreach (var anime in Model.FavoriteAnimes)
+                {
+                    <li><a href="/Anime/@anime.AnimeId">@anime.AnimeTitle</a></li>
+                }
+            </ul>
+        </div>
     </div>
 
-    <div class="col-md-8">
-        <h3>Favoriete Anime</h3> 
+    <!-- Voeg een sectie toe voor User Reviews -->
+    <div class="col-md-8 user-reviews">
+        <h3>Uw Reviews</h3>
         <ul>
-            @foreach (var anime in Model.FavoriteAnimes)
+            @foreach (var review in Model.UserReviews)
             {
-                <li><a href="/Anime/@anime.AnimeId">@anime.AnimeTitle</a></li>
+                <li>
+                    Review voor "@review.AnimeTitle": @review.Comment
+                </li>
             }
-
         </ul>
     </div>
-</div>
 
-<!-- Voeg een sectie toe voor User Reviews -->
-<div class="col-md-8">
-    <h3>Uw Reviews</h3>
-    <ul>
-        @foreach (var review in Model.UserReviews)
-        {
-            <li>
-                Review voor "@review.AnimeTitle": @review.Comment
-            </li>
-        }
-    </ul>
-</div>
-
-
-
-<div>
-    <a asp-action="Index" asp-controller="Home">Terug naar Home</a>
+    <div class="back-to-home">
+        <a asp-action="Index" asp-controller="Home">Terug naar Home</a>
+    </div>
 </div>
