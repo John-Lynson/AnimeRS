@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using AnimeRS.Core.Services;
+using AnimeRS.Core.ViewModels;
 using System.Security.Claims;
 
 namespace AnimeRS.Web.Controllers

@@ -1,10 +1,11 @@
-﻿@model AnimeRS.Core.Models.AnimeLover
+﻿@model AnimeRS.Core.ViewModels.ProfileViewModel
+
 
 @{
     ViewData["Title"] = "Profiel";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2>@ViewData["Title"]]</h2>
 <hr />
 
 <div class="row">
@@ -12,13 +13,24 @@
         <h3>Gebruikersgegevens</h3>
         <dl class="dl-horizontal">
             <dt>Gebruikersnaam</dt>
-            <dd>@Model.Username</dd>
+            <dd>@Model.AnimeLover.Username</dd>
 
             <dt>Rol</dt>
-            <dd>@Model.Role</dd>
+            <dd>@Model.AnimeLover.Role</dd>
 
             <!-- Voeg hier meer eigenschappen toe indien nodig -->
         </dl>
+    </div>
+
+    <div class="col-md-8">
+        <h3>Favoriete Anime</h3> 
+        <ul>
+            @foreach (var anime in Model.FavoriteAnimes)
+            {
+                <li><a href="/Anime/Detail/@anime.AnimeId">@anime.AnimeTitle</a></li>
+            }
+
+        </ul>
     </div>
 </div>
 

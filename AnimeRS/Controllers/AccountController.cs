@@ -4,6 +4,7 @@ using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using AnimeRS.Core.Models;
+using AnimeRS.Core.ViewModels;
 using AnimeRS.Core.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Threading.Tasks;
@@ -46,7 +47,7 @@ namespace AnimeRS.Controllers
         public async Task<IActionResult> Profile()
         {
             var auth0UserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var username = User.Identity.Name;
+            var username = User.Identity.Name; // Voeg deze regel toe
 
             var animeLover = _animeLoverService.GetByAuth0UserId(auth0UserId);
 
@@ -54,15 +55,23 @@ namespace AnimeRS.Controllers
             {
                 animeLover = new AnimeLover
                 {
-                    Username = username,
+                    Username = username, // Gebruik de opgehaalde gebruikersnaam
                     Role = "User",
                     Auth0UserId = auth0UserId
                 };
                 _animeLoverService.AddAnimeLover(animeLover);
             }
 
-            return View(animeLover);
+            var favoriteAnimes = _favoriteAnimeService.GetFavoriteAnimesByAnimeLoverId(animeLover.Id);
+            var model = new ProfileViewModel
+            {
+                AnimeLover = animeLover,
+                FavoriteAnimes = favoriteAnimes
+            };
+
+            return View(model);
         }
+
 
         [Authorize]
         public async Task Logout()

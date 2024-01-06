@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using AnimeRS.Data.Interfaces;
 using AnimeRS.Data.dto;
 using AnimeRS.Data.Database;
+using System.Text;
 
 namespace AnimeRS.Data.Repositories
 {
@@ -175,6 +176,68 @@ WHERE Id = @Id";
             return animes;
         }
 
+        public IEnumerable<AnimeDTO> GetAnimesByIds(IEnumerable<int> animeIds)
+        {
+            var animes = new List<AnimeDTO>();
+            var parameters = new List<string>();
+            var queryBuilder = new StringBuilder("SELECT * FROM Animes WHERE Id IN (");
+
+            int index = 0;
+            foreach (var id in animeIds)
+            {
+                var paramName = "@Id" + index;
+                parameters.Add(paramName);
+                queryBuilder.Append(paramName).Append(",");
+                index++;
+            }
+
+            if (parameters.Any())
+            {
+                queryBuilder.Length--; // Verwijder de laatste komma
+                queryBuilder.Append(")");
+            }
+            else
+            {
+                return animes; // Geen IDs om te zoeken
+            }
+
+            string query = queryBuilder.ToString();
+
+            using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    index = 0;
+                    foreach (var id in animeIds)
+                    {
+                        command.Parameters.AddWithValue(parameters[index], id);
+                        index++;
+                    }
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var anime = new AnimeDTO
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                Title = reader["Title"].ToString(),
+                                Description = reader["Description"].ToString(),
+                                Genre = reader["Genre"].ToString(),
+                                Episodes = reader.GetInt32(reader.GetOrdinal("Episodes")),
+                                Status = reader["Status"].ToString(),
+                                ReleaseDate = DateTime.Parse(reader["ReleaseDate"].ToString()),
+                                ImageURL = reader.IsDBNull(reader.GetOrdinal("Image_url")) ? null : reader["Image_url"].ToString()
+                            };
+                            animes.Add(anime);
+                        }
+                    }
+                }
+            }
+
+            return animes;
+        }
 
 
         public void DeleteAnime(int id)

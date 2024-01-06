@@ -2,6 +2,7 @@
 using AnimeRS.Core.Services;
 using AnimeRS.Core.Models;
 using System.Security.Claims;
+using AnimeRS.Core.ViewModels;
 
 namespace AnimeRS.Web.Controllers
 {
