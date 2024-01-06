@@ -112,3 +112,18 @@ function deleteAnime(animeId) {
         });
     }
 }
+
+function toggleFavorite(animeId) {
+    $.ajax({
+        url: '/api/anime/toggle/' + animeId,
+        method: 'POST',
+        success: function () {
+            // Update de UI om de verandering weer te geven
+            // Dit kan het veranderen van de sterstijl of het tonen van een bericht zijn
+        },
+        error: function (error) {
+            console.error('Fout bij het wijzigen van favoriete status:', error);
+        }
+    });
+}
+

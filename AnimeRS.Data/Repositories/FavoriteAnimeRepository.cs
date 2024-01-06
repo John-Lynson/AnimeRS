@@ -6,7 +6,7 @@ using AnimeRS.Data.Database;
 
 namespace AnimeRS.Data.Repositories
 {
-    internal class FavoriteAnimeRepository : IFavoriteAnimeRepository
+    public class FavoriteAnimeRepository : IFavoriteAnimeRepository
     {
         private readonly DatabaseConnection _databaseConnection;
 

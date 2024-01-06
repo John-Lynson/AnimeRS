@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AnimeRS.Core.Services;
 using AnimeRS.Core.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 [Route("api/[controller]")]
 [ApiController]
 public class AnimeController : ControllerBase
 {
     private readonly AnimeService _animeService;
+    private readonly FavoriteAnimeService _favoriteAnimeService;
 
     public AnimeController(AnimeService animeService)
     {

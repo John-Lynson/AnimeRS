@@ -46,3 +46,16 @@ footer {
 .container {
     margin-top: 1em;
 }
+
+.favorite-star {
+    font-size: 30px; /* Maak de ster groter */
+    cursor: pointer; /* Verandert de cursor in een handje bij hover */
+}
+
+.star.filled {
+    color: gold; /* Kleur voor gevulde ster */
+}
+
+.star {
+    color: gray; /* Kleur voor lege ster */
+}

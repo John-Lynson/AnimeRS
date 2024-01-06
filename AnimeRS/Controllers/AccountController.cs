@@ -13,10 +13,12 @@ namespace AnimeRS.Controllers
     public class AccountController : Controller
     {
         private readonly AnimeLoverService _animeLoverService;
+        private readonly FavoriteAnimeService _favoriteAnimeService;
 
-        public AccountController(AnimeLoverService animeLoverService)
+        public AccountController(AnimeLoverService animeLoverService, FavoriteAnimeService favoriteAnimeService)
         {
             _animeLoverService = animeLoverService;
+            _favoriteAnimeService= favoriteAnimeService;
         }
 
         // Login actie

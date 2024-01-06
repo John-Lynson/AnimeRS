@@ -15,6 +15,19 @@
         </div>
     </div>
 
+    <div class="anime-favorite">
+        <span class="favorite-star" data-anime-id="@Model.Anime.Id" onclick="toggleFavorite(this.dataset.animeId)">
+            @if (Model.FavoriteAnime)
+            {
+                <span class="star filled">&#9733;</span> <!-- Gevulde ster -->
+            }
+            else
+            {
+                <span class="star">&#9734;</span> <!-- Lege ster -->
+            }
+        </span>
+    </div>
+
     <section class="reviews-section">
         <h3>Reviews</h3>
         @foreach (var review in Model.Reviews)

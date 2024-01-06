@@ -27,11 +27,13 @@ builder.Services.AddSingleton(new DatabaseConnection(connectionString));
 builder.Services.AddScoped<IAnimeRepository, AnimeRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IAnimeLoverRepository, AnimeLoverRepository>();
+builder.Services.AddScoped<IFavoriteAnimeRepository, FavoriteAnimeRepository>();
 
 // Registreer services
 builder.Services.AddScoped<AnimeService>();
 builder.Services.AddScoped<ReviewService>();
 builder.Services.AddScoped<AnimeLoverService>();
+builder.Services.AddScoped<FavoriteAnimeService>();
 
 var app = builder.Build();
 
