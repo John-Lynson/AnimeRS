@@ -175,7 +175,7 @@ namespace AnimeRS.Data.Repositories
                         {
                             animeLover = new AnimeLoverDTO
                             {
-                                Id = reader.GetInt32(reader.GetOrdinal("Id")), // Voeg deze regel toe
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")), 
                                 Username = reader["Username"].ToString(),
                                 Role = reader["Role"].ToString(),
                                 Auth0UserId = auth0UserId

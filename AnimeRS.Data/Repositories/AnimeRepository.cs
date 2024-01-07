@@ -193,12 +193,12 @@ WHERE Id = @Id";
 
             if (parameters.Any())
             {
-                queryBuilder.Length--; // Verwijder de laatste komma
+                queryBuilder.Length--; 
                 queryBuilder.Append(")");
             }
             else
             {
-                return animes; // Geen IDs om te zoeken
+                return animes; 
             }
 
             string query = queryBuilder.ToString();

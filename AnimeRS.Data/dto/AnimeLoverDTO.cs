@@ -12,6 +12,5 @@ namespace AnimeRS.Data.dto
         public string Username { get; set; }
         public string Role { get; set; }
         public string Auth0UserId { get; set; }
-        // Voeg eventueel andere relevante velden toe
     }
 }

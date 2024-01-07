@@ -10,6 +10,5 @@ namespace AnimeRS.Data.dto
     {
         public int AnimeLoverId { get; set; }
         public int AnimeId { get; set; }
-        // Voeg andere relevante velden toe
     }
 }

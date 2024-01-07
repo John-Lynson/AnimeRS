@@ -9,8 +9,8 @@ namespace AnimeRS.Core.Models
     public class FavoriteAnime
     {
         public int Id { get; set; }
-        public int AnimeLoverId { get; set; } // Fkey
-        public int AnimeId { get; set; } // Fkey
+        public int AnimeLoverId { get; set; } 
+        public int AnimeId { get; set; } 
 
     }
 }

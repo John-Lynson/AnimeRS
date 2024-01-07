@@ -12,12 +12,12 @@ namespace AnimeRS.Core.Services
     public class FavoriteAnimeService
     {
         private readonly IFavoriteAnimeRepository _favoriteAnimeRepository;
-        private readonly IAnimeRepository _animeRepository; // Zorg ervoor dat dit aanwezig is
+        private readonly IAnimeRepository _animeRepository; 
 
         public FavoriteAnimeService(IFavoriteAnimeRepository favoriteAnimeRepository, IAnimeRepository animeRepository)
         {
             _favoriteAnimeRepository = favoriteAnimeRepository;
-            _animeRepository = animeRepository; // Injecteer de anime repository
+            _animeRepository = animeRepository;
         }
 
         public IEnumerable<FavoriteAnimeViewModel> GetFavoriteAnimesByAnimeLoverId(int animeLoverId)
@@ -30,10 +30,10 @@ namespace AnimeRS.Core.Services
             var animeIds = favoriteAnimes.Select(fa => fa.AnimeId).Distinct();
             Console.WriteLine($"Anime IDs: {string.Join(", ", animeIds)}");
 
-            var animeDTOs = _animeRepository.GetAnimesByIds(animeIds); // Zorg ervoor dat deze methode geïmplementeerd is
+            var animeDTOs = _animeRepository.GetAnimesByIds(animeIds); 
             Console.WriteLine($"Aantal opgehaalde anime DTO's: {animeDTOs.Count()}");
 
-            var animeLookup = animeDTOs.ToDictionary(a => a.Id, a => a); // Creëer een lookup dictionary
+            var animeLookup = animeDTOs.ToDictionary(a => a.Id, a => a); 
 
             var favoriteAnimeViewModels = favoriteAnimes.Select(fa =>
                 new FavoriteAnimeViewModel
@@ -62,7 +62,6 @@ namespace AnimeRS.Core.Services
 
         public bool RemoveFavoriteAnime(int animeLoverId, int animeId)
         {
-            // Je moet mogelijk de logica aanpassen om de juiste ID te vinden voor het verwijderen
             var favoriteAnimes = _favoriteAnimeRepository.GetFavoriteAnimesByAnimeLoverId(animeLoverId);
             var favoriteAnime = favoriteAnimes.FirstOrDefault(fa => fa.AnimeId == animeId);
             if (favoriteAnime != null)

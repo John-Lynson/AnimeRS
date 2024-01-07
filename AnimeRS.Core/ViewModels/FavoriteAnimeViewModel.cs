@@ -8,6 +8,6 @@ namespace AnimeRS.Core.ViewModels
         public int AnimeId { get; set; }
         public int AnimeLoverId { get; set; }
         public string AnimeTitle { get; set; }
-        // Voeg andere eigenschappen toe indien nodig
+
     }
 }

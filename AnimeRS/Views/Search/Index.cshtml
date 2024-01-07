@@ -5,23 +5,20 @@
 <div class="search-container">
     <h2>@ViewData["Title"]</h2>
 
-    <!-- Sectie voor het zoeken van anime -->
     <section id="animeSearchSection">
         <h3>Zoek Anime</h3>
         <input type="text" id="searchQuery" placeholder="Zoek op naam of genre...">
         <button id="searchButton">Zoeken</button>
     </section>
 
-    <!-- Sectie voor het weergeven van zoekresultaten -->
     <section id="animeResultsSection">
         <h3>Zoekresultaten</h3>
         <div id="animeList">
-            <!-- Anime zoekresultaten worden hier dynamisch ingeladen -->
         </div>
     </section>
 </div>
 
 @section Scripts {
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/js/searchAnimeScript.js"></script> <!-- Verwijzing naar uw JavaScript bestand -->
+    <script src="~/js/searchAnimeScript.js"></script> 
 }

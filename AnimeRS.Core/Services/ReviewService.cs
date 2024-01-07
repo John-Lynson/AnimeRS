@@ -33,7 +33,7 @@ namespace AnimeRS.Core.Services
 
         public void AddReview(Review review)
         {
-            review.DatePosted = DateTime.UtcNow; // Stel de huidige UTC tijd in
+            review.DatePosted = DateTime.UtcNow; 
             var reviewDTO = AnimeRSConverter.ConvertToReviewDto(review);
             _reviewRepository.AddReview(reviewDTO);
 

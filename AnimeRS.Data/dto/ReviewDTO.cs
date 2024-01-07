@@ -14,6 +14,5 @@ namespace AnimeRS.Data.dto
         public string Comment { get; set; }
         public int Rating { get; set; }
         public DateTime DatePosted { get; set; }
-        // Voeg andere relevante velden toe
     }
 }

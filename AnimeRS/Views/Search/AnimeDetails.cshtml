@@ -19,17 +19,17 @@
         <span class="favorite-star" data-anime-id="@Model.Anime.Id" onclick="toggleFavorite(this.dataset.animeId)">
             @if (Model.FavoriteAnime)
             {
-                <span class="star filled">&#9733;</span> <!-- Gevulde ster -->
+                <span class="star filled">&#9733;</span>
             }
             else
             {
-                <span class="star">&#9734;</span> <!-- Lege ster -->
+                <span class="star">&#9734;</span> 
             }
         </span>
     </div>
 
     </span>
-    <span class="average-score">@Model.AverageScore.ToString("0.0")</span> <!-- Toon de gemiddelde score -->
+    <span class="average-score">@Model.AverageScore.ToString("0.0")</span> 
     </div>
 
     <section class="reviews-section">
@@ -42,11 +42,11 @@
                     <div class="review-rating">
                         @for (int i = 0; i < review.Rating; i++)
                         {
-                            <span class="star">&#9733;</span> <!-- Gevulde ster -->
+                            <span class="star">&#9733;</span> 
                         }
                         @for (int i = review.Rating; i < 5; i++)
                         {
-                            <span class="star">&#9734;</span> <!-- Lege ster -->
+                            <span class="star">&#9734;</span> 
                         }
                     </div>
                 </div>
@@ -62,7 +62,6 @@
             </div>
         }
 
-    <!-- Review formulier -->
     <form id="reviewForm">
         <input type="hidden" id="animeId" value="@Model.Anime.Id">
         <textarea id="reviewComment" placeholder="Uw review..."></textarea>

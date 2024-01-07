@@ -72,7 +72,7 @@ namespace AnimeRS.Data.Repositories
                     }
                 }
             }
-            return null;  // No review found with the specified ID
+            return null; 
         }
 
         public void AddReview(ReviewDTO review)
@@ -195,7 +195,7 @@ namespace AnimeRS.Data.Repositories
             catch (Exception ex)
             {
                 Console.WriteLine($"Fout bij het verwijderen van review: {ex.Message}");
-                throw; // Of handel de uitzondering op een andere manier af
+                throw; 
             }
         }
     }

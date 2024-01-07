@@ -5,7 +5,6 @@ using System.Linq;
 
 public static class AnimeRSConverter
 {
-    // AnimeLover Conversies
     public static AnimeLover ConvertToDomain(AnimeLoverDTO dto)
     {
         return dto == null ? null : new AnimeLover
@@ -14,7 +13,6 @@ public static class AnimeRSConverter
             Username = dto.Username,
             Role = dto.Role,
             Auth0UserId = dto.Auth0UserId
-            // Voeg andere relevante velden toe
         };
     }
 
@@ -26,7 +24,6 @@ public static class AnimeRSConverter
             Username = domain.Username,
             Role = domain.Role,
             Auth0UserId = domain.Auth0UserId
-            // Voeg andere relevante velden toe
         };
     }
 
@@ -43,7 +40,6 @@ public static class AnimeRSConverter
             Status = dto.Status,
             ReleaseDate = dto.ReleaseDate,
             ImageURL = dto.ImageURL
-            // Voeg andere relevante velden toe
         };
     }
 
@@ -59,7 +55,7 @@ public static class AnimeRSConverter
             Status = domain.Status,
             ReleaseDate = domain.ReleaseDate,
             ImageURL = domain.ImageURL
-            // Voeg andere relevante velden toe
+
         };
     }
 
@@ -70,7 +66,6 @@ public static class AnimeRSConverter
         {
             AnimeLoverId = dto.AnimeLoverId,
             AnimeId = dto.AnimeId
-            // Voeg andere relevante velden toe
         };
     }
 
@@ -80,7 +75,6 @@ public static class AnimeRSConverter
         {
             AnimeLoverId = domain.AnimeLoverId,
             AnimeId = domain.AnimeId
-            // Voeg andere relevante velden toe
         };
     }
 
@@ -95,7 +89,6 @@ public static class AnimeRSConverter
             Comment = dto.Comment,
             Rating = dto.Rating,
             DatePosted = dto.DatePosted
-            // Voeg andere relevante velden toe
         };
     }
 
@@ -118,7 +111,6 @@ public static class AnimeRSConverter
             Comment = domain.Comment,
             Rating = domain.Rating,
             DatePosted = domain.DatePosted
-            // Voeg andere relevante velden toe
         };
     }
 }
