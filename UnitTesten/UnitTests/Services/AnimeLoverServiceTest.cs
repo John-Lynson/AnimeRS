@@ -19,8 +19,6 @@ namespace AnimeRS.UnitTesten.Services
         {
             mockAnimeLoverRepository = new Mock<IAnimeLoverRepository>();
             animeLoverService = new AnimeLoverService(mockAnimeLoverRepository.Object);
-
-            // Hier kan je de mock setup plaatsen
         }
 
         [Fact]
@@ -122,7 +120,6 @@ namespace AnimeRS.UnitTesten.Services
             {
                 Id = 1,
                 Username = "Gebruiker1",
-                // Vul andere relevante velden in...
             };
             var animeLoverDTO = AnimeRSConverter.ConvertToDto(animeLover);
             mockAnimeLoverRepository.Setup(repo => repo.UpdateAnimeLover(It.IsAny<AnimeLoverDTO>())).Returns(true);

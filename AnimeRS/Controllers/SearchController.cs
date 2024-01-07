@@ -1,25 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using AnimeRS.Core.Services;
+using AnimeRS.Core.Interfaces; // Zorg ervoor dat je de juiste namespaces gebruikt
 using AnimeRS.Core.Models;
-using System.Security.Claims;
 using AnimeRS.Core.ViewModels;
+using System.Security.Claims;
 
 namespace AnimeRS.Web.Controllers
 {
     public class SearchController : Controller
     {
-        private readonly AnimeService _animeService;
-        private readonly ReviewService _reviewService;
-        private readonly FavoriteAnimeService _favoriteAnimeService;
-        private readonly AnimeLoverService _animeLoverService;
+        private readonly IAnimeService _animeService;
+        private readonly IReviewService _reviewService;
+        private readonly IFavoriteAnimeService _favoriteAnimeService;
+        private readonly IAnimeLoverService _animeLoverService;
 
-        public SearchController(AnimeService animeService, ReviewService reviewService, FavoriteAnimeService favoriteAnimeService, AnimeLoverService animeLoverService)
+        public SearchController(IAnimeService animeService, IReviewService reviewService,
+                                IFavoriteAnimeService favoriteAnimeService,
+                                IAnimeLoverService animeLoverService)
         {
             _animeService = animeService;
             _reviewService = reviewService;
-            _favoriteAnimeService= favoriteAnimeService;
-            _animeLoverService= animeLoverService;
+            _favoriteAnimeService = favoriteAnimeService;
+            _animeLoverService = animeLoverService;
         }
+
 
         public IActionResult Index()
         {

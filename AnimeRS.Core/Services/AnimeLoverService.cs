@@ -3,8 +3,9 @@ using AnimeRS.Data.dto;
 using AnimeRS.Core.Models;
 using System.Collections.Generic;
 using System.Linq;
+using AnimeRS.Core.Interfaces;
 
-public class AnimeLoverService
+public class AnimeLoverService : IAnimeLoverService
 {
     private readonly IAnimeLoverRepository _animeLoverRepository;
 

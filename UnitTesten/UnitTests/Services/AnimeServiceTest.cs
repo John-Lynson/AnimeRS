@@ -19,10 +19,10 @@ namespace AnimeRS.UnitTesten.Services
             mockAnimeRepository = new Mock<IAnimeRepository>();
             mockReviewRepository = new Mock<IReviewRepository>();
 
-            var dummyReviews = new List<ReviewDTO> { /* Voeg hier dummy review data toe */ };
+            var dummyReviews = new List<ReviewDTO> {};
             mockReviewRepository.Setup(repo => repo.GetAllReviews()).Returns(dummyReviews);
 
-            var dummyAnimes = new List<AnimeDTO> { /* Voeg hier dummy anime data toe */ };
+            var dummyAnimes = new List<AnimeDTO> {};
             mockAnimeRepository.Setup(repo => repo.GetAllAnimes()).Returns(dummyAnimes);
 
             // Creëer een instance van AnimeService met de mocks
@@ -33,7 +33,7 @@ namespace AnimeRS.UnitTesten.Services
         public void AddAnime_ShouldCallAddAnime_WhenCalled()
         {
             // Arrange
-            var anime = new Anime { /* initialiseer Anime object */ };
+            var anime = new Anime {};
 
             // Act
             animeService.AddAnime(anime);
@@ -62,7 +62,7 @@ namespace AnimeRS.UnitTesten.Services
         public void UpdateAnime_ShouldCallUpdateAnime_WhenCalled()
         {
             // Arrange
-            var anime = new Anime { /* initialiseer Anime object */ };
+            var anime = new Anime {};
 
             // Act
             animeService.UpdateAnime(anime);

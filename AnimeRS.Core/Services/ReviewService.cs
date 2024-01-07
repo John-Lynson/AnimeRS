@@ -8,7 +8,7 @@ using AnimeRS.Core.Interfaces;
 
 namespace AnimeRS.Core.Services
 {
-    public class ReviewService
+    public class ReviewService : IReviewService
     {
         private readonly IReviewRepository _reviewRepository;
         private readonly IAnimeService _animeService;

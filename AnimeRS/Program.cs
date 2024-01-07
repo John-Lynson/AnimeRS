@@ -11,36 +11,35 @@ using Auth0.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Auth0 configuratie
 builder.Services.AddAuth0WebAppAuthentication(options =>
 {
     options.Domain = builder.Configuration["Auth0:Domain"];
     options.ClientId = builder.Configuration["Auth0:ClientId"];
 });
 
+// Controllers met Views (of MVC)
 builder.Services.AddControllersWithViews();
 
+// Database verbinding
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddSingleton(new DatabaseConnection(connectionString));
 
+// Repository registraties
 builder.Services.AddScoped<IAnimeRepository, AnimeRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IAnimeLoverRepository, AnimeLoverRepository>();
 builder.Services.AddScoped<IFavoriteAnimeRepository, FavoriteAnimeRepository>();
 
-// Registreer services
-builder.Services.AddScoped<AnimeService>();
-builder.Services.AddScoped<ReviewService>();
-builder.Services.AddScoped<AnimeLoverService>();
-builder.Services.AddScoped<FavoriteAnimeService>();
-
-builder.Services.AddScoped<IFavoriteAnimeService>();
-builder.Services.AddScoped<IReviewService>();
-builder.Services.AddScoped<IAnimeLoverService>();
-builder.Services.AddScoped<IFavoriteAnimeService>();
-
+// Service registraties
+builder.Services.AddScoped<IAnimeService, AnimeService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<IAnimeLoverService, AnimeLoverService>();
+builder.Services.AddScoped<IFavoriteAnimeService, FavoriteAnimeService>();
 
 var app = builder.Build();
 
+// Configureer de HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");

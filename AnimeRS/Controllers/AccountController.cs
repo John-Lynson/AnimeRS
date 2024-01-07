@@ -8,20 +8,21 @@ using AnimeRS.Core.ViewModels;
 using AnimeRS.Core.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Threading.Tasks;
+using AnimeRS.Core.Interfaces;
 
 namespace AnimeRS.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly AnimeLoverService _animeLoverService;
-        private readonly FavoriteAnimeService _favoriteAnimeService;
-        private readonly ReviewService _reviewService;
+        private readonly IAnimeLoverService _animeLoverService;
+        private readonly IFavoriteAnimeService _favoriteAnimeService;
+        private readonly IReviewService _reviewService;
 
-        public AccountController(AnimeLoverService animeLoverService, FavoriteAnimeService favoriteAnimeService, ReviewService reviewService)
+        public AccountController(IAnimeLoverService animeLoverService, IFavoriteAnimeService favoriteAnimeService, IReviewService reviewService)
         {
             _animeLoverService = animeLoverService;
-            _favoriteAnimeService= favoriteAnimeService;
-            _reviewService=reviewService;
+            _favoriteAnimeService = favoriteAnimeService;
+            _reviewService = reviewService;
         }
 
         // Login actie

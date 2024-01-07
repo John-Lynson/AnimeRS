@@ -1,4 +1,5 @@
-﻿using AnimeRS.Core.Models;
+﻿using AnimeRS.Core.Interfaces;
+using AnimeRS.Core.Models;
 using AnimeRS.Core.ViewModels;
 using AnimeRS.Data.dto;
 using AnimeRS.Data.Interfaces;
@@ -9,7 +10,7 @@ using System.Linq;
 
 namespace AnimeRS.Core.Services
 {
-    public class FavoriteAnimeService
+    public class FavoriteAnimeService : IFavoriteAnimeService
     {
         private readonly IFavoriteAnimeRepository _favoriteAnimeRepository;
         private readonly IAnimeRepository _animeRepository; 
