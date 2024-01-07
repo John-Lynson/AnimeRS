@@ -4,21 +4,22 @@ using AnimeRS.Core.Models;
 using System.Collections.Generic;
 using System.Linq;
 using AnimeRS.Core.ViewModels;
+using AnimeRS.Core.Interfaces;
 
 namespace AnimeRS.Core.Services
 {
     public class ReviewService
     {
         private readonly IReviewRepository _reviewRepository;
-        private readonly AnimeService _animeService;
+        private readonly IAnimeService _animeService;
 
-        public ReviewService(IReviewRepository reviewRepository, AnimeService animeService)
+        public ReviewService(IReviewRepository reviewRepository, IAnimeService animeService)
         {
             _reviewRepository = reviewRepository;
             _animeService = animeService;
         }
 
-        public IEnumerable<Review> GetAllReviews()
+    public IEnumerable<Review> GetAllReviews()
         {
             var reviewDTOs = _reviewRepository.GetAllReviews();
             return reviewDTOs.Select(AnimeRSConverter.ConvertToDomain).ToList();

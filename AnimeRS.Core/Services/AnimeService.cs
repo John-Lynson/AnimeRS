@@ -4,13 +4,14 @@ using AnimeRS.Core.Models;
 using System.Collections.Generic;
 using System.Linq;
 using AnimeRS.Data.Repositories;
+using AnimeRS.Core.Interfaces;
 
 namespace AnimeRS.Core.Services
 {
-    public class AnimeService
+    public class AnimeService : IAnimeService
     {
         private readonly IAnimeRepository _animeRepository;
-        private readonly IReviewRepository _reviewRepository; // Zorg ervoor dat u toegang heeft tot de reviews
+        private readonly IReviewRepository _reviewRepository;
 
         public AnimeService(IAnimeRepository animeRepository, IReviewRepository reviewRepository)
         {
