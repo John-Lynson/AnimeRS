@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using AnimeRS.Core.Services;
 using AnimeRS.Core.ViewModels;
 using System.Security.Claims;
+using AnimeRS.Core.Interfaces;
 
 namespace AnimeRS.Web.Controllers
 {
@@ -11,10 +12,10 @@ namespace AnimeRS.Web.Controllers
     [Authorize]
     public class FavoriteAnimeController : ControllerBase
     {
-        private readonly FavoriteAnimeService _favoriteAnimeService;
-        private readonly AnimeLoverService _animeLoverService;
+        private readonly IFavoriteAnimeService _favoriteAnimeService;
+        private readonly IAnimeLoverService _animeLoverService;
 
-        public FavoriteAnimeController(FavoriteAnimeService favoriteAnimeService, AnimeLoverService animeLoverService)
+        public FavoriteAnimeController(IFavoriteAnimeService favoriteAnimeService, IAnimeLoverService animeLoverService)
         {
             _favoriteAnimeService = favoriteAnimeService;
             _animeLoverService = animeLoverService;

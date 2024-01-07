@@ -4,14 +4,15 @@ using AnimeRS.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using AnimeRS.Core.ViewModels;
+using AnimeRS.Core.Interfaces;
 
 [Route("api/[controller]")]
 [ApiController]
 public class AnimeController : ControllerBase
 {
-    private readonly AnimeService _animeService;
+    private readonly IAnimeService _animeService;
 
-    public AnimeController(AnimeService animeService)
+    public AnimeController(IAnimeService animeService)
     {
         _animeService = animeService;
     }

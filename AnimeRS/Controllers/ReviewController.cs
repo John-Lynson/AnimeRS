@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using AnimeRS.Core.Services;
 using AnimeRS.Core.Models;
 using System.Security.Claims;
+using AnimeRS.Core.Interfaces;
 
 namespace AnimeRS.Web.Controllers
 {
@@ -11,10 +12,10 @@ namespace AnimeRS.Web.Controllers
     [Authorize]
     public class ReviewController : ControllerBase
     {
-        private readonly ReviewService _reviewService;
-        private readonly AnimeLoverService _animeLoverService;
+        private readonly IReviewService _reviewService;
+        private readonly IAnimeLoverService _animeLoverService;
 
-        public ReviewController(ReviewService reviewService, AnimeLoverService animeLoverService)
+        public ReviewController(IReviewService reviewService, IAnimeLoverService animeLoverService)
         {
             _reviewService = reviewService;
             _animeLoverService = animeLoverService;
