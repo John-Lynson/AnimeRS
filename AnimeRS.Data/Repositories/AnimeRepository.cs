@@ -134,7 +134,7 @@ WHERE Id = @Id";
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw; // Overweeg een meer specifieke foutafhandeling
             }

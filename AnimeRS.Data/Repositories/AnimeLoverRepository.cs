@@ -70,8 +70,14 @@ namespace AnimeRS.Data.Repositories
                 }
             }
 
+            if (animeLover == null)
+            {
+                throw new KeyNotFoundException($"No AnimeLover found with ID {id}");
+            }
+
             return animeLover;
         }
+
 
         public AnimeLoverDTO GetAnimeLoverByUsername(string username)
         {
@@ -99,6 +105,11 @@ namespace AnimeRS.Data.Repositories
 
         public bool AddAnimeLover(AnimeLoverDTO animeLover)
         {
+            if (animeLover == null)
+            {
+                throw new ArgumentNullException(nameof(animeLover));
+            }
+
             string query = @"
               INSERT INTO AnimeLovers (Username, Role, Auth0UserId)
               VALUES (@Username, @Role, @Auth0UserId)";
@@ -120,6 +131,12 @@ namespace AnimeRS.Data.Repositories
 
         public bool UpdateAnimeLover(AnimeLoverDTO animeLover)
         {
+            if (animeLover == null)
+            {
+                throw new ArgumentNullException(nameof(animeLover));
+            }
+
+
             string query = @"
         UPDATE AnimeLovers
         SET Username = @Username, Role = @Role
@@ -141,6 +158,8 @@ namespace AnimeRS.Data.Repositories
 
         public AnimeLoverDTO GetByAuth0UserId(string auth0UserId)
         {
+
+
             AnimeLoverDTO animeLover = null;
             string query = "SELECT * FROM AnimeLovers WHERE Auth0UserId = @Auth0UserId";
 
