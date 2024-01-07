@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using AnimeRS.Core.Interfaces; // Zorg ervoor dat je de juiste namespaces gebruikt
+using AnimeRS.Core.Interfaces; 
 using AnimeRS.Core.Models;
 using AnimeRS.Core.ViewModels;
 using System.Security.Claims;
@@ -45,11 +45,9 @@ namespace AnimeRS.Web.Controllers
             var isFavorite = false;
             if (!string.IsNullOrEmpty(userId))
             {
-                // Gebruik de AnimeLoverService om de AnimeLover te krijgen op basis van Auth0UserId
                 var animeLover = _animeLoverService.GetByAuth0UserId(userId);
                 if (animeLover != null)
                 {
-                    // Controleer of de anime een favoriet is van de gebruiker
                     isFavorite = _favoriteAnimeService.GetFavoriteAnimesByAnimeLoverId(animeLover.Id)
                         .Any(fa => fa.AnimeId == id);
                 }

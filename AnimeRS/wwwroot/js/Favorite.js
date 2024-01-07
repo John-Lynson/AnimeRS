@@ -1,29 +1,20 @@
-﻿document.addEventListener('DOMContentLoaded', (event) => {
+﻿document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.favorite-star').forEach(star => {
-        star.addEventListener('click', function () {
-            toggleFavorite(this.dataset.animeId);
-        });
+        star.addEventListener('click', () => toggleFavorite(star.dataset.animeId));
     });
 });
 
 function toggleFavorite(animeId) {
-    console.log("Anime ID:", animeId); // Log om te controleren
-    if (animeId === undefined) {
+    if (!animeId) {
         console.error("Anime ID is undefined");
         return;
     }
+
     $.ajax({
-        url: '/api/favoriteanime/toggle/' + animeId,
+        url: `/api/favoriteanime/toggle/${animeId}`,
         method: 'POST',
-        success: function (response) {
-            console.log("Response received:", response);
-            updateFavoriteStar(animeId, response.isFavorite);
-        },
-
-
-        error: function (error) {
-            console.error('Fout bij het wijzigen van favoriete status:', error);
-        }
+        success: (response) => updateFavoriteStar(animeId, response.isFavorite),
+        error: (error) => handleError(error)
     });
 }
 
@@ -38,3 +29,8 @@ function updateFavoriteStar(animeId, isFavorite) {
         }
     }
 }
+
+function handleError(error) {
+    console.error('Fout bij het wijzigen van favoriete status:', error);
+}
+
