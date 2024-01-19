@@ -72,20 +72,20 @@ namespace AnimeRS.Core.Services
             return false;
         }
 
-public void ToggleFavoriteAnime(int animeLoverId, int animeId)
-{
-    var favoriteAnimes = GetFavoriteAnimesByAnimeLoverId(animeLoverId);
-    var favoriteAnime = favoriteAnimes.FirstOrDefault(fa => fa.AnimeId == animeId);
+        public void ToggleFavoriteAnime(int animeLoverId, int animeId)
+        {
+            var favoriteAnimes = GetFavoriteAnimesByAnimeLoverId(animeLoverId);
+            var favoriteAnime = favoriteAnimes.FirstOrDefault(fa => fa.AnimeId == animeId);
 
-    if (favoriteAnime != null)
-    {
-        RemoveFavoriteAnime(animeLoverId, animeId);
-    }
-    else
-    {
-        AddFavoriteAnime(animeLoverId, animeId);
-    }
-}
-
+            if (favoriteAnime != null)
+            {
+                // Gebruik zowel animeLoverId als animeId voor het verwijderen
+                RemoveFavoriteAnime(favoriteAnime.AnimeLoverId, favoriteAnime.AnimeId);
+            }
+            else
+            {
+                AddFavoriteAnime(animeLoverId, animeId);
+            }
+        }
     }
 }

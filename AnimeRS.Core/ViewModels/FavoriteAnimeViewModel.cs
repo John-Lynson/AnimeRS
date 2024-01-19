@@ -5,6 +5,7 @@ namespace AnimeRS.Core.ViewModels
 {
     public class FavoriteAnimeViewModel
     {
+        public int Id { get; set; }
         public int AnimeId { get; set; }
         public int AnimeLoverId { get; set; }
         public string AnimeTitle { get; set; }
