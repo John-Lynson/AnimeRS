@@ -45,9 +45,20 @@ namespace AnimeRS.Data.Repositories
 
         public bool AddFavoriteAnime(FavoriteAnimeDTO favoriteAnime)
         {
+            // Eerst controleren of het record al bestaat
+            var existingFavorite = GetFavoriteAnimesByAnimeLoverId(favoriteAnime.AnimeLoverId)
+                .FirstOrDefault(fa => fa.AnimeId == favoriteAnime.AnimeId);
+
+            if (existingFavorite != null)
+            {
+                // Record bestaat al, dus voeg niets toe
+                return false;
+            }
+
+            // Voeg het nieuwe favoriete record toe
             string query = @"
-                INSERT INTO FavoriteAnimes (AnimeLoverId, AnimeId)
-                VALUES (@AnimeLoverId, @AnimeId)";
+        INSERT INTO FavoriteAnimes (AnimeLoverId, AnimeId)
+        VALUES (@AnimeLoverId, @AnimeId)";
 
             using (SqlConnection connection = new SqlConnection(_databaseConnection.ConnectionString))
             {

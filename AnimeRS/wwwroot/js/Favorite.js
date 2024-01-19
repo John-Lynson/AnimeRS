@@ -4,17 +4,32 @@
     });
 });
 
+let isProcessing = false;
+
 function toggleFavorite(animeId) {
     if (!animeId) {
         console.error("Anime ID is undefined");
         return;
     }
 
+    if (isProcessing) {
+        console.log("Verwerking loopt al, extra klik genegeerd");
+        return;
+    }
+
+    isProcessing = true;
+
     $.ajax({
         url: `/api/favoriteanime/toggle/${animeId}`,
         method: 'POST',
-        success: (response) => updateFavoriteStar(animeId, response.isFavorite),
-        error: (error) => handleError(error)
+        success: (response) => {
+            updateFavoriteStar(animeId, response.isFavorite);
+            isProcessing = false;
+        },
+        error: (error) => {
+            handleError(error);
+            isProcessing = false;
+        }
     });
 }
 
@@ -33,4 +48,3 @@ function updateFavoriteStar(animeId, isFavorite) {
 function handleError(error) {
     console.error('Fout bij het wijzigen van favoriete status:', error);
 }
-
