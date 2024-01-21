@@ -45,7 +45,6 @@ namespace AnimeRS.UnitTesten.Controllers
             int animeId = 1;
             var dummyAnimeLover = new AnimeLover { Id = 1, Auth0UserId = "MockUserId" };
             mockAnimeLoverService.Setup(service => service.GetByAuth0UserId("MockUserId")).Returns(dummyAnimeLover);
-            // Mock andere benodigde methoden...
 
             // Act
             var result = controller.ToggleFavorite(animeId);
